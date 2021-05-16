@@ -1,5 +1,15 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- ingress-nginx
+# - _pvc
+- ingress-nginx-external
+- ingress-nginx-internal
 - wildcard-certificate
+# - adguard-home
+# - oxidized
+# - blocky
+# - cloudflare-ddns
+- coredns
+- external-dns
+# - internal-dns
+- secret-reflector

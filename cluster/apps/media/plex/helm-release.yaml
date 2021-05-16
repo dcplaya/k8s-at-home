@@ -1,0 +1,127 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: plex
+  namespace: media
+  labels:
+    service: plex
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: plex
+      version: 4.3.1
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    image:
+      repository: plexinc/pms-docker
+      tag: plexpass
+      # repository: ghcr.io/k8s-at-home/plex
+      # tag: v1.22.0.4163-d8c4875dd
+      pullPolicy: IfNotPresent
+    env:
+      TZ: "America/Los_Angeles"
+      PUID: "1000"
+      PGID: "100"
+      ADVERTISE_IP: "https://plex.media.${SECRET_DOMAIN}:443"
+      PLEX_CLAIM: "${SECRET_PLEX_CLAIM_TOKEN}"
+    # Needed for hardware transcoding
+    podSecurityContext:
+      supplementalGroups:
+      - 44
+      - 109
+    service:
+      enabled: true
+      type: LoadBalancer
+      loadBalancerIP: "${LB_PLEX_IP}"
+      externalTrafficPolicy: Local
+      port:
+        port: 32400
+      additionalServices:
+      - enabled: true
+        nameSuffix: webtools
+        type: LoadBalancer
+        externalIPs:
+        - "${CLUSTER_LB_PLEX}"
+        port:
+          port: 33400
+          name: webtools
+          protocol: TCP
+          targetPort: 33400
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: "external"
+        nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+      hosts:
+      - host: "plex.media.${SECRET_DOMAIN}"
+        paths:
+        - path: /
+          pathType: Prefix
+      tls:
+      - hosts:
+        - "plex.media.${SECRET_DOMAIN}"
+    persistence:
+      config:
+        enabled: true
+        existingClaim: config-plex
+      transcode:
+        enabled: false
+        emptyDir:
+          medium: "Memory"
+    podAnnotations:
+      backup.velero.io/backup-volumes: config
+    additionalVolumeMounts:
+    - name: nfs-nas-merged-media-pvc
+      mountPath: "/mnt/unionfs"
+    additionalVolumes:
+    - name: nfs-nas-merged-media-pvc
+      persistentVolumeClaim:
+        claimName: nfs-nas-merged-media-pvc
+    addons:
+      promtail:
+        enabled: true
+        image:
+          repository: grafana/promtail
+          tag: 2.2.1
+        loki: http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push
+        logs:
+        - name: promtail/plex
+          path: "/config/Library/Application Support/Plex Media Server/Logs/*.log"
+        - name: promtail/plex/plugins
+          path: "/config/Library/Application Support/Plex Media Server/Logs/PMS Plugin Logs/*.log"
+        volumeMounts:
+        - name: config
+          mountPath: /config
+          readOnly: true
+        securityContext:
+          runAsUser: 0
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+              - node04
+            - key: feature.node.kubernetes.io/custom-intel-gpu
+              operator: In
+              values:
+              - "true"
+    resources:
+      requests:
+        ## 1000m = 1 core
+        ## Setting request high enough so this doesnt get scheduled on i3 NUCs
+        cpu: 8000m
+        memory: 10000Mi
+        gpu.intel.com/i915: 1
+      limits:
+        gpu.intel.com/i915: 1
+        memory: 20000Mi

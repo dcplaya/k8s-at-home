@@ -1,0 +1,57 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: flood
+  namespace: media
+  labels:
+    service: flood
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: flood
+      version: 4.3.1
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    controllerType: deployment
+    image:
+      repository: jesec/flood
+      tag: 4.5.4
+      pullPolicy: Always
+    env:
+      FLOOD_OPTION_RUNDIR: /data
+      FLOOD_OPTION_AUTH: "none"
+      FLOOD_OPTION_QBURL: "https://qb.media.${SECRET_DOMAIN}"
+      FLOOD_OPTION_QBUSER: "${SECRET_QB_USERNAME}"
+      FLOOD_OPTION_QBPASS: "${SECRET_QB_PASSWORD}"
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: "internal"
+      hosts:
+      - host: "flood.media.${SECRET_DOMAIN}"
+        paths:
+        - path: /
+          pathType: Prefix
+      tls:
+      - hosts:
+        - "flood.media.${SECRET_DOMAIN}"
+    persistence:
+      data:
+        enabled: true
+        emptyDir: false
+        existingClaim: config-flood
+    podAnnotations:
+      backup.velero.io/backup-volumes: data
+    resources:
+      requests:
+        memory: 250Mi
+        cpu: 510m
+      limits:
+        memory: 1500Mi

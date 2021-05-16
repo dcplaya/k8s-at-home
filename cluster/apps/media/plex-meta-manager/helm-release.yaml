@@ -1,0 +1,102 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  namespace: media
+  name: plex-meta-manager
+  labels:
+    app: plex-meta-manager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plex-meta-manager
+  template:
+    metadata:
+      labels:
+        app: plex-meta-manager
+    spec:
+      # dnsPolicy: None
+      dnsConfig:
+        nameservers:
+        - "${CLUSTER_DNS_SERVER_FQDN}"
+      initContainers:
+      - name: git-config
+        image: alpine/git:v2.30.0
+        env:
+        - name: GITEA_TOKEN
+          value: "${SECRET_GITEA_ACCESS_TOKEN}"
+        - name: URL
+          value: "git.dev.${SECRET_DOMAIN}"
+        command:
+        - "/bin/sh"
+        - "-c"
+        - |
+          set -o nounset
+          set -o errexit
+          # sleep 600000000m
+          if [ -z "${SECRET_GITEA_ACCESS_TOKEN}" ]; then
+            printf "%s - Error - Missing GITEA_TOKEN environment variable" "$(date -u)"
+            exit 1
+          fi
+          git clone --depth 1 "https://${SECRET_GITEA_ACCESS_TOKEN}@git.dev.${SECRET_DOMAIN}/dcplaya/Configs.git" /shared/Configs
+          echo "Clone Complete"
+          echo "Setting Perms"
+          chown -R 1000:1000 /shared/Configs
+          chmod a+x /shared/Configs/Plex-Meta-Manager/pushGit.sh
+          exit 0
+        volumeMounts:
+        - name: shared
+          # Path will be /shared/Configs/Plex-Meta-Manager/config.yml
+          mountPath: /shared
+      containers:
+      - name: plex-meta-manager
+        image: meisnate12/plex-meta-manager:latest
+        imagePullPolicy: Always
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "/shared/Configs/Plex-Meta-Manager/setupGit.sh"]
+          preStop:
+            exec:
+              command: ["/bin/sh", "-c", "/shared/Configs/Plex-Meta-Manager/pushGit.sh"]
+        env:
+        - name: GITEA_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: gitea-pat
+              key: token
+        - name: PUID
+          value: "1000"
+        - name: GUID
+          value: "1000"
+        - name: TZ
+          value: "America/Los_Angeles"
+        # - name: PMM_DEBUG
+        - name: PMM_TEST
+          value: "false"
+        - name: PMM_RUN
+          value: "false"
+        # - name: PMM_COLLECTIONS
+        - name: PMM_TIME
+          value: "14:00"
+        - name: PMM_CONFIG
+          value: "/shared/Configs/Plex-Meta-Manager/config.yml"
+        volumeMounts:
+        - mountPath: /volume1/Media
+          name: media-pvc
+        - mountPath: /shared
+          name: shared
+        resources:
+          requests:
+            memory: 500Mi
+            cpu: 1000m
+          limits:
+            memory: 2000Mi
+            cpu: 1001m
+      volumes:
+      - name: media-pvc
+        persistentVolumeClaim:
+          claimName: nfs-nas-media-pvc
+      - name: shared
+        emptyDir: {}

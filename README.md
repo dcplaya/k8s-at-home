@@ -159,23 +159,35 @@ export FLUX_KEY_FP=AB675CE4CC64251G3S9AE1DAA88ARRTY2C009E2D
 
 ```sh
 k3sup install \
-    --host=169.254.1.1 \
-    --user=k8s-at-home \
-    --k3s-version=v1.20.5+k3s1 \
+    --host=node01.cluster.elcarpenter.com \
+    --user=carpenam \
+    --k3s-version=v1.20.6+k3s1 \
+    --cluster \
     --k3s-extra-args="--disable servicelb --disable traefik"
 ```
 
-3. Join worker nodes (optional)
+3. Join other master nodes
 
 ```sh
 k3sup join \
-    --host=169.254.1.2 \
-    --server-host=169.254.1.1 \
-    --k3s-version=v1.20.5+k3s1 \
-    --user=k8s-at-home
+    --host=node02.cluster.elcarpenter.com \
+    --server-host=node01.cluster.elcarpenter.com \
+    --k3s-version=v1.20.6+k3s1 \
+    --user=carpenam \
+    --server
 ```
 
-4. Verify the nodes are online
+3. Join other worker nodes
+
+```sh
+k3sup join \
+    --host=node04.cluster.elcarpenter.com \
+    --server-host=node01.cluster.elcarpenter.com \
+    --k3s-version=v1.20.6+k3s1 \
+    --user=carpenam
+```
+
+5. Verify the nodes are online
    
 ```sh
 kubectl --kubeconfig=./kubeconfig get nodes

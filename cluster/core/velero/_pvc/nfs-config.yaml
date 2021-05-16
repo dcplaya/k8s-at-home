@@ -1,0 +1,36 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-config-pv
+spec:
+  storageClassName: "rclone-config"
+  capacity:
+    storage: 2Mi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: 10.10.200.210
+    path: /volume1/Media/config
+  mountOptions:
+    - tcp
+    - intr
+    - hard
+    - noatime
+    - nodiratime
+    - rsize=32768
+    - wsize=32768
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-config-pvc
+  namespace: velero
+spec:
+  accessModes:
+  - ReadWriteMany
+  storageClassName: "rclone-config"
+  resources:
+    requests:
+      storage: 2Mi

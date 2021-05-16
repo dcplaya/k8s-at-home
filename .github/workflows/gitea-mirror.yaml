@@ -1,0 +1,32 @@
+name: " ⏳  Gitea Mirror Setup"
+
+on:
+  workflow_dispatch:
+ 
+  schedule:
+    - cron: 0 0 * * *
+  
+  push:
+    branches:
+      - main
+
+jobs:
+  mirror:
+    runs-on:
+    - self-hosted
+    steps:
+      - uses: varunsridharan/action-gitea-mirror@main
+        name: " ⏳ Setting Up Mirror"
+        with:
+          gh_username: "dcplaya"
+          gh_accesstoken: ${{ secrets.PAT }}
+          gitea_host: ${{ secrets.GITEA_HOST }}
+          gitea_username: "dcplaya"
+          gitea_accesstoken: ${{ secrets.GITEA_TOKEN }}
+          gitea_gist_prefix: "gist"
+          gitea_gist_surfix: ""
+          gistsSource: true
+          gistsStared: true
+          repositoryStared: true
+          repositorySource: true
+          repositoryForked: true

@@ -1,0 +1,77 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: tautulli
+  namespace: media
+  labels:
+    service: tautulli
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: tautulli
+      version: 9.0.0
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    controllerType: deployment
+    image:
+      repository: linuxserver/tautulli
+      tag: amd64-develop
+      pullPolicy: Always
+    env:
+      TZ: "America/Los_Angeles"
+      PUID: "1000"
+      PGID: "100"
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: "external"
+      hosts:
+      - host: "plexpy.media.${SECRET_DOMAIN}"
+        paths:
+        - path: /
+          pathType: Prefix
+      tls:
+      - hosts:
+        - "plexpy.media.${SECRET_DOMAIN}"
+      additionalIngresses:
+      - enabled: true
+        nameSuffix: "altname01"
+        annotations:
+          kubernetes.io/ingressClassName: external
+          kubernetes.io/ingress.class: external
+        hosts:
+        - host: "tautulli.media.${SECRET_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
+        tls:
+        - hosts:
+          - "tautulli.media.${SECRET_DOMAIN}"
+    persistence:
+      config:
+        enabled: true
+        existingClaim: config-tautulli
+    podAnnotations:
+      backup.velero.io/backup-volumes: config
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: NotIn
+              values:
+              - node04
+    resources:
+      requests:
+        memory: 250Mi
+        cpu: 510m
+      limits:
+        memory: 1500Mi

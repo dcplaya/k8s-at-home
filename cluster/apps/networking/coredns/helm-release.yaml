@@ -1,0 +1,92 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: coredns
+  namespace: networking
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://coredns.github.io/helm
+      chart: coredns
+      version: 1.15.0
+      sourceRef:
+        kind: HelmRepository
+        name: coredns-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    nameOverride: coredns
+    fullnameOverride: coredns
+    rbac:
+      create: true
+    replicaCount: 3
+    isClusterService: false
+    serviceType: LoadBalancer
+    service:
+      loadBalancerIP: "${LB_COREDNS_IP}"
+      externalTrafficPolicy: Local
+    servers:
+    - zones:
+      - zone: ${SECRET_DOMAIN}
+        scheme: dns://
+      port: 53
+      plugins:
+      # Enables console logging
+      - name: log
+      - name: errors
+      # Serves a /health endpoint on :8080, required for livenessProbe
+      - name: health
+        configBlock: |-
+          lameduck 5s
+      # Serves a /ready endpoint on :8181, required for readinessProbe
+      - name: ready
+      # Allow automatic reloading of Corefile
+      - name: reload
+      # Detect forwarding loops
+      - name: loop
+      # Static hosts
+      - name: hosts
+        configBlock: |-
+          192.168.42.40 minio.storage.${SECRET_DOMAIN}
+          192.168.42.40 nexus.${SECRET_DOMAIN}
+          192.168.42.40 registry.${SECRET_DOMAIN}
+          192.168.42.40 registry-cache.${SECRET_DOMAIN}
+          192.168.42.40 rocinante.${SECRET_DOMAIN}
+          192.168.42.40 serenity.${SECRET_DOMAIN}
+          192.168.42.40 unifi.${SECRET_DOMAIN}
+          192.168.42.40 vault.${SECRET_DOMAIN}
+          10.10.200.1 drew.network.${SECRET_DOMAIN}
+          10.10.200.210 nas01.storage.${SECRET_DOMAIN}
+          fallthrough
+      # Set up local resolution
+      # endpoint https://192.168.42.10:2379 https://192.168.42.11:2379 https://192.168.42.12:2379
+      - name: etcd
+        configBlock: |-
+          stubzones
+          path /skydns
+          http://etcd:2379
+          tls /etc/coredns/coredns-etcd/cert.pem /etc/coredns/coredns-etcd/key.pem /etc/coredns/coredns-etcd/ca.crt
+      # Set up cache
+      - name: cache
+        parameters: 30
+    extraSecrets:
+    - name: coredns-etcd
+      mountPath: /etc/coredns/coredns-etcd
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+              - coredns
+          topologyKey: "kubernetes.io/hostname"
+    resources:
+      requests:
+        memory: 200Mi
+        cpu: 50m
+      limits:
+        memory: 500Mi

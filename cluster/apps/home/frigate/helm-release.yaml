@@ -1,0 +1,137 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: frigate
+  namespace: home
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://blakeblackshear.github.io/blakeshome-charts/
+      chart: frigate
+      version: 5.0.1
+      sourceRef:
+        kind: HelmRepository
+        name: blakeshome-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    image:
+      repository: blakeblackshear/frigate
+      tag: 0.8.4-amd64
+    # timezone: America/Los_Angeles
+    persistence:
+      data:
+        enabled: true
+        existingClaim: data-frigate
+    extraVolumes:
+    - name: media-frigate
+      persistentVolumeClaim:
+        claimName: media-frigate
+    extraVolumeMounts:
+    - name: media-frigate
+      mountPath: "/media/frigate"
+    podAnnotations:
+      configmap.reloader.stakater.com/reload: "frigate"
+      backup.velero.io/backup-volumes: data
+    coral:
+      enabled: true
+    config: |
+      mqtt:
+        # Required: host name
+        host: vernemq
+        # Optional: port (default: shown below)
+        port: 1883
+        # Optional: topic prefix (default: shown below)
+        # WARNING: must be unique if you are running multiple instances
+        topic_prefix: frigate
+        # Optional: client id (default: shown below)
+        # WARNING: must be unique if you are running multiple instances
+        client_id: frigate
+        # Optional: user
+        # user: mqtt_user
+        # Optional: password
+        # NOTE: Environment variables that begin with 'FRIGATE_' may be referenced in {}.
+        #       eg. password: '{FRIGATE_MQTT_PASSWORD}'
+        # password: password
+        # Optional: interval in seconds for publishing stats (default: shown below)
+        stats_interval: 60
+      detectors:
+        coral:
+          type: edgetpu
+          device: usb
+      ffmpeg:
+        hwaccel_args:
+          - -hwaccel
+          - qsv
+          - -qsv_device
+          - /dev/dri/renderD128
+      cameras:
+        living-room:
+          ffmpeg:
+            inputs:
+              - path: rtsp://10.10.200.220:7447/azUhHEqKsTILYSdR
+                roles:
+                  - detect
+                  - rtmp
+          width: 640
+          height: 360
+          fps: 5
+        dining-room:
+          ffmpeg:
+            inputs:
+              - path: rtsp://10.10.200.220:7447/KOF0Fng0FwIRT2ug
+                roles:
+                  - detect
+                  - rtmp
+          width: 640
+          height: 360
+          fps: 5
+          zones:
+            zone-kitchen:
+              coordinates: 991,414,1920,289,1920,702,1708,924,1564,1080,1120,1080,1061,1039
+        front-door:
+          ffmpeg:
+            inputs:
+              - path: rtsp://10.10.200.220:7447/1xYtZJaXQrqnIctQ
+                roles:
+                  - detect
+                  - rtmp
+          width: 640
+          height: 360
+          fps: 5
+        back-door:
+          ffmpeg:
+            inputs:
+              - path: rtsp://10.10.200.220:7447/ZjAMogmEORupfL1w
+                roles:
+                  - detect
+                  - rtmp
+          width: 640
+          height: 360
+          fps: 5
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: "internal"
+      hosts:
+      - "frigate.home.${SECRET_DOMAIN}"
+      tls:
+      - hosts:
+        - "frigate.home.${SECRET_DOMAIN}"
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - {key: "feature.node.kubernetes.io/custom-coral-tpu", operator: In, values: ["true"]}
+            - {key: "feature.node.kubernetes.io/custom-intel-gpu", operator: In, values: ["true"]}
+    resources:
+      requests:
+        memory: 1000Mi
+        cpu: 750m
+        gpu.intel.com/i915: 1
+      limits:
+        memory: 2500Mi
+        gpu.intel.com/i915: 1

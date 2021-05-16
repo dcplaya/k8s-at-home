@@ -1,0 +1,86 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: qbittorrent
+  namespace: media
+  labels:
+    service: qbtorrent
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: qbittorrent
+      version: 10.0.0
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    controllerType: deployment
+    image:
+      repository: linuxserver/qbittorrent
+      tag: latest
+      pullPolicy: Always
+    env:
+      TZ: "America/Los_Angeles"
+      PUID: "1000"
+      PGID: "100"
+    service:
+      additionalServices:
+      - enabled: true
+        nameSuffix: bittorrent
+        type: LoadBalancer
+        externalIPs:
+        - 10.201.70.44
+        port:
+          port: 50413
+          name: bittorrent
+          protocol: TCP
+          targetPort: 6881
+        externalTrafficPolicy: Local
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: "internal"
+      hosts:
+      - host: "qb.media.${SECRET_DOMAIN}"
+        paths:
+        - path: /
+          pathType: Prefix
+      tls:
+      - hosts:
+        - "qb.media.${SECRET_DOMAIN}"
+    persistence:
+      config:
+        enabled: true
+        storageClass: "rook-ceph-block"
+        accessMode: ReadWriteOnce
+        size: "5Gi"
+    podAnnotations:
+      backup.velero.io/backup-volumes: config
+    additionalVolumeMounts:
+    - name: nfs-nas-merged-media-pvc
+      mountPath: "/mnt/unionfs"
+    additionalVolumes:
+    - name: nfs-nas-merged-media-pvc
+      persistentVolumeClaim:
+        claimName: nfs-nas-merged-media-pvc
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: NotIn
+              values:
+              - node04
+    resources:
+      requests:
+        memory: 250Mi
+        cpu: 500m
+      limits:
+        memory: 6000Mi
+        cpu: 1500m

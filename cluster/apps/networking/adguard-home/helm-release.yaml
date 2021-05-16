@@ -1,0 +1,99 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: adguard-home
+  namespace: networking
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: adguard-home
+      version: 3.2.1
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    initContainers:
+    - name: git-config
+      image: alpine/git:v2.30.0
+      env:
+      - name: GITEA_TOKEN
+        value: "${SECRET_GITEA_ACCESS_TOKEN}"
+      - name: URL
+        value: "git.dev.${SECRET_DOMAIN}"
+      command:
+      - "sh"
+      - "-c"
+      - |
+        if [ ! -f /opt/adguardhome/conf/AdGuardHome.yaml ]; then
+          mkdir -p /opt/adguardhome/conf
+          git clone --depth 1 "https://${SECRET_GITEA_ACCESS_TOKEN}@git.dev.${SECRET_DOMAIN}/dcplaya/Configs.git" /opt/adguardhome/Configs
+          cp /opt/adguardhome/Configs/AdGuard-Home/AdGuardHome.yaml /opt/adguardhome/conf/AdGuardHome.yaml
+        fi
+      volumeMounts:
+      - name: config
+        mountPath: /opt/adguardhome/conf
+      securityContext:
+        runAsUser: 0
+    image:
+      repository: adguard/adguardhome
+      tag: v0.106.1
+      pullPolicy: Always
+    persistence:
+      config:
+        enabled: true
+      data:
+        enabled: true
+        existingClaim: database-adguard-home
+    env:
+      TZ: "America/Los_Angeles"
+      PUID: "1000"
+      PGID: "100"
+    service:
+      port:
+        port: 3000
+      additionalServices:
+      - enabled: true
+        nameSuffix: dns-tcp
+        type: LoadBalancer
+        loadBalancerIP: "${LB_ADGUARD_IP}"
+        port:
+          port: 53
+          name: dns-tcp
+          protocol: TCP
+          targetPort: 53
+        externalTrafficPolicy: Local
+      - enabled: true
+        nameSuffix: dns-udp
+        type: LoadBalancer
+        externalIPs:
+        - "${CLUSTER_LB_ADGUARD_HOME}"
+        port:
+          port: 53
+          name: dns-udp
+          protocol: UDP
+          targetPort: 53
+        externalTrafficPolicy: Local
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: "external"
+        # nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+      hosts:
+      - host: "dns01.network.${SECRET_DOMAIN}"
+        paths:
+        - path: /
+          pathType: Prefix
+      tls:
+      - hosts:
+        - "dns01.network.${SECRET_DOMAIN}"
+    resources:
+      requests:
+        memory: 1000Mi
+        cpu: 200m
+      limits:
+        memory: 2000Mi

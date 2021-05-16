@@ -1,0 +1,87 @@
+---
+#
+# Cronjob to back up my longhorn backups to the cloud
+# Thanks @onedr0p!
+#
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  namespace: velero
+  name: rclone-sync-postgres
+spec:
+  suspend: false
+  # Run once a day, every day, starting at 3AM
+  schedule: "0 3 * * *"
+  failedJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 1
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          # dnsPolicy: None
+          dnsConfig:
+            nameservers:
+            - "${CLUSTER_DNS_SERVER_FQDN}"
+          initContainers:
+          - name: rclone-conf
+            image: alpine/git:v2.30.0
+            env:
+            - name: GITEA_TOKEN
+              value: "${SECRET_GITEA_ACCESS_TOKEN}"
+            - name: URL
+              value: "git.dev.${SECRET_DOMAIN}"
+            command:
+            - "/bin/sh"
+            - "-ec"
+            - |
+              set -o nounset
+              set -o errexit
+              if [ -z "${SECRET_GITEA_ACCESS_TOKEN}" ]; then
+                printf "%s - Error - Missing GITEA_TOKEN environment variable" "$(date -u)"
+                exit 1
+              fi
+              git clone --depth 1 "https://${SECRET_GITEA_ACCESS_TOKEN}@git.dev.${SECRET_DOMAIN}/dcplaya/Configs.git" /shared/Configs
+              exit 0
+            volumeMounts:
+            - name: shared
+              mountPath: /shared
+          containers:
+          - name: rclone
+            image: rclone/rclone:1.54
+            imagePullPolicy: IfNotPresent
+            env:
+            - name: TZ
+              value: "America/Los_Angeles"
+            command: ["rclone"]
+            args:
+            - "-vvv"
+            - "--config"
+            - "/shared/Configs/RClone/backups.conf"
+            - "sync"
+            - "--ignore-errors"
+            - "--fast-list"
+            - "--b2-hard-delete"
+            - "--transfers"
+            - "24"
+            - "--checkers"
+            - "24"
+            - "--bwlimit"
+            - "50M"
+            - "minio:postgres"
+            - "backblaze-postgres:/"
+            resources:
+              requests:
+                memory: 1000Mi
+                cpu: 1500m
+              limits:
+                cpu: 2500m
+                # memory: 2000Mi
+            volumeMounts:
+            - mountPath: /shared
+              name: shared
+          volumes:
+          # Location of rclone.conf
+          - name: shared
+            emptyDir: {}

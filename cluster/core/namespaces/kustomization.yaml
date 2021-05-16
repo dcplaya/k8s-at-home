@@ -4,3 +4,9 @@ resources:
 - cert-manager.yaml
 - metallb-system.yaml
 - networking.yaml
+- media.yaml
+- home.yaml
+- kube-system.yaml
+- rook-ceph.yaml
+- velero.yaml
+- dev.yaml

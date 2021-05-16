@@ -1,0 +1,86 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: nzbget
+  namespace: media
+  labels:
+    service: nzbget
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: nzbget
+      version: 10.0.0
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    controllerType: deployment
+    image:
+      repository: hotio/nzbget
+      tag: release
+      pullPolicy: Always
+    env:
+      TZ: "America/Los_Angeles"
+      PUID: "1000"
+      PGID: "100"
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: "external"
+        nginx.ingress.kubernetes.io/auth-type: basic
+        nginx.ingress.kubernetes.io/auth-secret: media/nginx-basic-auth
+        nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
+        nginx.ingress.kubernetes.io/configuration-snippet: |
+          proxy_set_header Accept-Encoding "";
+          sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://gilbn.github.io/theme.park/CSS/themes/nzbget/organizr-dark.css"></head>';
+          sub_filter_once on;
+      hosts:
+      - host: "usenet.media.${SECRET_DOMAIN}"
+        paths:
+        - path: /
+          pathType: Prefix
+      tls:
+      - hosts:
+        - "usenet.media.${SECRET_DOMAIN}"
+    persistence:
+      config:
+        enabled: true
+        existingClaim: config-nzbget
+      downloads:
+        enabled: false
+    podAnnotations:
+      backup.velero.io/backup-volumes: config
+    additionalVolumeMounts:
+    - name: nfs-media
+      mountPath: "/mnt/unionfs"
+    - name: nfs-downloads
+      mountPath: "/downloads"
+    additionalVolumes:
+    - name: nfs-media
+      persistentVolumeClaim:
+        claimName: nfs-nas-merged-media-pvc
+    - name: nfs-downloads
+      persistentVolumeClaim:
+        claimName: nfs-nas-media-pvc
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: NotIn
+              values:
+              - node00
+              - node04
+    resources:
+      requests:
+        memory: 260Mi
+        cpu: 500m
+      limits:
+        # cpu: 2500m
+        memory: 7500Mi

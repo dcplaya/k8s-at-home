@@ -1,0 +1,129 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: home-assistant
+  namespace: home
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: home-assistant
+      version: 8.0.0
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    image:
+      repository: homeassistant/home-assistant
+      tag: dev
+      pullPolicy: Always
+    env:
+      TZ: "America/Los_Angeles"
+      PUID: "1000"
+      PGID: "100"
+      HASS_SECRET_LATITUDE: "${SECRET_HASS_LATITUDE}"
+      HASS_SECRET_LONGITUDE: "${SECRET_HASS_LONGITUDE}"
+      HASS_SECRET_ELEVATION: "${SECRET_HASS_ELEVATION}"
+    hostNetwork: true
+    service:
+      type: LoadBalancer
+      loadBalancerIP: "${LB_HOME_ASSISTANT_IP}"
+      externalTrafficPolicy: Local
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: "internal"
+      hosts:
+      - host: "home.${SECRET_DOMAIN}"
+        paths:
+        - path: /
+          pathType: Prefix
+      tls:
+      - hosts:
+        - "home.${SECRET_DOMAIN}"
+    monitoring:
+      enabled: false
+    prometheus:
+      serviceMonitor:
+        enabled: true
+    persistence:
+      config:
+        enabled: true
+        existingClaim: config-home-assistant
+    podAnnotations:
+      backup.velero.io/backup-volumes: config
+    git:
+      deployKeyBase64: "${SECRET_HASS_DEPLOY_KEY_B64}"
+    addons:
+      codeserver:
+        enabled: true
+        image:
+          repository: codercom/code-server
+          tag: 3.9.3
+        workingDir: "/config"
+        args:
+        - --auth
+        - "none"
+        - --user-data-dir
+        - "/config/.vscode"
+        - --extensions-dir
+        - "/config/.vscode"
+        ingress:
+          enabled: true
+          annotations:
+            kubernetes.io/ingress.class: "internal"
+          hosts:
+          - host: "vscode.home.${SECRET_DOMAIN}"
+            paths:
+            - path: /
+              pathType: Prefix
+          tls:
+          - hosts:
+            - "vscode.home.${SECRET_DOMAIN}"
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        # - name: deploykey
+        #   mountPath: /root/.ssh/id_rsa
+        #   subPath: id_rsa
+    resources:
+      requests:
+        cpu: 200m
+        memory: 1000Mi
+      limits:
+        memory: 2500Mi
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+              - plex
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+              - k10
+          topologyKey: "kubernetes.io/hostname"
+    postgresql:
+      enabled: false
+      postgresqlDatabase: homeassistant
+      postgresqlPassword: "${SECRET_HASS_DB_PASSWORD}"
+      postgresqlUsername: "${SECRET_HASS_DB_USERNAME}"
+      persistence:
+        enabled: true
+        storageClass: "rook-ceph-block"
+    influxdb:
+      enabled: true
+      architecture: standalone
+      database: home_assistant
+      authEnabled: false
+      updateStrategy: Recreate
+      persistence:
+        enabled: true
+        existingClaim: database-home-assistant-influxdb

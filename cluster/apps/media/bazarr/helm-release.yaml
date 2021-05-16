@@ -1,0 +1,102 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: bazarr
+  namespace: media
+  labels:
+    service: bazarr
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: bazarr
+      version: 8.0.0
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    controllerType: deployment
+    image:
+      repository: hotio/bazarr
+      tag: nightly
+      pullPolicy: Always
+    env:
+      TZ: "America/Los_Angeles"
+      PUID: "1000"
+      PGID: "100"
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: "external"
+        nginx.ingress.kubernetes.io/auth-url: "https://auth.${SECRET_DOMAIN}/oauth2/auth"
+        nginx.ingress.kubernetes.io/auth-signin: "https://auth.${SECRET_DOMAIN}/oauth2/start"
+        nginx.ingress.kubernetes.io/configuration-snippet: |
+        #   # Bypass auth for requests from local network
+        #   # This works, but are there some security concerns?
+        #   satisfy any;
+        #   allow 192.168.0.0/16;
+        #   allow 172.16.0.0/12;
+        #   allow 10.0.0.0/8;
+        #   deny all;
+      hosts:
+      - host: "bazarr.media.${SECRET_DOMAIN}"
+        paths:
+        - path: /
+          pathType: Prefix
+      - host: "subtitles.media.${SECRET_DOMAIN}"
+        paths:
+        - path: /
+          pathType: Prefix
+      tls:
+      - hosts:
+        - "bazarr.media.${SECRET_DOMAIN}"
+      - hosts:
+        - "subtitles.media.${SECRET_DOMAIN}"
+      additionalIngresses:
+      - enabled: true
+        nameSuffix: "api"
+        annotations:
+          kubernetes.io/ingress.class: "external"
+        hosts:
+        - host: "subtitles.media.${SECRET_DOMAIN}"
+          paths:
+          - path: /api
+            pathType: Prefix
+        tls:
+        - hosts:
+          - "subtitles.media.${SECRET_DOMAIN}"
+      - enabled: true
+        nameSuffix: "altname01"
+        annotations:
+          kubernetes.io/ingress.class: "external"
+        hosts:
+        - host: "subs.media.${SECRET_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
+        tls:
+        - hosts:
+          - "subs.media.${SECRET_DOMAIN}"
+    persistence:
+      config:
+        enabled: true
+        existingClaim: config-bazarr
+    podAnnotations:
+      backup.velero.io/backup-volumes: config
+    additionalVolumeMounts:
+    - name: nfs-nas-merged-media-pvc
+      mountPath: "/mnt/unionfs"
+    additionalVolumes:
+    - name: nfs-nas-merged-media-pvc
+      persistentVolumeClaim:
+        claimName: nfs-nas-merged-media-pvc
+    resources:
+      requests:
+        memory: 250Mi
+        cpu: 500m
+      limits:
+        memory: 1500Mi
