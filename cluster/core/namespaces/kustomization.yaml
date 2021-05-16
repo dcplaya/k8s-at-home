@@ -5,6 +5,7 @@ resources:
 - metallb-system.yaml
 - networking.yaml
 - media.yaml
+- monitoring.yaml
 - home.yaml
 - kube-system.yaml
 - rook-ceph.yaml
