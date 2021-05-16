@@ -8,7 +8,7 @@ spec:
   interval: 1m0s
   ref:
     branch: main
-  url: git@github.com:dcplaya/k8s-at-home.git
+  url: ssh://git@github.com:dcplaya/k8s-at-home.git
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
