@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
 - _pvc
 - velero
-- jobs
+# - jobs
