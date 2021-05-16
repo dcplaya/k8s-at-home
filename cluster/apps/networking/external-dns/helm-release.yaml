@@ -3,7 +3,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: external-dns
-  namespace: kube-system
+  namespace: networking
 spec:
   interval: 5m
   chart:
@@ -18,17 +18,24 @@ spec:
       interval: 5m
   values:
     nameOverride: external-dns
+    # interval: "5m"
     logLevel: debug
-    provider: coredns
-    coredns:
-      etcdEndpoints: http://etcd:2379
+    sources:
+    - ingress
+    provider: cloudflare
+    cloudflare:
+      secretName: cloudflare-api-key
+      email: "${SECRET_EMAIL}"
+      proxied: true
+    policy: sync
+    txtPrefix: "k8s."
     domainFilters:
-      - "${SECRET_DOMAIN}"
+    - "${SECRET_DOMAIN}"
     crd:
       create: false
       apiversion: externaldns.k8s.io/v1alpha1
       kind: DNSEndpoint
-    # annotationFilter: "external-dns/is-public in (true)"
+    annotationFilter: "external-dns/is-public in (true)"
     resources:
       requests:
         memory: 100Mi
