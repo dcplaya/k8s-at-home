@@ -23,7 +23,7 @@ spec:
     ingress:
       enabled: true
       annotations:
-        kubernetes.io/ingress.class: "nginx"
+        kubernetes.io/ingress.class: "internal"
       hosts:
       - host: "homer.${SECRET_DOMAIN}"
         paths:
