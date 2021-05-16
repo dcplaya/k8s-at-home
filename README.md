@@ -170,11 +170,12 @@ k3sup install \
 
 ```sh
 k3sup join \
-    --host=node02.cluster.elcarpenter.com \
+    --host=node03.cluster.elcarpenter.com \
     --server-host=node01.cluster.elcarpenter.com \
     --k3s-version=v1.20.6+k3s1 \
     --user=carpenam \
-    --server
+    --server \
+    --k3s-extra-args="--disable servicelb --disable traefik"
 ```
 
 3. Join other worker nodes
