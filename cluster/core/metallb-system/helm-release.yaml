@@ -25,8 +25,17 @@ spec:
         repository: metallb/speaker
         tag: v0.9.6
     configInline:
+      # address-pools:
+      # - name: default
+      #   protocol: layer2
+      #   addresses:
+      #   - "${METALLB_LB_RANGE}"
+      peers:
+      - peer-address: 10.10.200.1
+        peer-asn: 64512
+        my-asn: 64512
       address-pools:
       - name: default
-        protocol: layer2
+        protocol: bgp
         addresses:
-        - "${METALLB_LB_RANGE}"
+        - "${METALLB_LB_BGP_RANGE}"
