@@ -29,52 +29,45 @@ spec:
       externalTrafficPolicy: Local
     servers:
     - zones:
-      - zone: ${SECRET_DOMAIN}
+      - zone: ${SECRET_DOMAIN}.
         scheme: dns://
       port: 53
       plugins:
-      # Enables console logging
       - name: log
       - name: errors
-      # Serves a /health endpoint on :8080, required for livenessProbe
       - name: health
         configBlock: |-
           lameduck 5s
-      # Serves a /ready endpoint on :8181, required for readinessProbe
       - name: ready
-      # Allow automatic reloading of Corefile
-      - name: reload
-      # Detect forwarding loops
-      - name: loop
-      # Static hosts
-      # 192.168.42.40 minio.storage.${SECRET_DOMAIN}
-      # 192.168.42.40 nexus.${SECRET_DOMAIN}
-      # 192.168.42.40 registry.${SECRET_DOMAIN}
-      # 192.168.42.40 registry-cache.${SECRET_DOMAIN}
-      # 192.168.42.40 rocinante.${SECRET_DOMAIN}
-      # 192.168.42.40 serenity.${SECRET_DOMAIN}
-      # 192.168.42.40 unifi.${SECRET_DOMAIN}
-      # 192.168.42.40 vault.${SECRET_DOMAIN}
-      - name: hosts
+      - name: kubernetes
+        parameters: cluster.local in-addr.arpa ip6.arpa
         configBlock: |-
-          10.10.200.1 drew.network.${SECRET_DOMAIN}
-          10.10.200.210 nas01.storage.${SECRET_DOMAIN}
-          fallthrough
-      # Set up local resolution
+          pods insecure
+          fallthrough in-addr.arpa ip6.arpa
+          ttl 30
+      - name: prometheus
+        parameters: 0.0.0.0:9153
+      # Forward everything else to Cloudflare DNS
+      # Note: plugin/forward: this plugin can only be used once per Server Block
+      - name: forward
+        parameters: . 1.1.1.1
+        configBlock: |-
+          except elcarpenter.com *.elcarpenter.com stricklybeans.com *.stricklybeans.com
+      - name: cache
+        parameters: 30
+      # Detects simple forwarding loops and halts the CoreDNS process if a loop is found.
+      - name: loop
+      # Allows automatic reload of a changed Corefile.
+      - name: reload
+      # The loadbalance will act as a round-robin DNS load balancer by randomizing the order of A, AAAA, and MX records in the answer.
+      - name: loadbalance
+      # I need this due to having 2 ingress controllers. Without it, internal resolves to external ingress due to zonefiles below
       - name: etcd
-        parameters: elcarpenter.com
+        parameters: ${SECRET_DOMAIN}
         configBlock: |-
           stubzones
           path /skydns
           endpoint http://etcd:2379
-      # endpoint https://10.10.200.51:2379 https://10.10.200.52.11:2379 https://10.10.200.53:2379
-      # tls /etc/coredns/coredns-etcd/cert.pem /etc/coredns/coredns-etcd/key.pem /etc/coredns/coredns-etcd/ca.crt
-      # Set up cache
-      - name: cache
-        parameters: 30
-    # extraSecrets:
-    # - name: coredns-etcd
-    #   mountPath: /etc/coredns/coredns-etcd
     affinity:
       podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
