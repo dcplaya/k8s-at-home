@@ -9,6 +9,7 @@ resources:
 # - oxidized
 # - blocky
 # - cloudflare-ddns
+- etcd
 - coredns
 - external-dns
 - internal-dns

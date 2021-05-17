@@ -26,7 +26,7 @@ spec:
     - ingress
     provider: coredns
     coredns:
-      etcdEndpoints: "https://10.10.200.51:2379,https://10.10.200.52:2379,https://10.10.200.53:2379"
+      etcdEndpoints: "http://etcd:2379"
       etcdTLS:
         enabled: false
         secretName: coredns-etcd
