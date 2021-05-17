@@ -17,7 +17,7 @@ spec:
         kind: HelmRepository
         name: k8s-at-home-charts
         namespace: flux-system
-      interval: 5m
+      interval: 6m
   values:
     controllerType: deployment
     image:
@@ -84,5 +84,4 @@ spec:
         memory: 260Mi
         cpu: 500m
       limits:
-        # cpu: 2500m
         memory: 7500Mi
