@@ -47,8 +47,7 @@ spec:
       - enabled: true
         nameSuffix: webtools
         type: LoadBalancer
-        externalIPs:
-        - "${CLUSTER_LB_PLEX}"
+        loadBalancerIP: "${LB_PLEX_IP}"
         port:
           port: 33400
           name: webtools

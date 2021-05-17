@@ -3,7 +3,7 @@ kind: Kustomization
 resources:
 - default
 - kube-system
-# - home
+- home
 - media
 # - dev
 - monitoring
