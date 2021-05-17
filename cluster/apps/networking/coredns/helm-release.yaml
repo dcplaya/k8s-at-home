@@ -47,27 +47,26 @@ spec:
       # Detect forwarding loops
       - name: loop
       # Static hosts
+      # 192.168.42.40 minio.storage.${SECRET_DOMAIN}
+      # 192.168.42.40 nexus.${SECRET_DOMAIN}
+      # 192.168.42.40 registry.${SECRET_DOMAIN}
+      # 192.168.42.40 registry-cache.${SECRET_DOMAIN}
+      # 192.168.42.40 rocinante.${SECRET_DOMAIN}
+      # 192.168.42.40 serenity.${SECRET_DOMAIN}
+      # 192.168.42.40 unifi.${SECRET_DOMAIN}
+      # 192.168.42.40 vault.${SECRET_DOMAIN}
       - name: hosts
         configBlock: |-
-          192.168.42.40 minio.storage.${SECRET_DOMAIN}
-          192.168.42.40 nexus.${SECRET_DOMAIN}
-          192.168.42.40 registry.${SECRET_DOMAIN}
-          192.168.42.40 registry-cache.${SECRET_DOMAIN}
-          192.168.42.40 rocinante.${SECRET_DOMAIN}
-          192.168.42.40 serenity.${SECRET_DOMAIN}
-          192.168.42.40 unifi.${SECRET_DOMAIN}
-          192.168.42.40 vault.${SECRET_DOMAIN}
           10.10.200.1 drew.network.${SECRET_DOMAIN}
           10.10.200.210 nas01.storage.${SECRET_DOMAIN}
           fallthrough
       # Set up local resolution
-      # endpoint https://192.168.42.10:2379 https://192.168.42.11:2379 https://192.168.42.12:2379
       - name: etcd
         configBlock: |-
           stubzones
           path /skydns
-          http://etcd:2379
-          tls /etc/coredns/coredns-etcd/cert.pem /etc/coredns/coredns-etcd/key.pem /etc/coredns/coredns-etcd/ca.crt
+          endpoint https://10.10.200.51:2379 https://10.10.200.52.11:2379 https://10.10.200.53:2379
+      # tls /etc/coredns/coredns-etcd/cert.pem /etc/coredns/coredns-etcd/key.pem /etc/coredns/coredns-etcd/ca.crt
       # Set up cache
       - name: cache
         parameters: 30
