@@ -29,7 +29,7 @@ spec:
       TZ: "America/Los_Angeles"
       PUID: "1000"
       PGID: "100"
-      CONFIG_RELOAD_INTERVAL: 600
+      CONFIG_RELOAD_INTERVAL: 601
     service:
       port:
         port: 8888
