@@ -6,6 +6,8 @@ metadata:
   namespace: rook-ceph
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+    external-dns/is-public: "true"
+    external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
   labels:
     app.kubernetes.io/instance: rook-ceph-mgr-dashboard
     app.kubernetes.io/name: rook-ceph-mgr-dashboard
