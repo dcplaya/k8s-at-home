@@ -10,7 +10,7 @@ spec:
   # max number of pods, required
   maxRunners: 3
   organization: dcplaya
-  repository: home-cluster
+  repository: k8s-at-home
   podTemplateSpec:
     spec:
       # dnsPolicy: None
