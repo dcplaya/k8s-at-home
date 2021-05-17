@@ -37,7 +37,7 @@ spec:
         - "auth.${SECRET_DOMAIN}"
     extraArgs:
       provider: oidc
-      oidc-issuer-url: "https://${SECRET_COMPANY_NAME}.us.auth0.com/"
+      oidc-issuer-url: "https://${SECRET_AUTH0_URL}.us.auth0.com/"
       skip-provider-button:
       pass-authorization-header:
       email-domain: "*"
