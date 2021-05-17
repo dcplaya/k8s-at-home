@@ -60,7 +60,7 @@ spec:
         kubernetes.io/ingress.class: "external"
         nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
         external-dns/is-public: "true"
-        external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+        external-dns.alpha.kubernetes.io/target: "er1.device.${SECRET_DOMAIN}"
       hosts:
       - host: "plex.media.${SECRET_DOMAIN}"
         paths:

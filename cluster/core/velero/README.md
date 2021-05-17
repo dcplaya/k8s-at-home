@@ -43,7 +43,7 @@ kubectl delete pvc/jackett-test-config
 
 
 ```bash
-velero restore create --from-backup test-labels --include-namespaces media --selector "app.kubernetes.io/instance=plex" --wait
+velero restore create --from-backup velero-weekly-backup-20210511030004 --include-namespaces media --selector "app.kubernetes.io/instance=plex" --wait
 ```
 
 Restore a specific PVC
