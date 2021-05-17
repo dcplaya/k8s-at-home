@@ -14,3 +14,4 @@ resources:
 - external-dns
 - internal-dns
 - secret-reflector
+- oauth2-proxy
