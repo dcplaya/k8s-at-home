@@ -62,6 +62,7 @@ spec:
           fallthrough
       # Set up local resolution
       - name: etcd
+        parameters: elcarpenter.com
         configBlock: |-
           stubzones
           path /skydns
