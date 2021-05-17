@@ -160,10 +160,10 @@ spec:
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
       hosts:
-      - "grafana.${SECRET_DOMAIN}"
+      - "grafana.monitoring.${SECRET_DOMAIN}"
       tls:
       - hosts:
-        - "grafana.${SECRET_DOMAIN}"
+        - "grafana.monitoring.${SECRET_DOMAIN}"
     persistence:
       enabled: true
       storageClassName: "rook-ceph-block"
