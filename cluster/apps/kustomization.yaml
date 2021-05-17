@@ -5,7 +5,7 @@ resources:
 - kube-system
 - home
 - media
-# - dev
+- dev
 - monitoring
 - networking
 - system-upgrade
