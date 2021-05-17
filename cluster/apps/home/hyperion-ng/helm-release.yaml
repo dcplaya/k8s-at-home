@@ -28,8 +28,7 @@ spec:
       PGID: "100"
     service:
       type: LoadBalancer
-      externalIPs:
-      - 10.201.40.70
+      loadBalancerIP: "${LB_HYPERION_IP}"
     ingress:
       enabled: true
       annotations:

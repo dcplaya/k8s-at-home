@@ -22,8 +22,7 @@ spec:
       create: true
     service:
       type: LoadBalancer
-      externalIPs:
-      - 10.201.40.10
+      loadBalancerIP: "${LB_MQTT_IP}"
       ws:
         enabled: true
       mqtt:
