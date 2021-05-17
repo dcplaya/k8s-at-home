@@ -65,12 +65,12 @@ spec:
         limits:
           cpu: 3000m
           memory: 15360Mi
-    schedules:
-      daily-backup:
-        schedule: "0 2 * * *"
-        template:
-          ttl: "120h"
-      weekly-backup:
-        schedule: "0 3 * * 2"
-        template:
-          ttl: "720h"
+    # schedules:
+    #   daily-backup:
+    #     schedule: "0 2 * * *"
+    #     template:
+    #       ttl: "120h"
+    #   weekly-backup:
+    #     schedule: "0 3 * * 2"
+    #     template:
+    #       ttl: "720h"
