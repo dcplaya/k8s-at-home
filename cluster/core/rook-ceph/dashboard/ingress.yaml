@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/instance: rook-ceph-mgr-dashboard
     app.kubernetes.io/name: rook-ceph-mgr-dashboard
 spec:
-  ingressClassName: "internal"
+  ingressClassName: "external"
   rules:
   - host: "rook.${SECRET_DOMAIN}"
     http:
