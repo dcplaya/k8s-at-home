@@ -5,6 +5,11 @@ resources:
 # - _pvc
 - autoscan
 - bazarr
+- dizquetv
+- flood
+- gaps
+- jackett
+- lidarr
 - nzbget
 - nzbhydra2
 - radarr
