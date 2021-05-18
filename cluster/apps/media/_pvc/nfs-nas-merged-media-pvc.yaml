@@ -33,4 +33,4 @@ spec:
   storageClassName: merged-media
   resources:
     requests:
-      storage: 2Mi
+      storage: 1Mi
