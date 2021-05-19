@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: config-oxidized
-  namespace: network
+  namespace: networking
 spec:
   storageClassName: rook-ceph-block
   accessModes:
