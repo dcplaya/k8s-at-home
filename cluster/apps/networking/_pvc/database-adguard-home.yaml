@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: database-adguard-home
-  namespace: network
+  namespace: networking
 spec:
   storageClassName: rook-ceph-block
   accessModes:
