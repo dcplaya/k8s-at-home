@@ -6,15 +6,15 @@ metadata:
   namespace: rook-ceph
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-    external-dns/is-public: "true"
+    external-dns/is-public: "false"
     external-dns.alpha.kubernetes.io/target: "er1.device.${SECRET_DOMAIN}"
   labels:
     app.kubernetes.io/instance: rook-ceph-mgr-dashboard
     app.kubernetes.io/name: rook-ceph-mgr-dashboard
 spec:
-  ingressClassName: "external"
+  ingressClassName: "internal"
   rules:
-  - host: "rook.${SECRET_DOMAIN}"
+  - host: "rook.storage.${SECRET_DOMAIN}"
     http:
       paths:
       - path: /
@@ -26,4 +26,4 @@ spec:
               name: http-dashboard
   tls:
   - hosts:
-    - "rook.${SECRET_DOMAIN}"
+    - "rook.storage.${SECRET_DOMAIN}"
