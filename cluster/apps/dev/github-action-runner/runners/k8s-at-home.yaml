@@ -33,7 +33,7 @@ spec:
             - name: GH_ORG
               value: dcplaya
             - name: GH_REPO
-              value: home-cluster
+              value: k8s-at-home
           envFrom:
             - secretRef:
                 name: github-actions-runner-k8s-gitops-regtoken
