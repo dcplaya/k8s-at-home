@@ -17,4 +17,5 @@ resources:
 - radarr-4k
 - sonarr
 - sonarr-4k
+- sync
 - tautulli
