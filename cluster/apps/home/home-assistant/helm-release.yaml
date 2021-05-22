@@ -119,7 +119,7 @@ spec:
         enabled: true
         storageClass: "rook-ceph-block"
     influxdb:
-      enabled: true
+      enabled: false
       architecture: standalone
       database: home_assistant
       authEnabled: false
