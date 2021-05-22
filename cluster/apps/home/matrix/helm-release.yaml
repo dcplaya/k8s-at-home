@@ -35,7 +35,7 @@ spec:
     postgresql:
       image:
         repository: bitnami/postgresql
-        tag: 13.2.0-debian-10-r9
+        tag: 13.3.0-debian-10-r9
       persistence:
         enabled: true
         storageClass: rook-ceph-block
