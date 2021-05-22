@@ -41,7 +41,7 @@ spec:
         runAsUser: 0
     image:
       repository: adguard/adguardhome
-      tag: v0.106.1
+      tag: v0.106.3
       pullPolicy: Always
     persistence:
       config:
