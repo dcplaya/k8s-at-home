@@ -38,7 +38,7 @@ spec:
           name: dns-tcp
           protocol: TCP
           targetPort: 53
-        externalTrafficPolicy: cluster
+        externalTrafficPolicy: Cluster
       - enabled: true
         nameSuffix: dns-udp
         type: LoadBalancer
@@ -48,7 +48,7 @@ spec:
           name: dns-udp
           protocol: UDP
           targetPort: 53
-        externalTrafficPolicy: cluster
+        externalTrafficPolicy: Cluster
     config: |
       upstream:
         externalResolvers:
