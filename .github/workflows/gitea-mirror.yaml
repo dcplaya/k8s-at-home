@@ -15,11 +15,11 @@ jobs:
     runs-on:
     - self-hosted
     steps:
-      - uses: varunsridharan/action-gitea-mirror@main
+      - uses: varunsridharan/action-gitea-mirror@1.1
         name: " ⏳ Setting Up Mirror"
         with:
           gh_username: "dcplaya"
-          gh_accesstoken: ${{ secrets.PAT }}
+          gh_accesstoken: ${{ secrets.GITEA_MIRROR_GITHUB_PAT }}
           gitea_host: ${{ secrets.GITEA_HOST }}
           gitea_username: "dcplaya"
           gitea_accesstoken: ${{ secrets.GITEA_TOKEN }}
