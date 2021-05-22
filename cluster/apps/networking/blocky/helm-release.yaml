@@ -4,8 +4,8 @@ kind: HelmRelease
 metadata:
   name: blocky
   namespace: networking
-  annotations:
-    metallb.universe.tf/allow-shared-ip: blocky
+  # annotations:
+  #  metallb.universe.tf/allow-shared-ip: blocky
 spec:
   interval: 5m
   chart:
