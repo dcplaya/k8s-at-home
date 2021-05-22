@@ -19,7 +19,7 @@ spec:
   values:
     initContainers:
     - name: git-config
-      image: alpine/git:v2.30.0
+      image: alpine/git:v2.30.2
       env:
       - name: GITEA_TOKEN
         value: "${SECRET_GITEA_ACCESS_TOKEN}"
