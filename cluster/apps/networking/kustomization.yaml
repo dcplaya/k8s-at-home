@@ -8,7 +8,7 @@ resources:
 # - adguard-home
 - oxidized
 # - blocky
-# - cloudflare-ddns
+- cloudflare-ddns
 - etcd
 - coredns
 - external-dns
