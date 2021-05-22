@@ -30,7 +30,7 @@ spec:
         port: 4000
       additionalServices:
       - enabled: true
-        nameSuffix: dns
+        nameSuffix: dns-tcp
         type: LoadBalancer
         loadBalancerIP: "${LB_BLOCKY_IP}"
         port:
@@ -38,12 +38,17 @@ spec:
           name: dns-tcp
           protocol: TCP
           targetPort: 53
-        additionalPorts:
-        - port: 53
+        externalTrafficPolicy: cluster
+      - enabled: true
+        nameSuffix: dns-udp
+        type: LoadBalancer
+        loadBalancerIP: "${LB_BLOCKY_IP}"
+        port:
+          port: 53
           name: dns-udp
           protocol: UDP
           targetPort: 53
-        externalTrafficPolicy: Local
+        externalTrafficPolicy: cluster
     config: |
       upstream:
         externalResolvers:
