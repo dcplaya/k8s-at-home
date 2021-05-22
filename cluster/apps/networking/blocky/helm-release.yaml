@@ -63,6 +63,11 @@ spec:
         - tcp-tls:${SECRET_NEXTDNS_ID}.dns2.nextdns.io:853
       conditional:
         mapping:
+          device.${SECRET_DOMAIN}: udp:1.1.1.1
+          vpn.${SECRET_DOMAIN}: udp:1.1.1.1
+          cluster.${SECRET_DOMAIN}: udp:10.10.200.1
+          iot.${SECRET_DOMAIN}: udp:10.10.100.1
+          lan.${SECRET_DOMAIN}: udp:10.10.1.1
           ${SECRET_DOMAIN}: udp:${LB_COREDNS_IP}
       blocking:
         blackLists:
