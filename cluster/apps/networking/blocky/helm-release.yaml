@@ -4,8 +4,6 @@ kind: HelmRelease
 metadata:
   name: blocky
   namespace: networking
-  # annotations:
-  #  metallb.universe.tf/allow-shared-ip: blocky
 spec:
   interval: 5m
   chart:
@@ -39,6 +37,8 @@ spec:
           protocol: TCP
           targetPort: 53
         externalTrafficPolicy: Local
+        annotations:
+          metallb.universe.tf/allow-shared-ip: blocky
       - enabled: true
         nameSuffix: dns-udp
         type: LoadBalancer
@@ -49,6 +49,8 @@ spec:
           protocol: UDP
           targetPort: 53
         externalTrafficPolicy: Local
+        annotations:
+          metallb.universe.tf/allow-shared-ip: blocky
     config: |
       upstream:
         externalResolvers:
