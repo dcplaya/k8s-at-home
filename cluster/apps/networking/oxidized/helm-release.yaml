@@ -25,6 +25,10 @@ spec:
       repository: oxidized/oxidized
       tag: latest
       pullPolicy: Always
+    hostAliases:
+    - ip: ${LB_GITEA_IP}
+      hostnames:
+      - "git.dev.${SECRET_DOMAIN}"
     env:
       TZ: "America/Los_Angeles"
       PUID: "1000"
