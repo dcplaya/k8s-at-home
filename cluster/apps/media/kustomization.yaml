@@ -13,6 +13,7 @@ resources:
 - lidarr
 - nzbget
 - nzbhydra2
+- overseer
 - radarr
 - radarr-4k
 - sonarr
