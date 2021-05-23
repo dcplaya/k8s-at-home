@@ -22,9 +22,9 @@ spec:
       tag: 2021.5.4
     env:
       TZ: "America/Los_Angeles"
-    replicas: 1
+    replicas: 2
     worker:
-      replicas: 1
+      replicas: 2
     authentik:
       log_level: debug
       # -- Secret key used for cookie singing and unique user IDs,
