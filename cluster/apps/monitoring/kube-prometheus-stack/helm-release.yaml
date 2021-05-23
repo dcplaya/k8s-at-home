@@ -47,7 +47,7 @@ spec:
               {{ end }}
         - name: 'webhook'
           webhook_configs:
-          - url: "http://192.168.1.35:9000/hooks/webhook-ups"
+          - url: "http://10.10.200.210:9000/hooks/webhook-ups"
             send_resolved: false
         route:
           group_by: ['alertname', 'job']
@@ -77,7 +77,7 @@ spec:
       ingress:
         enabled: true
         pathType: Prefix
-        ingressClassName: "internal"
+        ingressClassName: "traefik"
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         hosts:
@@ -126,7 +126,7 @@ spec:
       ingress:
         enabled: true
         pathType: Prefix
-        ingressClassName: "internal"
+        ingressClassName: "traefik"
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         hosts:
