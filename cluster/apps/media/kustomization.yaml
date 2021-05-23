@@ -14,6 +14,7 @@ resources:
 - nzbget
 - nzbhydra2
 - overseer
+- plex
 - radarr
 - radarr-4k
 - sonarr
