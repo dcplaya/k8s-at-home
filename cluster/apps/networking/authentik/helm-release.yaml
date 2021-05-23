@@ -22,9 +22,9 @@ spec:
       tag: 2021.5.3
     env:
       TZ: "America/Los_Angeles"
-    replicas: 1
+    replicas: 2
     worker:
-      replicas: 1
+      replicas: 2
     authentik:
       secret_key: ${SECRET_AUTHENTIK_SECRET_KEY}
       # This sends anonymous usage-data, stack traces on errors and
