@@ -65,7 +65,6 @@ spec:
         ingressClassName: "traefik"
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-          # kubernetes.io/ingress.class: "external"
         hosts:
         - host: "4ktv.media.${SECRET_DOMAIN}"
           paths:
