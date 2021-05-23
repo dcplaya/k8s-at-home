@@ -40,7 +40,8 @@ spec:
     ingress:
       enabled: true
       annotations:
-        kubernetes.io/ingress.class: "internal"
+        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        # kubernetes.io/ingress.class: "internal"
       hosts:
       - host: oxidized.network.${SECRET_DOMAIN}
         paths:
