@@ -43,8 +43,9 @@ spec:
         externalTrafficPolicy: Local
     ingress:
       enabled: true
+      ingressClassName: "traefik"
       annotations:
-        kubernetes.io/ingress.class: "internal"
+        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
       hosts:
       - host: "qb.media.${SECRET_DOMAIN}"
         paths:

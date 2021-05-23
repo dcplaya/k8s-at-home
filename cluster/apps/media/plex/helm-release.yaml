@@ -43,6 +43,8 @@ spec:
       externalTrafficPolicy: Local
       port:
         port: 32400
+      annotations:
+        traefik.ingress.kubernetes.io/service.serversscheme: https
       additionalServices:
       - enabled: true
         nameSuffix: webtools
@@ -55,9 +57,9 @@ spec:
           targetPort: 33400
     ingress:
       enabled: true
+      ingressClassName: "traefik"
       annotations:
-        kubernetes.io/ingress.class: "external"
-        nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         external-dns/is-public: "true"
         external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
       hosts:

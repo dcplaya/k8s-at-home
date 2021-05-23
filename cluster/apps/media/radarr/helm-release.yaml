@@ -30,20 +30,18 @@ spec:
       PGID: "100"
     ingress:
       enabled: true
+      ingressClassName: "traefik"
       annotations:
-        kubernetes.io/ingress.class: "external"
+        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         external-dns/is-public: "true"
         external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
-        nginx.ingress.kubernetes.io/auth-type: basic
-        nginx.ingress.kubernetes.io/auth-secret: media/nginx-basic-auth
-        nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
         # nginx.ingress.kubernetes.io/auth-url: "https://auth.${SECRET_DOMAIN}/oauth2/auth"
         # nginx.ingress.kubernetes.io/auth-signin: "https://auth.${SECRET_DOMAIN}/oauth2/start"
         # Custom themes provided by https://github.com/gilbN/theme.park
-        nginx.ingress.kubernetes.io/configuration-snippet: |
-          proxy_set_header Accept-Encoding "";
-          sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://gilbn.github.io/theme.park/CSS/themes/radarr/organizr-dark.css"></head>';
-          sub_filter_once on;
+        # nginx.ingress.kubernetes.io/configuration-snippet: |
+        #   proxy_set_header Accept-Encoding "";
+        #   sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://gilbn.github.io/theme.park/CSS/themes/radarr/organizr-dark.css"></head>';
+        #   sub_filter_once on;
       hosts:
       - host: "movies.media.${SECRET_DOMAIN}"
         paths:
@@ -56,7 +54,8 @@ spec:
       - enabled: true
         nameSuffix: "api"
         annotations:
-          kubernetes.io/ingress.class: "external"
+          kubernetes.io/ingressClassName: traefik
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         hosts:
         - host: "movies.media.${SECRET_DOMAIN}"
           paths:

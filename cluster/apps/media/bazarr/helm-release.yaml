@@ -30,22 +30,11 @@ spec:
       PGID: "100"
     ingress:
       enabled: true
+      ingressClassName: "traefik"
       annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         external-dns/is-public: "true"
         external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
-        nginx.ingress.kubernetes.io/auth-type: basic
-        nginx.ingress.kubernetes.io/auth-secret: media/nginx-basic-auth
-        nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
-        # nginx.ingress.kubernetes.io/auth-url: "https://auth.${SECRET_DOMAIN}/oauth2/auth"
-        # nginx.ingress.kubernetes.io/auth-signin: "https://auth.${SECRET_DOMAIN}/oauth2/start"
-        nginx.ingress.kubernetes.io/configuration-snippet: |
-        #   # Bypass auth for requests from local network
-        #   # This works, but are there some security concerns?
-        #   satisfy any;
-        #   allow 192.168.0.0/16;
-        #   allow 172.16.0.0/12;
-        #   allow 10.0.0.0/8;
-        #   deny all;
       hosts:
       - host: "bazarr.media.${SECRET_DOMAIN}"
         paths:
@@ -64,7 +53,10 @@ spec:
       - enabled: true
         nameSuffix: "api"
         annotations:
-          kubernetes.io/ingress.class: "external"
+          kubernetes.io/ingressClassName: traefik
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          external-dns/is-public: "true"
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
         hosts:
         - host: "subtitles.media.${SECRET_DOMAIN}"
           paths:
@@ -76,7 +68,10 @@ spec:
       - enabled: true
         nameSuffix: "altname01"
         annotations:
-          kubernetes.io/ingress.class: "external"
+          kubernetes.io/ingressClassName: traefik
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          external-dns/is-public: "true"
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
         hosts:
         - host: "subs.media.${SECRET_DOMAIN}"
           paths:
