@@ -26,15 +26,33 @@ spec:
     worker:
       replicas: 2
     authentik:
+      log_level: debug
+      # -- Secret key used for cookie singing and unique user IDs,
+      # don't change this after the first install
       secret_key: ${SECRET_AUTHENTIK_SECRET_KEY}
+      # email:
+      #   from: authentik@services.beryju.org
+      #   host: email-smtp.eu-central-1.amazonaws.com
+      #   port: 587
+      #   use_tls: true
       # This sends anonymous usage-data, stack traces on errors and
       # performance data to sentry.beryju.org, and is fully opt-in
       error_reporting:
         enabled: true
       postgresql:
-        password: ${SECRET_AUTHENTIK_POSTGRE_PASSWORD}
+        enabled: true
+        ## if unset, default is "{{ .Release.Name }}-postgresql"
+        # host: 
+        password: "${SECRET_AUTHENTIK_POSTGRE_PASSWORD}"
+        user: "authentik"
+        # s3_backup:
+        #   bucket: "authentik-backup"
+        #   host: "https://backup-s3.beryju.org"    
     ingress:
       enabled: true
+      ingressClassName: "traefik"
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
       hosts:
         - host: "authentik.${SECRET_DOMAIN}"
           paths:
@@ -42,7 +60,12 @@ spec:
               pathType: Prefix
     postgresql:
       enabled: true
-      postgresqlPassword: ${SECRET_AUTHENTIK_POSTGRE_PASSWORD}
+      postgresqlUsername: "authentik"
+      postgresqlPassword: "${SECRET_AUTHENTIK_POSTGRE_PASSWORD}"
+      postgresqlDatabase: "authentik"
+      persistence:
+        enabled: true
+        storageClass: "rook-ceph-block"
     redis:
       enabled: true
 
@@ -53,88 +76,4 @@ spec:
 
 
 
-    service:
-      port:
-        port: 4000
-      additionalServices:
-      - enabled: true
-        nameSuffix: dns-tcp
-        type: LoadBalancer
-        loadBalancerIP: "${LB_BLOCKY_IP}"
-        port:
-          port: 53
-          name: dns-tcp
-          protocol: TCP
-          targetPort: 53
-        # additionalPorts:
-        # - port: 53
-        #   name: dns-udp
-        #   protocol: UDP
-        #   targetPort: 53
-        externalTrafficPolicy: Local
-        annotations:
-          metallb.universe.tf/allow-shared-ip: blocky
-      - enabled: true
-        nameSuffix: dns-udp
-        type: LoadBalancer
-        loadBalancerIP: "${LB_BLOCKY_IP}"
-        port:
-          port: 53
-          name: dns-udp
-          protocol: UDP
-          targetPort: 53
-        externalTrafficPolicy: Local
-        annotations:
-          metallb.universe.tf/allow-shared-ip: blocky
-    config: |
-      upstream:
-        externalResolvers:
-        - tcp-tls:${SECRET_NEXTDNS_ID}.dns1.nextdns.io:853
-        - tcp-tls:${SECRET_NEXTDNS_ID}.dns2.nextdns.io:853
-      conditional:
-        mapping:
-          device.${SECRET_DOMAIN}: udp:1.1.1.1
-          vpn.${SECRET_DOMAIN}: udp:1.1.1.1
-          cluster.${SECRET_DOMAIN}: udp:10.10.200.1
-          iot.${SECRET_DOMAIN}: udp:10.10.100.1
-          lan.${SECRET_DOMAIN}: udp:10.10.1.1
-          ${SECRET_DOMAIN}: udp:${LB_COREDNS_IP}
-      blocking:
-        blackLists:
-          ads:
-          # https://oisd.nl/
-          - https://raw.githubusercontent.com/ookangzheng/dbl-oisd-nl/master/dbl.txt
-        whiteLists:
-          ads:
-          - https://raw.githubusercontent.com/anudeepND/whitelist/master/domains/whitelist.txt
-        clientGroupsBlock:
-          default:
-          - ads
-      clientLookup:
-        upstream: udp:${GATEWAY_IP}
-      prometheus:
-        enable: true
-        path: /metrics
-      httpPort: 4000
-      logLevel: info
-    prometheus:
-      serviceMonitor:
-        enabled: true
-    podAnnotations:
-      configmap.reloader.stakater.com/reload: "blocky-config"
-    affinity:
-      podAntiAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchExpressions:
-            - key: app.kubernetes.io/name
-              operator: In
-              values:
-              - blocky
-          topologyKey: "kubernetes.io/hostname"
-    resources:
-      requests:
-        memory: 100Mi
-        cpu: 100m
-      limits:
-        memory: 750Mi
+    
