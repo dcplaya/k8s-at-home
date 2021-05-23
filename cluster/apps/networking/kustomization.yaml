@@ -14,4 +14,5 @@ resources:
 - external-dns
 - internal-dns
 - secret-reflector
+- traefik
 - oauth2-proxy
