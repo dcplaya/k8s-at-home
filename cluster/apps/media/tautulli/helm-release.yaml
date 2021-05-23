@@ -46,9 +46,9 @@ spec:
       additionalIngresses:
       - enabled: true
         nameSuffix: "altname01"
+        ingressClassName: "traefik"
         annotations:
-          kubernetes.io/ingressClassName: external
-          kubernetes.io/ingress.class: external
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         hosts:
         - host: "tautulli.media.${SECRET_DOMAIN}"
           paths:
