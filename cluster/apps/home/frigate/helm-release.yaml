@@ -137,3 +137,13 @@ spec:
       limits:
         memory: 2500Mi
         gpu.intel.com/i915: 1
+  postRenderers:
+  - kustomize:
+      patchesJson6902:
+      - target:
+          kind: Ingress
+          name: gitea
+        patch:
+        - op: add
+          path: /spec/ingressClassName
+          value: traefik

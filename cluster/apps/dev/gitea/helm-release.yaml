@@ -22,7 +22,7 @@ spec:
       existingClaim: config-gitea
     ingress:
       enabled: true
-      ingressClassName: "traefik"
+      # ingressClassName: "traefik"
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         # nginx.ingress.kubernetes.io/proxy-body-size: 128m
@@ -108,3 +108,13 @@ spec:
               values:
               - node00
               - node04
+  postRenderers:
+  - kustomize:
+      patchesJson6902:
+      - target:
+          kind: Ingress
+          name: gitea
+        patch:
+        - op: add
+          path: /spec/ingressClassName
+          value: traefik
