@@ -35,8 +35,10 @@ spec:
       externalTrafficPolicy: Local
     ingress:
       enabled: true
+      ingressClassName: "traefik"
       annotations:
-        kubernetes.io/ingress.class: "internal"
+        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        # kubernetes.io/ingress.class: "internal"
       hosts:
       - host: "home.${SECRET_DOMAIN}"
         paths:
@@ -74,8 +76,10 @@ spec:
         - "/config/.vscode"
         ingress:
           enabled: true
+          ingressClassName: "traefik"
           annotations:
-            kubernetes.io/ingress.class: "internal"
+            traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+            # kubernetes.io/ingress.class: "internal"
           hosts:
           - host: "vscode.home.${SECRET_DOMAIN}"
             paths:

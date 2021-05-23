@@ -62,8 +62,10 @@ spec:
       privileged: true
     ingress:
       enabled: true
+      ingressClassName: "traefik"
       annotations:
-        kubernetes.io/ingress.class: "internal"
+        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        # kubernetes.io/ingress.class: "internal"
       hosts:
       - host: zigbee2mqtt.home.${SECRET_DOMAIN}
         paths:
@@ -106,8 +108,10 @@ spec:
         - "none"
         ingress:
           enabled: true
+          ingressClassName: "traefik"
           annotations:
-            kubernetes.io/ingress.class: "internal"
+            traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+            # ubernetes.io/ingress.class: "internal"
           hosts:
           - host: zigbee2mqtt-config.home.${SECRET_DOMAIN}
             paths:

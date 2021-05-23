@@ -113,8 +113,10 @@ spec:
           fps: 5
     ingress:
       enabled: true
+      ingressClassName: "traefik"
       annotations:
-        kubernetes.io/ingress.class: "internal"
+        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        # kubernetes.io/ingress.class: "internal"
       hosts:
       - "frigate.home.${SECRET_DOMAIN}"
       tls:
