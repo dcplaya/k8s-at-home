@@ -39,6 +39,7 @@ spec:
         port: 8888
     ingress:
       enabled: true
+      ingressClassName: "traefik"
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         # kubernetes.io/ingress.class: "internal"
