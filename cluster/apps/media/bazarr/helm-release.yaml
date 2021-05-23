@@ -52,8 +52,8 @@ spec:
       additionalIngresses:
       - enabled: true
         nameSuffix: "api"
+        ingressClassName: "traefik"
         annotations:
-          kubernetes.io/ingressClassName: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           external-dns/is-public: "true"
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
@@ -67,8 +67,8 @@ spec:
           - "subtitles.media.${SECRET_DOMAIN}"
       - enabled: true
         nameSuffix: "altname01"
+        ingressClassName: "traefik"
         annotations:
-          kubernetes.io/ingressClassName: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           external-dns/is-public: "true"
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"

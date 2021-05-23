@@ -45,8 +45,8 @@ spec:
       additionalIngresses:
       - enabled: true
         nameSuffix: "altname01"
+        ingressClassName: "traefik"
         annotations:
-          kubernetes.io/ingressClassName: traefik
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         hosts:
         - host: "request.media.${SECRET_DOMAIN}"
