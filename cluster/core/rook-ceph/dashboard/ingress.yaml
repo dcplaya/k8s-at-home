@@ -12,7 +12,7 @@ metadata:
     app.kubernetes.io/instance: rook-ceph-mgr-dashboard
     app.kubernetes.io/name: rook-ceph-mgr-dashboard
 spec:
-  ingressClassName: "internal"
+  ingressClassName: "traefik"
   rules:
   - host: "rook.storage.${SECRET_DOMAIN}"
     http:
