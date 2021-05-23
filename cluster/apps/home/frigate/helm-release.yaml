@@ -116,7 +116,7 @@ spec:
       ingressClassName: "traefik"
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        # kubernetes.io/ingress.class: "internal"
+        kubernetes.io/ingress.class: "traefik"
       hosts:
       - "frigate.home.${SECRET_DOMAIN}"
       tls:
