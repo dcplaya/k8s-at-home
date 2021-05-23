@@ -22,13 +22,14 @@ spec:
       existingClaim: config-gitea
     ingress:
       enabled: true
+      ingressClassName: "traefik"
       annotations:
-        kubernetes.io/ingress.class: "internal"
-        nginx.ingress.kubernetes.io/proxy-body-size: 128m
-        nginx.ingress.kubernetes.io/configuration-snippet: |
-          proxy_set_header Accept-Encoding "";
-          sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://gilbn.github.io/theme.park/CSS/themes/gitea/organizr-dark.css"></head>';
-          sub_filter_once on;
+        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        # nginx.ingress.kubernetes.io/proxy-body-size: 128m
+        # nginx.ingress.kubernetes.io/configuration-snippet: |
+        #   proxy_set_header Accept-Encoding "";
+        #   sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://gilbn.github.io/theme.park/CSS/themes/gitea/organizr-dark.css"></head>';
+        #   sub_filter_once on;
       hosts:
       - "git.dev.${SECRET_DOMAIN}"
       tls:
