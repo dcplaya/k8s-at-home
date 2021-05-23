@@ -1,0 +1,140 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: authentik
+  namespace: networking
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: authentik
+      version: 1.0.0
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    image:
+      repository: ghcr.io/goauthentik/server
+      tag: 2021.5.3
+    env:
+      TZ: "America/Los_Angeles"
+    replicas: 1
+    worker:
+      replicas: 1
+    authentik:
+      secret_key: ${SECRET_AUTHENTIK_SECRET_KEY}
+      # This sends anonymous usage-data, stack traces on errors and
+      # performance data to sentry.beryju.org, and is fully opt-in
+      error_reporting:
+        enabled: true
+      postgresql:
+        password: ${SECRET_AUTHENTIK_POSTGRE_PASSWORD}
+    ingress:
+      enabled: true
+      hosts:
+        - host: "authentik.${SECRET_DOMAIN}"
+          paths:
+            - path: "/"
+              pathType: Prefix
+    postgresql:
+      enabled: true
+      postgresqlPassword: ${SECRET_AUTHENTIK_POSTGRE_PASSWORD}
+    redis:
+      enabled: true
+
+
+
+
+
+
+
+
+    service:
+      port:
+        port: 4000
+      additionalServices:
+      - enabled: true
+        nameSuffix: dns-tcp
+        type: LoadBalancer
+        loadBalancerIP: "${LB_BLOCKY_IP}"
+        port:
+          port: 53
+          name: dns-tcp
+          protocol: TCP
+          targetPort: 53
+        # additionalPorts:
+        # - port: 53
+        #   name: dns-udp
+        #   protocol: UDP
+        #   targetPort: 53
+        externalTrafficPolicy: Local
+        annotations:
+          metallb.universe.tf/allow-shared-ip: blocky
+      - enabled: true
+        nameSuffix: dns-udp
+        type: LoadBalancer
+        loadBalancerIP: "${LB_BLOCKY_IP}"
+        port:
+          port: 53
+          name: dns-udp
+          protocol: UDP
+          targetPort: 53
+        externalTrafficPolicy: Local
+        annotations:
+          metallb.universe.tf/allow-shared-ip: blocky
+    config: |
+      upstream:
+        externalResolvers:
+        - tcp-tls:${SECRET_NEXTDNS_ID}.dns1.nextdns.io:853
+        - tcp-tls:${SECRET_NEXTDNS_ID}.dns2.nextdns.io:853
+      conditional:
+        mapping:
+          device.${SECRET_DOMAIN}: udp:1.1.1.1
+          vpn.${SECRET_DOMAIN}: udp:1.1.1.1
+          cluster.${SECRET_DOMAIN}: udp:10.10.200.1
+          iot.${SECRET_DOMAIN}: udp:10.10.100.1
+          lan.${SECRET_DOMAIN}: udp:10.10.1.1
+          ${SECRET_DOMAIN}: udp:${LB_COREDNS_IP}
+      blocking:
+        blackLists:
+          ads:
+          # https://oisd.nl/
+          - https://raw.githubusercontent.com/ookangzheng/dbl-oisd-nl/master/dbl.txt
+        whiteLists:
+          ads:
+          - https://raw.githubusercontent.com/anudeepND/whitelist/master/domains/whitelist.txt
+        clientGroupsBlock:
+          default:
+          - ads
+      clientLookup:
+        upstream: udp:${GATEWAY_IP}
+      prometheus:
+        enable: true
+        path: /metrics
+      httpPort: 4000
+      logLevel: info
+    prometheus:
+      serviceMonitor:
+        enabled: true
+    podAnnotations:
+      configmap.reloader.stakater.com/reload: "blocky-config"
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+              - blocky
+          topologyKey: "kubernetes.io/hostname"
+    resources:
+      requests:
+        memory: 100Mi
+        cpu: 100m
+      limits:
+        memory: 750Mi
