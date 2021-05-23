@@ -76,6 +76,9 @@ spec:
       auth:
         enabled: true
         password: "${SECRET_AUTHENTIK_POSTGRE_PASSWORD}"
+      master:
+        persistence:
+          storageClass: "rook-ceph-block"
 
 
 
