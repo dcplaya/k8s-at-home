@@ -47,7 +47,12 @@ spec:
         user: "authentik"
         # s3_backup:
         #   bucket: "authentik-backup"
-        #   host: "https://backup-s3.beryju.org"    
+        #   host: "https://backup-s3.beryju.org"
+      redis:
+        # -- set the redis hostname to talk to
+        # @default -- `{{ .Release.Name }}-redis-master`
+        # host:
+        password: "${SECRET_AUTHENTIK_POSTGRE_PASSWORD}"
     ingress:
       enabled: true
       ingressClassName: "traefik"
@@ -68,6 +73,9 @@ spec:
         storageClass: "rook-ceph-block"
     redis:
       enabled: true
+      auth:
+        enabled: true
+        password: "${SECRET_AUTHENTIK_POSTGRE_PASSWORD}"
 
 
 
