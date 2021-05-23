@@ -142,7 +142,7 @@ spec:
       patchesJson6902:
       - target:
           kind: Ingress
-          name: gitea
+          name: frigate
         patch:
         - op: add
           path: /spec/ingressClassName
