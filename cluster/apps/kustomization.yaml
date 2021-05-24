@@ -4,6 +4,7 @@ resources:
 - default
 - kube-system
 - home
+- kasten-io
 - media
 - dev
 - monitoring
