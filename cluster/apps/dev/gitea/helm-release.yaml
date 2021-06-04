@@ -57,6 +57,11 @@ spec:
           SSH_PORT: 22
           SSH_LISTEN_PORT: 22
           SSH_DOMAIN: "ssh.git.dev.${SECRET_DOMAIN}"
+          LFS_START_SERVER: true
+          # LFS_CONTENT_PATH:
+          LFS_JWT_SECRET: "${SECRET_GITEA_ADMIN_PASSWORD}"
+          LFS_HTTP_AUTH_EXPIRY: 120m
+          LFS_MAX_FILE_SIZE: 0
         respository:
           DEFAULT_PRIVATE: true
         admin:
