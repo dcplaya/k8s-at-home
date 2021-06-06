@@ -23,7 +23,7 @@ spec:
     controllerType: deployment
     image:
       repository: hotio/prowlarr
-      tag: latest
+      tag: nightly
       pullPolicy: Always
     env:
       TZ: "America/Los_Angeles"
