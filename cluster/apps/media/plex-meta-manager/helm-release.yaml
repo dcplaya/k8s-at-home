@@ -61,11 +61,11 @@ spec:
             exec:
               command: ["/bin/sh", "-c", "/shared/Configs/Plex-Meta-Manager/pushGit.sh"]
         env:
-        - name: GITEA_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: gitea-pat
-              key: token
+        # - name: GITEA_TOKEN
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: gitea-pat
+        #       key: token
         - name: PUID
           value: "1000"
         - name: GUID
