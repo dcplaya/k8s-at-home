@@ -1,4 +1,4 @@
-name: " ⏳  Gitea Mirror Setup"
+name: "⏳  Gitea Mirror Setup"
 
 on:
   workflow_dispatch:
@@ -16,7 +16,7 @@ jobs:
     - self-hosted
     steps:
       - uses: varunsridharan/action-gitea-mirror@1.1
-        name: " ⏳ Setting Up Mirror"
+        name: "⏳ Setting Up Mirror"
         with:
           gh_username: "dcplaya"
           gh_accesstoken: ${{ secrets.GITEA_MIRROR_GITHUB_PAT }}
@@ -27,6 +27,6 @@ jobs:
           gitea_gist_surfix: ""
           gistsSource: false
           gistsStared: false
-          repositoryStared: true
-          repositorySource: true
-          repositoryForked: true
+          repositoryStared: false
+          repositorySource: false
+          repositoryForked: false
