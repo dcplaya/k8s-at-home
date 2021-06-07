@@ -29,4 +29,4 @@ jobs:
           gistsStared: false
           repositoryStared: false
           repositorySource: true
-          repositoryForked: false
+          repositoryForked: true
