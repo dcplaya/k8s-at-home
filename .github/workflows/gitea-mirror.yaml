@@ -28,5 +28,5 @@ jobs:
           gistsSource: false
           gistsStared: false
           repositoryStared: false
-          repositorySource: false
+          repositorySource: true
           repositoryForked: false
