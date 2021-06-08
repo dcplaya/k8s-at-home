@@ -44,14 +44,14 @@ spec:
         externalTrafficPolicy: Local
         loadBalancerIP: "${LB_GITEA_IP}"
     # bash shell script copied verbatim to the start of the init-container.
-    initPreScript: |
-      cd /app/gitea
-      /app/gitea/gitea admin create-user --admin --username "${SECRET_GITEA_ADMIN_USERNAME}" --password "${SECRET_GITEA_ADMIN_PASSWORD}" --email "${SECRET_EMAIL}" --must-change-password false
+    # initPreScript: |
+    #   cd /app/gitea
+    #   /app/gitea/gitea admin create-user --admin --username "${SECRET_GITEA_ADMIN_USERNAME}" --password "${SECRET_GITEA_ADMIN_PASSWORD}" --email "${SECRET_EMAIL}" --must-change-password false
     gitea:
       admin:
         username: "${SECRET_GITEA_ADMIN_USERNAME}"
         password: "${SECRET_GITEA_ADMIN_PASSWORD}"
-        email: "${SECRET_EMAIL}"
+        email: "${SECRET_GITEA_ADMIN_EMAIL}"
       config:
         APP_NAME: "Home Gitea"
         server:
