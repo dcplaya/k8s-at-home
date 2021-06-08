@@ -45,7 +45,7 @@ spec:
         loadBalancerIP: "${LB_GITEA_IP}"
     gitea:
       admin:
-        username: "${SECRET_GITEA_ADMIN_EMAIL}"
+        username: "${SECRET_GITEA_ADMIN_USERNAME}"
         password: "${SECRET_GITEA_ADMIN_PASSWORD}"
         email: "${SECRET_EMAIL}"
       config:
