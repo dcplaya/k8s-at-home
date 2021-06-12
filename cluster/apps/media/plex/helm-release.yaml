@@ -12,7 +12,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: plex
-      version: 4.4.0
+      version: 5.0.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -37,56 +37,52 @@ spec:
       - 44
       - 109
     service:
-      enabled: true
-      type: LoadBalancer
-      loadBalancerIP: "${LB_PLEX_IP}"
-      externalTrafficPolicy: Local
-      port:
-        port: 32400
-      annotations:
-        traefik.ingress.kubernetes.io/service.serversscheme: https
-      additionalServices:
-      - enabled: true
-        nameSuffix: webtools
+      main:
         type: LoadBalancer
-        loadBalancerIP: "${LB_PLEX_IP}"
-        port:
-          port: 33400
-          name: webtools
-          protocol: TCP
-          targetPort: 33400
+        externalIPs:
+        - "${LB_PLEX_IP}"
+        externalTrafficPolicy: Local
+        annotations:
+          traefik.ingress.kubernetes.io/service.serversscheme: https
+      webtools:
+        enabled: true
+        type: NodePort
+        ports:
+          webtools:
+            enabled: true
+            port: 33400
+            protocol: TCP
+            targetPort: 33400
+        externalTrafficPolicy: Local
     ingress:
-      enabled: true
-      ingressClassName: "traefik"
-      annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        external-dns/is-public: "true"
-        external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
-      hosts:
-      - host: "plex.media.${SECRET_DOMAIN}"
-        paths:
-        - path: /
-          pathType: Prefix
-      tls:
-      - hosts:
-        - "plex.media.${SECRET_DOMAIN}"
+      main:
+        enabled: true
+        ingressClassName: "traefik"
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          external-dns/is-public: "true"
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+        hosts:
+        - host: "plex.media.${SECRET_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
+        tls:
+        - hosts:
+          - "plex.media.${SECRET_DOMAIN}"
     persistence:
       config:
         enabled: true
         existingClaim: config-plex
-      transcode:
-        enabled: false
-        emptyDir:
-          medium: "Memory"
-    podAnnotations:
-      backup.velero.io/backup-volumes: config
-    additionalVolumeMounts:
-    - name: nfs-nas-merged-media-pvc
-      mountPath: "/mnt/unionfs"
-    additionalVolumes:
-    - name: nfs-nas-merged-media-pvc
-      persistentVolumeClaim:
-        claimName: nfs-nas-merged-media-pvc
+      tmp:
+        enabled: true
+        type: emptyDir
+        medium: Memory
+      nas-merged-media:
+        enabled: true
+        existingClaim: nfs-nas-merged-media-pvc
+        mountPath: "/mnt/unionfs"
+        # readOnly: true    
     addons:
       promtail:
         enabled: true
