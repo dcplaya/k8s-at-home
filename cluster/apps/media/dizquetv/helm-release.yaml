@@ -12,7 +12,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: dizquetv
-      version: 2.4.0
+      version: 3.0.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -29,20 +29,21 @@ spec:
       PUID: "1000"
       PGID: "100"
     ingress:
-      enabled: true
-      ingressClassName: "traefik"
-      annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        # external-dns/is-public: "true"
-        # external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
-      hosts:
-      - host: "plex-tv.media.${SECRET_DOMAIN}"
-        paths:
-        - path: /
-          pathType: Prefix
-      tls:
-      - hosts:
-        - "plex-tv.media.${SECRET_DOMAIN}"
+      main:
+        enabled: true
+        ingressClassName: "traefik"
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          # external-dns/is-public: "true"
+          # external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+        hosts:
+        - host: "plex-tv.media.${SECRET_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
+        tls:
+        - hosts:
+          - "plex-tv.media.${SECRET_DOMAIN}"
     persistence:
       config:
         enabled: true

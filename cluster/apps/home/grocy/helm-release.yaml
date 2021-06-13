@@ -12,7 +12,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: grocy
-      version: 6.4.0
+      version: 7.0.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -27,19 +27,19 @@ spec:
     env:
       TZ: "America/Los_Angeles"
     ingress:
-      enabled: true
-      ingressClassName: "traefik"
-      annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        # kubernetes.io/ingress.class: "internal"
-      hosts:
-      - host: grocery.home.${SECRET_DOMAIN}
-        paths:
-        - path: /
-          pathType: Prefix
-      tls:
-      - hosts:
-        - "grocery.home.${SECRET_DOMAIN}"
+      main:
+        enabled: true
+        ingressClassName: "traefik"
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        hosts:
+        - host: grocery.home.${SECRET_DOMAIN}
+          paths:
+          - path: /
+            pathType: Prefix
+        tls:
+        - hosts:
+          - "grocery.home.${SECRET_DOMAIN}"
     persistence:
       config:
         enabled: true

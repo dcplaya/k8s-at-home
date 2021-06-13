@@ -12,7 +12,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: bazarr
-      version: 8.1.0
+      version: 9.0.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -29,73 +29,68 @@ spec:
       PUID: "1000"
       PGID: "100"
     ingress:
-      enabled: true
-      ingressClassName: "traefik"
-      annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        external-dns/is-public: "true"
-        external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
-      hosts:
-      - host: "bazarr.media.${SECRET_DOMAIN}"
-        paths:
-        - path: /
-          pathType: Prefix
-      - host: "subtitles.media.${SECRET_DOMAIN}"
-        paths:
-        - path: /
-          pathType: Prefix
-      tls:
-      - hosts:
-        - "bazarr.media.${SECRET_DOMAIN}"
-      - hosts:
-        - "subtitles.media.${SECRET_DOMAIN}"
-      additionalIngresses:
-      - enabled: true
-        nameSuffix: "api"
+      main:
+        enabled: true
+        primary: true
         ingressClassName: "traefik"
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           external-dns/is-public: "true"
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
         hosts:
+        - host: "bazarr.media.${SECRET_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
         - host: "subtitles.media.${SECRET_DOMAIN}"
           paths:
-          - path: /api
+          - path: /
             pathType: Prefix
-        tls:
-        - hosts:
-          - "subtitles.media.${SECRET_DOMAIN}"
-      - enabled: true
-        nameSuffix: "altname01"
-        ingressClassName: "traefik"
-        annotations:
-          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-          external-dns/is-public: "true"
-          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
-        hosts:
         - host: "subs.media.${SECRET_DOMAIN}"
           paths:
           - path: /
             pathType: Prefix
         tls:
         - hosts:
+          - "bazarr.media.${SECRET_DOMAIN}"
+        - hosts:
+          - "subtitles.media.${SECRET_DOMAIN}"
+        - hosts:
           - "subs.media.${SECRET_DOMAIN}"
+      api:
+        enabled: true
+        primary: false
+        ingressClassName: "traefik"
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        hosts:
+        - host: "bazarr.media.${SECRET_DOMAIN}"
+          paths:
+          - path: /api
+            pathType: Prefix
+        - host: "subtitles.media.${SECRET_DOMAIN}"
+          paths:
+          - path: /api
+            pathType: Prefix
+        tls:
+        - hosts:
+          - "bazarr.media.${SECRET_DOMAIN}"
+        - hosts:
+          - "subtitles.media.${SECRET_DOMAIN}"
     persistence:
       config:
         enabled: true
         existingClaim: config-bazarr
+      nas-merged-media:
+        enabled: true
+        existingClaim: nfs-nas-merged-media-pvc
+        mountPath: "/mnt/unionfs"
+        # readOnly: true  
     podAnnotations:
       backup.velero.io/backup-volumes: config
-    additionalVolumeMounts:
-    - name: nfs-nas-merged-media-pvc
-      mountPath: "/mnt/unionfs"
-    additionalVolumes:
-    - name: nfs-nas-merged-media-pvc
-      persistentVolumeClaim:
-        claimName: nfs-nas-merged-media-pvc
     resources:
       requests:
         memory: 250Mi
         cpu: 500m
       limits:
-        memory: 1500Mi
+        memory: 2000Mi
