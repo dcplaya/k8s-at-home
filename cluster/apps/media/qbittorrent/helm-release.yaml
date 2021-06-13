@@ -12,7 +12,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: qbittorrent
-      version: 10.1.0
+      version: 11.0.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -29,46 +29,49 @@ spec:
       PUID: "1000"
       PGID: "100"
     service:
-      additionalServices:
-      - enabled: true
-        nameSuffix: bittorrent
+      main:
+        ports:
+          http:
+           port: 8080
+      bittorrent:
+        enabled: true
         type: LoadBalancer
         externalIPs:
-        - 10.201.70.44
-        port:
-          port: 50413
-          name: bittorrent
-          protocol: TCP
-          targetPort: 6881
+        - "${LB_QBITTORRENT_IP}"      
+        ports:
+          bittorrent:
+            enabled: true
+            port: 50413
+            protocol: TCP
+            targetPort: 50413
         externalTrafficPolicy: Local
     ingress:
-      enabled: true
-      ingressClassName: "traefik"
-      annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-      hosts:
-      - host: "qb.media.${SECRET_DOMAIN}"
-        paths:
-        - path: /
-          pathType: Prefix
-      tls:
-      - hosts:
-        - "qb.media.${SECRET_DOMAIN}"
+      main:
+        enabled: true
+        ingressClassName: "traefik"
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        hosts:
+        - host: "qb.media.${SECRET_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
+        tls:
+        - hosts:
+          - "qb.media.${SECRET_DOMAIN}"
     persistence:
       config:
         enabled: true
         storageClass: "rook-ceph-block"
         accessMode: ReadWriteOnce
         size: "5Gi"
+      nas-merged-media:
+        enabled: true
+        existingClaim: nfs-nas-merged-media-pvc
+        mountPath: "/mnt/unionfs"
+        # readOnly: true  
     podAnnotations:
       backup.velero.io/backup-volumes: config
-    additionalVolumeMounts:
-    - name: nfs-nas-merged-media-pvc
-      mountPath: "/mnt/unionfs"
-    additionalVolumes:
-    - name: nfs-nas-merged-media-pvc
-      persistentVolumeClaim:
-        claimName: nfs-nas-merged-media-pvc
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
