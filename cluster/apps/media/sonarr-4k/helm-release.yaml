@@ -12,7 +12,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: sonarr
-      version: 11.1.0
+      version: 12.0.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -29,39 +29,41 @@ spec:
       PUID: "1000"
       PGID: "100"
     ingress:
-      enabled: true
-      ingressClassName: "traefik"
-      annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        ingress.kubernetes.io/auth-type: "basic"
-        ingress.kubernetes.io/auth-secret: "networking/basic-auth"
-        external-dns/is-public: "true"
-        external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
-        # nginx.ingress.kubernetes.io/auth-type: basic
-        # nginx.ingress.kubernetes.io/auth-secret: media/nginx-basic-auth
-        # nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
-        # # nginx.ingress.kubernetes.io/auth-url: "https://auth.${SECRET_DOMAIN}/oauth2/auth"
-        # # nginx.ingress.kubernetes.io/auth-signin: "https://auth.${SECRET_DOMAIN}/oauth2/start"
-        # # Custom themes provided by https://github.com/gilbN/theme.park
-        # nginx.ingress.kubernetes.io/configuration-snippet: |
-        #   proxy_set_header Accept-Encoding "";
-        #   sub_filter
-        #   '</head>'
-        #   '<link rel="stylesheet" type="text/css" href="https://gilbn.github.io/theme.park/CSS/themes/sonarr/organizr-dark.css">
-        #   <link rel="stylesheet" type="text/css" href="https://gilbn.github.io/theme.park/CSS/addons/sonarr/sonarr-4k-logo.css">
-        #   </head>';
-        #   sub_filter_once on;
-      hosts:
-      - host: "4ktv.media.${SECRET_DOMAIN}"
-        paths:
-        - path: /
-          pathType: Prefix
-      tls:
-      - hosts:
-        - "4ktv.media.${SECRET_DOMAIN}"
-      additionalIngresses:
-      - enabled: true
-        nameSuffix: "api"
+      main:
+        enabled: true
+        primary: true
+        ingressClassName: "traefik"
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          ingress.kubernetes.io/auth-type: "basic"
+          ingress.kubernetes.io/auth-secret: "networking/basic-auth"
+          external-dns/is-public: "true"
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+          # nginx.ingress.kubernetes.io/auth-type: basic
+          # nginx.ingress.kubernetes.io/auth-secret: media/nginx-basic-auth
+          # nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
+          # # nginx.ingress.kubernetes.io/auth-url: "https://auth.${SECRET_DOMAIN}/oauth2/auth"
+          # # nginx.ingress.kubernetes.io/auth-signin: "https://auth.${SECRET_DOMAIN}/oauth2/start"
+          # # Custom themes provided by https://github.com/gilbN/theme.park
+          # nginx.ingress.kubernetes.io/configuration-snippet: |
+          #   proxy_set_header Accept-Encoding "";
+          #   sub_filter
+          #   '</head>'
+          #   '<link rel="stylesheet" type="text/css" href="https://gilbn.github.io/theme.park/CSS/themes/sonarr/organizr-dark.css">
+          #   <link rel="stylesheet" type="text/css" href="https://gilbn.github.io/theme.park/CSS/addons/sonarr/sonarr-4k-logo.css">
+          #   </head>';
+          #   sub_filter_once on;
+        hosts:
+        - host: "4ktv.media.${SECRET_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
+        tls:
+        - hosts:
+          - "4ktv.media.${SECRET_DOMAIN}"
+      api:
+        enabled: true
+        primary: false
         ingressClassName: "traefik"
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
@@ -77,15 +79,13 @@ spec:
       config:
         enabled: true
         existingClaim: config-sonarr-4k
+      nas-merged-media:
+        enabled: true
+        existingClaim: nfs-nas-merged-media-pvc
+        mountPath: "/mnt/unionfs"
+        # readOnly: true  
     podAnnotations:
       backup.velero.io/backup-volumes: config
-    additionalVolumeMounts:
-    - name: nfs-nas-merged-media-pvc
-      mountPath: "/mnt/unionfs"
-    additionalVolumes:
-    - name: nfs-nas-merged-media-pvc
-      persistentVolumeClaim:
-        claimName: nfs-nas-merged-media-pvc
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
