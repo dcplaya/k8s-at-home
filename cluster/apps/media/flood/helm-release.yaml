@@ -12,7 +12,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: flood
-      version: 4.4.0
+      version: 5.0.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -31,20 +31,21 @@ spec:
       FLOOD_OPTION_QBUSER: "${SECRET_QB_USERNAME}"
       FLOOD_OPTION_QBPASS: "${SECRET_QB_PASSWORD}"
     ingress:
-      enabled: true
-      ingressClassName: "traefik"
-      annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        # external-dns/is-public: "true"
-        # external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
-      hosts:
-      - host: "flood.media.${SECRET_DOMAIN}"
-        paths:
-        - path: /
-          pathType: Prefix
-      tls:
-      - hosts:
-        - "flood.media.${SECRET_DOMAIN}"
+      main:
+        enabled: true
+        ingressClassName: "traefik"
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          # external-dns/is-public: "true"
+          # external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+        hosts:
+        - host: "flood.media.${SECRET_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
+        tls:
+        - hosts:
+          - "flood.media.${SECRET_DOMAIN}"
     persistence:
       data:
         enabled: true
