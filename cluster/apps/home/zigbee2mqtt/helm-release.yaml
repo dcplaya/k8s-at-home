@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: zigbee2mqtt
-      version: 7.4.0
+      version: 8.2.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -61,33 +61,30 @@ spec:
     securityContext:
       privileged: true
     ingress:
-      enabled: true
-      ingressClassName: "traefik"
-      annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        # kubernetes.io/ingress.class: "internal"
-      hosts:
-      - host: zigbee2mqtt.home.${SECRET_DOMAIN}
-        paths:
-        - path: /
-          pathType: Prefix
-      tls:
-      - hosts:
-        - "zigbee2mqtt.home.${SECRET_DOMAIN}"
+      main:
+        enabled: true
+        ingressClassName: "traefik"
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        hosts:
+        - host: zigbee2mqtt.home.${SECRET_DOMAIN}
+          paths:
+          - path: /
+            pathType: Prefix
+        tls:
+        - hosts:
+          - "zigbee2mqtt.home.${SECRET_DOMAIN}"
     persistence:
       data:
         enabled: true
         mountPath: /data
         existingClaim: config-zigbee2mqtt
+      usb:
+        enabled: true
+        type: hostPath
+        hostPath: /dev/conbee
     podAnnotations:
       backup.velero.io/backup-volumes: data
-    additionalVolumeMounts:
-    - name: usb
-      mountPath: /dev/conbee
-    additionalVolumes:
-    - name: usb
-      hostPath:
-        path: /dev/conbee
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
