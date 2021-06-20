@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: home-assistant
-      version: 8.3.1
+      version: 9.2.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -30,23 +30,26 @@ spec:
       HASS_SECRET_ELEVATION: "${SECRET_HASS_ELEVATION}"
     hostNetwork: true
     service:
-      type: LoadBalancer
-      loadBalancerIP: "${LB_HOME_ASSISTANT_IP}"
-      externalTrafficPolicy: Local
+      main:
+        type: LoadBalancer
+        externalIPs:
+        - "${LB_HOME_ASSISTANT_IP}"
+        externalTrafficPolicy: Local
     ingress:
-      enabled: true
-      ingressClassName: "traefik"
-      annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        # kubernetes.io/ingress.class: "internal"
-      hosts:
-      - host: "home.${SECRET_DOMAIN}"
-        paths:
-        - path: /
-          pathType: Prefix
-      tls:
-      - hosts:
-        - "home.${SECRET_DOMAIN}"
+      main:
+        enabled: true
+        ingressClassName: "traefik"
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          # kubernetes.io/ingress.class: "internal"
+        hosts:
+        - host: "home.${SECRET_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
+        tls:
+        - hosts:
+          - "home.${SECRET_DOMAIN}"
     monitoring:
       enabled: false
     prometheus:
@@ -58,8 +61,6 @@ spec:
         existingClaim: config-home-assistant
     podAnnotations:
       backup.velero.io/backup-volumes: config
-    git:
-      deployKeyBase64: "${SECRET_HASS_DEPLOY_KEY_B64}"
     addons:
       codeserver:
         enabled: true
@@ -79,7 +80,6 @@ spec:
           ingressClassName: "traefik"
           annotations:
             traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-            # kubernetes.io/ingress.class: "internal"
           hosts:
           - host: "vscode.home.${SECRET_DOMAIN}"
             paths:

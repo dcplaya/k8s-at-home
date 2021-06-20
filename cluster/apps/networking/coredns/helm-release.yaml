@@ -53,6 +53,7 @@ spec:
           10.10.200.210 postgre.storage.${SECRET_DOMAIN}
           10.10.200.220 unifi.network.${SECRET_DOMAIN}
           ${LB_GITEA_IP} ssh.git.dev.${SECRET_DOMAIN}
+          10.10.200.10 k8s.cluster.${SECRET_DOMAIN}
           fallthrough
       - name: kubernetes
         parameters: cluster.local in-addr.arpa ip6.arpa
