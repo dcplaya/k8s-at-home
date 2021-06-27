@@ -56,6 +56,7 @@ spec:
         APP_NAME: "Home Gitea"
         server:
           ROOT_URL: "https://git.dev.${SECRET_DOMAIN}"
+          MIN_PASSWORD_LENGTH: 8
           DISABLE_SSH: false
           START_SSH_SERVER: false
           SSH_PORT: 22
