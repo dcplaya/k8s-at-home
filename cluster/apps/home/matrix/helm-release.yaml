@@ -58,7 +58,7 @@ spec:
     synapse:
       image:
         repository: "matrixdotorg/synapse"
-        tag: v1.36.0
+        tag: v1.37.0
     riot:
       image:
         repository: "vectorim/riot-web"
