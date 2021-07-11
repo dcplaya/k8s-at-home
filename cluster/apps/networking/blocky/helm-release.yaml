@@ -31,7 +31,7 @@ spec:
       main:
         ports:
           http:
-            4000
+            port: 4000
       dns-tcp:
         enabled: true
         type: LoadBalancer
