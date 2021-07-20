@@ -21,6 +21,7 @@ spec:
       repository: nodered/node-red
       tag: 2.0.1
       pullPolicy: IfNotPresent
+    dnsPolicy: ClusterFirst
     env:
       TZ: "America/Los_Angeles"
       NODE_RED_ENABLE_PROJECTS: "true"
