@@ -76,7 +76,7 @@ spec:
         - name: PMM_TEST
           value: "false"
         - name: PMM_RUN
-          value: "true"
+          value: "false"
         # - name: PMM_COLLECTIONS
         - name: PMM_TIME
           value: "14:00"
