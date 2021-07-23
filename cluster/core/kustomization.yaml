@@ -4,7 +4,7 @@ resources:
 - namespaces
 - metallb-system
 - cert-manager
-- kube-system
+# - kube-system
 - system-upgrade
 - rook-ceph
 - velero
