@@ -79,7 +79,7 @@ spec:
           value: "false"
         # - name: PMM_COLLECTIONS
         - name: PMM_TIME
-          value: "14:00,18:20,18:21,18:25,18:30"
+          value: "14:00,05:18"
         - name: PMM_CONFIG
           value: "/shared/Configs/Plex-Meta-Manager/config.yml"
         volumeMounts:
