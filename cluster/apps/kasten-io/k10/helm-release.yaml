@@ -36,6 +36,7 @@ spec:
     clusterName: k8s
     ingress:
       create: true
+      class: "traefik"
       host: "k10.${SECRET_DOMAIN}"
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
@@ -45,13 +46,13 @@ spec:
       tls:
         enabled: true
         secretName: "${SECRET_DOMAIN/./-}-tls"
-  postRenderers:
-  - kustomize:
-      patchesJson6902:
-      - target:
-          kind: Ingress
-          name: k10-ingress
-        patch:
-        - op: add
-          path: /spec/ingressClassName
-          value: traefik
+  # postRenderers:
+  # - kustomize:
+  #     patchesJson6902:
+  #     - target:
+  #         kind: Ingress
+  #         name: k10-ingress
+  #       patch:
+  #       - op: add
+  #         path: /spec/ingressClassName
+  #         value: traefik
