@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://dl.gitea.io/charts/
       chart: gitea
-      version: 3.1.3
+      version: 4.0.0
       sourceRef:
         kind: HelmRepository
         name: gitea-charts
@@ -31,7 +31,10 @@ spec:
         #   sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://gilbn.github.io/theme.park/CSS/themes/gitea/organizr-dark.css"></head>';
         #   sub_filter_once on;
       hosts:
-      - "git.dev.${SECRET_DOMAIN}"
+        - host: "git.dev.${SECRET_DOMAIN}"
+          paths:
+            - path: /
+              pathType: Prefix 
       tls:
       - hosts:
         - "git.dev.${SECRET_DOMAIN}"
