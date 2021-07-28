@@ -12,3 +12,4 @@ resources:
 - rook-ceph.yaml
 - velero.yaml
 - dev.yaml
+- gaming.yaml
