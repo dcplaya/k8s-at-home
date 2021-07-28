@@ -10,6 +10,7 @@ resources:
 - deliveryhero-charts.yaml
 - drone-charts.yaml
 - emberstack-charts.yaml
+- emqx-charts.yaml
 - evryfs-oss-charts.yaml
 - fairwinds-charts.yaml
 - falco-security-charts.yaml
@@ -21,10 +22,13 @@ resources:
 - jetstack-charts.yaml
 - k8s-at-home-charts.yaml
 - kasten-charts.yaml
+- kuberhealthy-charts.yaml
 - kubernetes-external-secrets-charts.yaml
 - kubernetes-sigs-descheduler-charts.yaml
 - kubernetes-stable-charts.yaml
 - longhorn-repositories.yaml
+- lwolf-charts.yaml
+- minecraft-server-charts.yaml
 - minio-repositories.yaml
 - nfs-subdir-external-provisioner-charts.yaml
 - node-feature-discovery-charts.yaml
@@ -35,5 +39,6 @@ resources:
 - traefik-charts.yaml
 - uptimerobot-operator-charts.yaml
 - vernemq-charts.yaml
+- victoriametrics-charts.yaml
 - vmware-tanzu-charts.yaml
 - weaveworks-kured-charts.yaml
