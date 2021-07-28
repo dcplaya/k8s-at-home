@@ -30,7 +30,8 @@ spec:
         enabled: false
       basicAuth:
         enabled: true
-        htpasswd: ${SECRET_NGINX_BASIC_AUTH}
+        htpasswd: "test:password"
+        # htpasswd: ${SECRET_NGINX_BASIC_AUTH}
     prometheus:
       enabled: true
       server:
