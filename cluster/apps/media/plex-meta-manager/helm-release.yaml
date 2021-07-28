@@ -15,6 +15,7 @@ spec:
     spec:
       template:
         spec:
+          restartPolicy: OnFailure
           # dnsPolicy: None
           # dnsConfig:
           #   nameservers:
