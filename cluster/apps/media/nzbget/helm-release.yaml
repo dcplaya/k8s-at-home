@@ -24,10 +24,10 @@ spec:
       repository: hotio/nzbget
       tag: release
       pullPolicy: Always
-    dnsConfig:
-      options:
-        - name: ndots
-          value: "1"
+    # dnsConfig:
+    #   options:
+    #     - name: ndots
+    #       value: "1"
     env:
       TZ: "America/Los_Angeles"
       PUID: "1000"

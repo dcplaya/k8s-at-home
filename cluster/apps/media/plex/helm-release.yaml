@@ -25,10 +25,10 @@ spec:
       # repository: ghcr.io/k8s-at-home/plex
       # tag: v1.22.0.4163-d8c4875dd
       pullPolicy: IfNotPresent
-    dnsConfig:
-      options:
-        - name: ndots
-          value: "1"
+    # dnsConfig:
+    #   options:
+    #     - name: ndots
+    #       value: "1"
     env:
       TZ: "America/Los_Angeles"
       PUID: "1000"
