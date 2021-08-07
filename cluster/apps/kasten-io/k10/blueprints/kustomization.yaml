@@ -4,5 +4,5 @@ resources:
   - secret.enc.yaml
   - secret-rclone-service.enc.yaml
   #- gaming.yaml
-  #- home.yaml
+  - home.yaml
   #- media.yaml
