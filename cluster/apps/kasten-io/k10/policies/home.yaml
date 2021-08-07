@@ -42,20 +42,20 @@ spec:
         profile:
           name: home
           namespace: kasten-io
-    # - action: export
-    #   exportParameters:
-    #     frequency: "@daily"
-    #     receiveString: bIzAPpoanmEJ4QpcrTZGj8Z0SUsNDlim5yOJ01sHeq8XMd4eiUaHZrmgdfaYlfQMIFDkzKuNGU+u7zELhTr9hRoHngA1B+Gac4eL796G9664qIxx321pDBaVu5T0NL9Iep43oG5P4eUau7OQ7NzJ6nOGD/Diy0JJ51XZHEOs8OiL4pMpE3e7lV3UrUXoNTVe6IFnQ42Vpj1I00o3MTiL9929XXSzHSjrpihO/IrbWJdep4bOOnTYbsUDs6SuidqyZJbfJa+PK9pzW2/4vBon4DLZ9f/TMqvE0gmHTmwmGyp+X3fVunE7+3r0uNDP8ItwiAw0McpNwyxIsMMmnw2KF/JLtKkNKQsG+IQth53r5PW7wx3JhdTSsWxyzw3L1GwqpJKueMMC0HMhHqF1+X4PfZybCNuL660
-    #     profile:
-    #       name: home
-    #       namespace: kasten-io
-    #     hooks:
-    #       onSuccess:
-    #         blueprint: home
-    #         actionName: post-export
-    #     migrationToken:
-    #       name: home-migration-token-f2rcn
-    #       namespace: kasten-io
-    #     exportData:
-    #       enabled: true
-    #   retention: {}
+    - action: export
+      exportParameters:
+        frequency: "@daily"
+        receiveString: bIzAPpoanmEJ4QpcrTZGj8Z0SUsNDlim5yOJ01sHeq8XMd4eiUaHZrmgdfaYlfQMIFDkzKuNGU+u7zELhTr9hRoHngA1B+Gac4eL796G9664qIxx321pDBaVu5T0NL9Iep43oG5P4eUau7OQ7NzJ6nOGD/Diy0JJ51XZHEOs8OiL4pMpE3e7lV3UrUXoNTVe6IFnQ42Vpj1I00o3MTiL9929XXSzHSjrpihO/IrbWJdep4bOOnTYbsUDs6SuidqyZJbfJa+PK9pzW2/4vBon4DLZ9f/TMqvE0gmHTmwmGyp+X3fVunE7+3r0uNDP8ItwiAw0McpNwyxIsMMmnw2KF/JLtKkNKQsG+IQth53r5PW7wx3JhdTSsWxyzw3L1GwqpJKueMMC0HMhHqF1+X4PfZybCNuL660
+        profile:
+          name: home
+          namespace: kasten-io
+        hooks:
+          onSuccess:
+            blueprint: home
+            actionName: post-export
+        migrationToken:
+          name: home-migration-token-cmdmr
+          namespace: kasten-io
+        exportData:
+          enabled: true
+      retention: {}
