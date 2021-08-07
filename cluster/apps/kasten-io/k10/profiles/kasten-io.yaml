@@ -9,7 +9,7 @@ spec:
     type: FileStore
     fileStore:
       claimName: nfs-kasten
-      path: kasten-io/k10/migration
+      path: kasten/kasten-io/k10/migration
     credential:
       secretType: ""
       secret:

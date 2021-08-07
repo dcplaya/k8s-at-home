@@ -4,5 +4,5 @@ resources:
   - pvc.yaml
   #- gaming.yaml
   #- kasten-io.yaml
-  #- home.yaml
+  - home.yaml
   #- media.yaml
