@@ -4,5 +4,6 @@ resources:
 - helm-release.yaml
 - monitoring
 - policies
+- profiles
 # # TODO Enable on cluster re-install
 # - profiles

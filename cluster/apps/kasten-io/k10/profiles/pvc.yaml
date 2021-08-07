@@ -12,7 +12,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   nfs:
     server: 10.10.200.210
-    path: /kasten
+    path: /volume2/Backups
   mountOptions:
     - nfsvers=4.1
     - hard
