@@ -10,8 +10,8 @@ spec:
     minutes:
       - 0
     hours:
+      - 0
       - 12
-      - 24
     weekdays:
       - 0
     days:
