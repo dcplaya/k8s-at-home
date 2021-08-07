@@ -5,6 +5,7 @@ metadata:
   name: minecraft-creative-config-v1
   namespace: gaming
   labels:
+    service: minecraft-creative
     kasten.io/backup-volume: "enabled"
 spec:
   accessModes:
