@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
 - helm-release.yaml
 - monitoring
+- blueprints
 - policies
 - profiles
 # # TODO Enable on cluster re-install
