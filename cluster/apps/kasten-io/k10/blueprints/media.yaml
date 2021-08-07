@@ -45,5 +45,5 @@ actions:
             - "24"
             - "--checkers"
             - "24"
-            - "/mnt/k10-exports/media"
+            - "/mnt/k10-exports/kasten/media"
             - "b2:k10-media-mxlcc/"

@@ -45,5 +45,5 @@ actions:
             - "24"
             - "--checkers"
             - "24"
-            - "/mnt/k10-exports/gaming"
+            - "/mnt/k10-exports/kasten/gaming"
             - "b2:k10-gaming-mxlcc/"
