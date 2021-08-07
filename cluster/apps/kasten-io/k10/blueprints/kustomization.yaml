@@ -5,4 +5,5 @@ resources:
   - dev.yaml
   - gaming.yaml
   - home.yaml
+  - k10-disaster-recovery.yaml
   - media.yaml
