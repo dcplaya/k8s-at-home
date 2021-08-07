@@ -10,8 +10,8 @@ spec:
     minutes:
       - 0
     hours:
-      - 11
-      - 23
+      - 12
+      - 24
     weekdays:
       - 0
     days:
@@ -53,9 +53,9 @@ spec:
           onSuccess:
             blueprint: home
             actionName: post-export
-        migrationToken:
-          name: home-migration-token-cmdmr
-          namespace: kasten-io
+        # migrationToken:
+        #   name: home-migration-token-cmdmr
+        #   namespace: kasten-io
         exportData:
           enabled: true
       retention: {}

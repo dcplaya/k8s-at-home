@@ -10,8 +10,8 @@ spec:
     minutes:
       - 0
     hours:
-      - 11
-      - 23
+      - 3
+      - 15
     weekdays:
       - 0
     days:
@@ -53,9 +53,9 @@ spec:
           onSuccess:
             blueprint: media
             actionName: post-export
-        migrationToken:
-          name: media-migration-token-p8tq7
-          namespace: kasten-io
+        # migrationToken:
+        #   name: media-migration-token-p8tq7
+        #   namespace: kasten-io
         exportData:
           enabled: true
       retention: {}

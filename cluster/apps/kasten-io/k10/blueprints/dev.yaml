@@ -2,7 +2,7 @@
 apiVersion: cr.kanister.io/v1alpha1
 kind: Blueprint
 metadata:
-  name: media
+  name: dev
   namespace: kasten-io
 actions:
   post-export:
@@ -44,5 +44,5 @@ actions:
             - "24"
             - "--checkers"
             - "24"
-            - "/mnt/k10-exports/kasten/media"
-            - "backups:Kubernetes/Kasten/media"
+            - "/mnt/k10-exports/kasten/dev"
+            - "backups:Kubernetes/Kasten/dev"

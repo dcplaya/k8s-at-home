@@ -45,4 +45,4 @@ actions:
             - "--checkers"
             - "24"
             - "/mnt/k10-exports/kasten/home"
-            - "backups:Kubernetes/Kasten/"
+            - "backups:Kubernetes/Kasten/home"
