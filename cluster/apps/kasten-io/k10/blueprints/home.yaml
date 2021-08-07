@@ -24,7 +24,7 @@ actions:
                   - name: rclone-config
                     mountPath: "/config"
                   - name: rclone-service-account
-                    mountPath: "/service"
+                    mountPath: "/config"
                   - name: k10-exports
                     mountPath: /mnt/k10-exports
             volumes:
