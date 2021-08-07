@@ -23,17 +23,12 @@ actions:
                 volumeMounts:
                   - name: rclone-config
                     mountPath: "/config"
-                  - name: rclone-service-account
-                    mountPath: "/service"
                   - name: k10-exports
                     mountPath: /mnt/k10-exports
             volumes:
               - name: rclone-config
                 secret:
                   secretName: rclone-config
-              - name: rclone-service-account
-                secret:
-                  secretName: rclone-service-account
               - name: k10-exports
                 persistentVolumeClaim:
                   claimName: nfs-kasten
