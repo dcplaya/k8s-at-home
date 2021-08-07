@@ -6,6 +6,7 @@ metadata:
   namespace: media
   labels:
     service: radarr-4k
+    kasten.io/backup-volume: "enabled"
 spec:
   storageClassName: rook-ceph-block
   accessModes:

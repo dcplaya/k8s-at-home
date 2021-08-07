@@ -7,6 +7,7 @@ metadata:
   labels:
     service: home-assistant
     database: influx
+    kasten.io/backup-volume: "enabled"
 spec:
   storageClassName: rook-ceph-block
   accessModes:
