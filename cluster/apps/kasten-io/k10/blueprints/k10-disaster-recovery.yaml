@@ -2,7 +2,7 @@
 apiVersion: cr.kanister.io/v1alpha1
 kind: Blueprint
 metadata:
-  name: home
+  name: disaster-recovery
   namespace: kasten-io
 actions:
   post-export:
