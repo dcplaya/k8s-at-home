@@ -34,7 +34,7 @@ spec:
           namespace: kasten-io
         hooks:
           onSuccess:
-            blueprint: kasten-io
+            blueprint: disaster-recovery
             actionName: post-export
         # migrationToken:
         #   name: gaming-migration-token-8kvp9
