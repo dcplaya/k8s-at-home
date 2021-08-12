@@ -17,3 +17,4 @@ resources:
 - internal-dns
 - secret-reflector
 - oauth2-proxy
+- vycontrol
