@@ -29,7 +29,7 @@ spec:
       externalTrafficPolicy: Local
     servers:
     - zones:
-      - zone: ${SECRET_DOMAIN}.
+      - zone: ${SECRET_DOMAIN}
         scheme: dns://
       port: 53
       plugins:
