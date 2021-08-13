@@ -79,11 +79,14 @@ spec:
       - name: loadbalance
       # I need this due to having 2 ingress controllers. Without it, internal resolves to external ingress due to zonefiles below
       - name: etcd
-        parameters: ${SECRET_DOMAIN}
+        # parameters: ${SECRET_DOMAIN}
         configBlock: |-
           stubzones
           path /skydns
           endpoint http://etcd:2379
+      # Set up cache
+      - name: cache
+        parameters: 30
     affinity:
       podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
