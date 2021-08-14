@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: blocky
-      version: 7.1.1
+      version: 8.0.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -87,14 +87,16 @@ spec:
       configmap.reloader.stakater.com/reload: "blocky-config"
     affinity:
       podAntiAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchExpressions:
-            - key: app.kubernetes.io/name
-              operator: In
-              values:
-              - blocky
-          topologyKey: "kubernetes.io/hostname"
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/name
+                    operator: In
+                    values:
+                      - blocky
+              topologyKey: kubernetes.io/hostname
     resources:
       requests:
         memory: 100Mi
