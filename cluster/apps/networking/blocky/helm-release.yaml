@@ -29,6 +29,9 @@ spec:
       TZ: "America/Los_Angeles"
     service:
       main:
+        type: LoadBalancer
+        externalIPs:
+          - "${LB_BLOCKY_IP}"
         ports:
           http:
             port: 4000
