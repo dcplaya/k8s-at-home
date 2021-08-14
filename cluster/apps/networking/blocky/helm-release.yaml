@@ -32,34 +32,23 @@ spec:
         ports:
           http:
             port: 4000
-      dns-tcp:
+      dns:
         enabled: true
         type: LoadBalancer
         externalIPs:
-        - "${LB_BLOCKY_IP}"
+          - "${LB_BLOCKY_IP}"
         ports:
-          dns-tcp:
+          tcp:
             enabled: true
             port: 53
             protocol: TCP
             targetPort: 53
-        externalTrafficPolicy: Local
-        annotations:
-          metallb.universe.tf/allow-shared-ip: blocky
-      dns-udp:
-        enabled: true
-        type: LoadBalancer
-        externalIPs:
-        - "${LB_BLOCKY_IP}"
-        ports:
-          dns-udp:
+          udp:
             enabled: true
             port: 53
             protocol: UDP
             targetPort: 53
         externalTrafficPolicy: Local
-        annotations:
-          metallb.universe.tf/allow-shared-ip: blocky
     config: |
       upstream:
         externalResolvers:
