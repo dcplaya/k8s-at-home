@@ -10,4 +10,4 @@ resources:
 - node-problem-detector
 - reloader
 - kube-cleanup-operator
-- home-dns
+# - home-dns
