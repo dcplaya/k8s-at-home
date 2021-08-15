@@ -87,7 +87,7 @@ spec:
               - node04
     resources:
       requests:
-        memory: 250Mi
+        memory: 200Mi
         # cpu: 500m
       limits:
         memory: 6000Mi
