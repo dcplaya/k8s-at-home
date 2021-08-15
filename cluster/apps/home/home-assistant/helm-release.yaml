@@ -32,8 +32,9 @@ spec:
     service:
       main:
         type: LoadBalancer
-        externalIPs:
-        - "${LB_HOME_ASSISTANT_IP}"
+        loadBalancerIP: "${LB_HOME_ASSISTANT_IP}"
+        # externalIPs:
+        # - "${LB_HOME_ASSISTANT_IP}"
         externalTrafficPolicy: Local
     ingress:
       main:
