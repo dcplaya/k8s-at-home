@@ -60,12 +60,13 @@ spec:
         tls:
         - hosts:
           - "qb.media.${SECRET_DOMAIN}"
+    podSecurityContext:
+      supplementalGroups:
+        - 100
     persistence:
       config:
         enabled: true
-        storageClass: "rook-ceph-block"
-        accessMode: ReadWriteOnce
-        size: "5Gi"
+        existingClaim: qbittorrent-config-v1
       nas-merged-media:
         enabled: true
         existingClaim: nfs-nas-merged-media-pvc

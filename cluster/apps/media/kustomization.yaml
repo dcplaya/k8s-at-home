@@ -17,6 +17,7 @@ resources:
 - plex
 - plex-meta-manager
 - prowlarr
+- qbittorrent
 - radarr
 - radarr-4k
 - sonarr
