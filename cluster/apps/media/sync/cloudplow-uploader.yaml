@@ -20,9 +20,9 @@ spec:
         app: cloudplow-uploader
     spec:
       # dnsPolicy: None
-      dnsConfig:
-        nameservers:
-        - "${CLUSTER_DNS_SERVER_FQDN}"
+      # dnsConfig:
+      #   nameservers:
+      #   - "${CLUSTER_DNS_SERVER_FQDN}"
       initContainers:
       - name: git-config
         image: alpine/git:v2.30.2
