@@ -47,8 +47,9 @@ spec:
       motd: "minecraft-creative\n\u00A76\u00A7lcreative\u00A7r\u00A7l - \u00A7r\u00A7c\u00A7lSMP\u00A7r\n"
       icon: https://www.freeiconspng.com/uploads/minecraft-server-icon-23.png
       serviceType: LoadBalancer
-      externalIPs:
-        - ${LB_MINECRAFT_CREATIVE_IP}
+      loadBalancerIP: "${LB_MINECRAFT_CREATIVE_IP}"
+      # externalIPs:
+      #   - ${LB_MINECRAFT_CREATIVE_IP}
       extraPorts:
         - name: map
           containerPort: 8123

@@ -35,8 +35,9 @@ spec:
       dns:
         enabled: true
         type: LoadBalancer
-        externalIPs:
-          - "${LB_BLOCKY_IP}"
+        loadBalancerIP: "${LB_BLOCKY_IP}"
+        # externalIPs:
+        #   - "${LB_BLOCKY_IP}"
         ports:
           tcp:
             enabled: true
@@ -52,8 +53,8 @@ spec:
     config: |
       upstream:
         externalResolvers:
-        - tcp-tls:${SECRET_NEXTDNS_ID}.dns1.nextdns.io:853
-        - tcp-tls:${SECRET_NEXTDNS_ID}.dns2.nextdns.io:853
+        - tcp-tls:blocky-${SECRET_NEXTDNS_ID}.dns1.nextdns.io:853
+        - tcp-tls:blocky-${SECRET_NEXTDNS_ID}.dns2.nextdns.io:853
       conditional:
         mapping:
           device.${SECRET_DOMAIN}: udp:1.1.1.1
