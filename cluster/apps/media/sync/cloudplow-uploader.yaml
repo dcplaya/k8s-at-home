@@ -19,10 +19,10 @@ spec:
       labels:
         app: cloudplow-uploader
     spec:
-      dnsPolicy: None
-      dnsConfig:
-        nameservers:
-        - "${LB_BLOCKY_IP}"
+      # dnsPolicy: None
+      # dnsConfig:
+      #   nameservers:
+      #   - "${LB_BLOCKY_IP}"
       initContainers:
       - name: git-config
         image: alpine/git:v2.30.2
