@@ -29,6 +29,7 @@ spec:
           - home
           - media
           - monitoring
+          - networking
       name: "Drew"
       customApps:
         - name: Synology
@@ -83,10 +84,10 @@ spec:
         #       url: "https://www.mymove.com/freshome/"
         - name: Media
           links:
-            - name: Spotify
-              url: "http://browse.spotify.com"
-            # - name: Trakt
-            #   url: "http://trakt.tv"
+            - name: Google Music
+              url: "http://music.google.com"
+            - name: Trakt
+              url: "http://trakt.tv"
             # - name: YouTube
             #   url: "https://youtube.com/feed/subscriptions"
         - name: Reading
