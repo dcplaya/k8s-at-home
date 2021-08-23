@@ -5,6 +5,7 @@ resources:
 - esphome
 - frigate
 - grocy
+- hajimari
 - home-assistant
 - hyperion-ng
 # - matrix
