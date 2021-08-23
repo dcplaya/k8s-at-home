@@ -9,6 +9,7 @@ resources:
 - home-assistant
 - hyperion-ng
 # - matrix
+- mosquitto
 - node-red
-- vernemq
+# - vernemq
 - zigbee2mqtt
