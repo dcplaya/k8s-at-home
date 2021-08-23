@@ -21,7 +21,7 @@ spec:
       repository: ghcr.io/toboshii/hajimari
       tag: v0.1.0
     env:
-      TZ: "America/New_York"
+      TZ: "America/Los_Angeles"
     hajimari:
       defaultEnable: false
       namespaceSelector:
@@ -29,17 +29,17 @@ spec:
           - home
           - media
           - monitoring
-      name: "devin"
+      name: "Drew"
       customApps:
-        - name: Valetudo
-          url: "http://192.168.1.28"
+        - name: Synology
+          url: "http://10.10.200.210:5000"
           icon: "robot-vacuum"
-        - name: PiAware
-          url: "http://192.168.150.25:8080"
-          icon: "airplane"
-        - name: HDHomeRun
-          url: "http://192.168.150.30"
-          icon: "antenna"
+        # - name: PiAware
+        #   url: "http://192.168.150.25:8080"
+        #   icon: "airplane"
+        # - name: HDHomeRun
+        #   url: "http://192.168.150.30"
+        #   icon: "antenna"
       groups:
         - name: Communicate
           links:
@@ -112,13 +112,13 @@ spec:
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         hosts:
-          - host: "hajimari.${SECRET_DOMAIN}"
+          - host: "hajimari.home.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
           - hosts:
-              - "hajimari.${SECRET_DOMAIN}"
+              - "hajimari.home.${SECRET_DOMAIN}"
     persistence:
       data:
         enabled: true
