@@ -30,7 +30,10 @@ spec:
       permit_join: true
       mqtt:
         base_topic: zigbee2mqtt
-        server: "mqtt://vernemq"
+        server: "mqtt://mqtt.home.${SECRET_DOMAIN}"
+        user: ${ZIGBEE2MQTT_USERNAME}
+        password: ${ZIGBEE2MQTT_PASSWORD}
+        client-id: zigbee2mqtt
       serial:
         port: /dev/conbee
         adapter: deconz
@@ -67,7 +70,7 @@ spec:
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         hosts:
-        - host: zigbee2mqtt.home.${SECRET_DOMAIN}
+        - host: "zigbee2mqtt.home.${SECRET_DOMAIN}"
           paths:
           - path: /
             pathType: Prefix
