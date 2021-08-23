@@ -23,13 +23,15 @@ spec:
     env:
       TZ: "America/Los_Angeles"
     hajimari:
-      defaultEnable: false
+      defaultEnable: true
       namespaceSelector:
         matchNames:
           - home
           - media
           - monitoring
           - networking
+          - kasten-io
+          - dev
       name: "Drew"
       customApps:
         - name: Synology

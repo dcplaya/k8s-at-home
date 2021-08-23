@@ -41,6 +41,10 @@ spec:
         ingressClassName: "traefik"
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          hajimari.io/enable: true
+          # hajimari.io/icon: "mdiTelevisionClassic"
+          hajimari.io/url: "https://autoscan.media.${SECRET_DOMAIN}/triggers/manual"
+          # hajimari.io/appName
         hosts:
         - host: "autoscan.media.${SECRET_DOMAIN}"
           paths:

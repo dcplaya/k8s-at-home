@@ -80,6 +80,10 @@ spec:
         ingressClassName: "traefik"
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          hajimari.io/enable: true
+          # hajimari.io/icon: "mdiTelevisionClassic"
+          # hajimari.io/url:
+          # hajimari.io/appName: 
         hosts:
         - "alert-manager.monitoring.${SECRET_DOMAIN}"
         tls:
@@ -129,6 +133,10 @@ spec:
         ingressClassName: "traefik"
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          hajimari.io/enable: true
+          # hajimari.io/icon: "mdiTelevisionClassic"
+          # hajimari.io/url:
+          # hajimari.io/appName: 
         hosts:
         - "prometheus.monitoring.${SECRET_DOMAIN}"
         tls:

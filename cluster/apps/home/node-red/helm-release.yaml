@@ -33,6 +33,11 @@ spec:
         ingressClassName: "traefik"
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          hajimari.io/enable: true
+          # hajimari.io/icon: "mdiTelevisionClassic"
+          # hajimari.io/url: 
+          # hajimari.io/appName: 
+          #
           # kubernetes.io/ingress.class: "internal"
           # nginx.ingress.kubernetes.io/auth-type: basic
           # nginx.ingress.kubernetes.io/auth-secret: media/nginx-basic-auth
