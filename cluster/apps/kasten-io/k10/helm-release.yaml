@@ -43,7 +43,7 @@ spec:
       host: "k10.${SECRET_DOMAIN}"
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        hajimari.io/enable: true
+        hajimari.io/enable: "true"
         # hajimari.io/icon: "mdiTelevisionClassic"
         hajimari.io/url: "https://k10.${SECRET_DOMAIN}/k10/#/"
         # hajimari.io/appName: 
