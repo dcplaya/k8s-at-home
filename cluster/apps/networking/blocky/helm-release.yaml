@@ -76,6 +76,9 @@ spec:
           - ads
       clientLookup:
         upstream: udp:${GATEWAY_IP}
+        clients:
+          pixel-5:
+            - 10.2.0.100
       prometheus:
         enable: true
         path: /metrics
