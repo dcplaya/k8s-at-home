@@ -28,9 +28,9 @@ spec:
         matchNames:
           - home
           - media
-          #- monitoring
-          #- networking
-          #- dev
+          - monitoring
+          - networking
+          - dev
       name: "Drew"
       customApps:
         - name: Synology
