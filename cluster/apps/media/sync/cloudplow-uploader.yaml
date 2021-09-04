@@ -20,9 +20,9 @@ spec:
         app: cloudplow-uploader
     spec:
       # dnsPolicy: None
-      dnsConfig:
-        nameservers:
-        - "${CLUSTER_DNS_SERVER_FQDN}"
+      # dnsConfig:
+      #   nameservers:
+      #   - "${LB_BLOCKY_IP}"
       initContainers:
       - name: git-config
         image: alpine/git:v2.30.2
@@ -37,6 +37,7 @@ spec:
         - |
           set -o nounset
           set -o errexit
+          # sleep 600000000m
           if [ -z "${SECRET_GITEA_ACCESS_TOKEN}" ]; then
             printf "%s - Error - Missing GITEA_TOKEN environment variable" "$(date -u)"
             exit 1
@@ -78,7 +79,7 @@ spec:
             cpu: 1000m
           limits:
             memory: 2000Mi
-            cpu: 1001m
+            cpu: 1000m
       volumes:
       - name: media-pvc
         persistentVolumeClaim:

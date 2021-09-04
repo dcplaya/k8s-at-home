@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://prometheus-community.github.io/helm-charts
       chart: kube-prometheus-stack
-      version: 17.2.1
+      version: 18.0.3
       sourceRef:
         kind: HelmRepository
         name: prometheus-community-charts
@@ -80,6 +80,10 @@ spec:
         ingressClassName: "traefik"
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          hajimari.io/enable: "true"
+          # hajimari.io/icon: "mdiTelevisionClassic"
+          # hajimari.io/url:
+          # hajimari.io/appName: 
         hosts:
         - "alert-manager.monitoring.${SECRET_DOMAIN}"
         tls:
@@ -129,6 +133,10 @@ spec:
         ingressClassName: "traefik"
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          hajimari.io/enable: "true"
+          # hajimari.io/icon: "mdiTelevisionClassic"
+          # hajimari.io/url:
+          # hajimari.io/appName: 
         hosts:
         - "prometheus.monitoring.${SECRET_DOMAIN}"
         tls:

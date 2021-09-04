@@ -32,6 +32,10 @@ spec:
         ingressClassName: "traefik"
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          hajimari.io/enable: "true"
+          # hajimari.io/icon: "mdiTelevisionClassic"
+          # hajimari.io/url:
+          # hajimari.io/appName: 
         hosts:
         - host: "gaps.media.${SECRET_DOMAIN}"
           paths:

@@ -59,9 +59,9 @@ spec:
         mapping:
           device.${SECRET_DOMAIN}: udp:1.1.1.1
           vpn.${SECRET_DOMAIN}: udp:1.1.1.1
-          cluster.${SECRET_DOMAIN}: udp:10.10.200.1
-          iot.${SECRET_DOMAIN}: udp:10.10.100.1
-          lan.${SECRET_DOMAIN}: udp:10.10.1.1
+          # cluster.${SECRET_DOMAIN}: udp:10.10.200.1
+          # iot.${SECRET_DOMAIN}: udp:10.10.100.1
+          # lan.${SECRET_DOMAIN}: udp:10.10.1.1
           ${SECRET_DOMAIN}: udp:${GATEWAY_IP}
       blocking:
         blackLists:
@@ -76,6 +76,9 @@ spec:
           - ads
       clientLookup:
         upstream: udp:${GATEWAY_IP}
+        clients:
+          pixel-5:
+            - 10.2.0.100
       prometheus:
         enable: true
         path: /metrics

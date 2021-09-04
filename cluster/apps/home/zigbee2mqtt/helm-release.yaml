@@ -19,7 +19,7 @@ spec:
   values:
     image:
       repository: koenkk/zigbee2mqtt
-      tag: 1.21.0
+      tag: 1.21.1
     env:
       TZ: America/Los_Angeles
       ZIGBEE2MQTT_DATA: /data
@@ -30,7 +30,10 @@ spec:
       permit_join: true
       mqtt:
         base_topic: zigbee2mqtt
-        server: "mqtt://vernemq"
+        server: "mqtt://mqtt.home.${SECRET_DOMAIN}"
+        user: ${ZIGBEE2MQTT_USERNAME}
+        password: ${ZIGBEE2MQTT_PASSWORD}
+        client-id: zigbee2mqtt
       serial:
         port: /dev/conbee
         adapter: deconz
@@ -66,8 +69,12 @@ spec:
         ingressClassName: "traefik"
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          hajimari.io/enable: "true"
+          # hajimari.io/icon: "mdiTelevisionClassic"
+          # hajimari.io/url: 
+          # hajimari.io/appName: 
         hosts:
-        - host: zigbee2mqtt.home.${SECRET_DOMAIN}
+        - host: "zigbee2mqtt.home.${SECRET_DOMAIN}"
           paths:
           - path: /
             pathType: Prefix
