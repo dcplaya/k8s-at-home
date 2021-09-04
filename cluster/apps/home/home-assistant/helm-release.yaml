@@ -29,6 +29,7 @@ spec:
       HASS_SECRET_LONGITUDE: "${SECRET_HASS_LONGITUDE}"
       HASS_SECRET_ELEVATION: "${SECRET_HASS_ELEVATION}"
     hostNetwork: true
+    dnsPolicy: ClusterFirstWithHostNet
     service:
       main:
         type: LoadBalancer
@@ -43,7 +44,7 @@ spec:
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           hajimari.io/enable: "true"
-          # hajimari.io/icon: "mdiTelevisionClassic"
+          hajimari.io/icon: "home-assistant"
           # hajimari.io/url: 
           # hajimari.io/appName: 
           #
