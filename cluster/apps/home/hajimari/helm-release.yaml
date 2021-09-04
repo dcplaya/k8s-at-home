@@ -30,7 +30,7 @@ spec:
           - media
           - monitoring
           - networking
-          - dev
+          # - dev
       name: "Drew"
       customApps:
         - name: Synology
