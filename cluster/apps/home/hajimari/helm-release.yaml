@@ -27,7 +27,7 @@ spec:
       namespaceSelector:
         matchNames:
           - home
-          #- media
+          - media
           #- monitoring
           #- networking
           #- dev
