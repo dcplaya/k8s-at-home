@@ -29,7 +29,7 @@ spec:
           - home
           - media
           - monitoring
-          - networking
+          # - networking
           # - dev
       name: "Drew"
       customApps:
