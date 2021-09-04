@@ -27,11 +27,10 @@ spec:
       namespaceSelector:
         matchNames:
           - home
-          - media
-          - monitoring
-          - networking
-          - kasten-io
-          - dev
+          #- media
+          #- monitoring
+          #- networking
+          #- dev
       name: "Drew"
       customApps:
         - name: Synology
