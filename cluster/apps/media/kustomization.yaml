@@ -12,7 +12,7 @@ resources:
 - jackett
 - lidarr
 - nzbget
-- nzbhydra2
+# - nzbhydra2
 - overseer
 - plex
 - plex-meta-manager
