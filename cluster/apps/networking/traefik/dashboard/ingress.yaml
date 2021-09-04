@@ -7,9 +7,9 @@ metadata:
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
     hajimari.io/enable: "true"
-    # hajimari.io/icon: "mdiTelevisionClassic"
+    hajimari.io/icon: "web"
+    hajimari.io/appName: "traefik"
     # hajimari.io/url:
-    # hajimari.io/appName: 
 spec:
   tls:
     - secretName: "${SECRET_DOMAIN/./-}-tls"
