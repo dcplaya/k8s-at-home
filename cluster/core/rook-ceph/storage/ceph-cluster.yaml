@@ -78,3 +78,6 @@ spec:
     - name: "node05"
       devices:
       - name: "nvme0n1p4"
+    - name: "node100"
+      devices:
+      - name: "sdb"
