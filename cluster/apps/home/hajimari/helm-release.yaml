@@ -36,9 +36,9 @@ spec:
         - name: Synology
           url: "http://10.10.200.210:5000"
           icon: "robot-vacuum"
-        # - name: PiAware
-        #   url: "http://192.168.150.25:8080"
-        #   icon: "airplane"
+        - name: TrueNAS Scale
+          url: "http://nas00.cluster.${SECRET_DOMAIN}"
+          icon: "nas"
         # - name: HDHomeRun
         #   url: "http://192.168.150.30"
         #   icon: "antenna"
