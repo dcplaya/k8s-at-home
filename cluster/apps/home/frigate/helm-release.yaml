@@ -62,7 +62,7 @@ spec:
     config: |
       mqtt:
         # Required: host name
-        host: vernemq
+        host: mqtt.home.${SECRET_DOMAIN}
         # Optional: port (default: shown below)
         port: 1883
         # Optional: topic prefix (default: shown below)
@@ -72,11 +72,11 @@ spec:
         # WARNING: must be unique if you are running multiple instances
         client_id: frigate
         # Optional: user
-        # user: mqtt_user
-        # Optional: password
+        user: ${SECRET_FRIGATE_USERNAME}
+        # Optional: frigate
         # NOTE: Environment variables that begin with 'FRIGATE_' may be referenced in {}.
         #       eg. password: '{FRIGATE_MQTT_PASSWORD}'
-        # password: password
+        password: ${SECRET_FRIGATE_PASSWORD}
         # Optional: interval in seconds for publishing stats (default: shown below)
         stats_interval: 60
       detectors:
