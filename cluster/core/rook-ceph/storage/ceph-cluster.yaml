@@ -54,8 +54,8 @@ spec:
       limits:
         memory: 4096Mi
   storage:
-    useAllNodes: false
-    useAllDevices: false
+    useAllNodes: true
+    useAllDevices: true
     config:
       metadataDevice:
       osdsPerDevice: "1"
@@ -78,6 +78,3 @@ spec:
     - name: "node05"
       devices:
       - name: "nvme0n1p4"
-    - name: "node100"
-      devices:
-      - name: "sdb"
