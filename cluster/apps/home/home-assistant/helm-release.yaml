@@ -18,9 +18,11 @@ spec:
       interval: 5m
   values:
     image:
-      repository: homeassistant/home-assistant
-      tag: dev
-      pullPolicy: Always
+      repository: ghcr.io/home-assistant/home-assistant
+      tag: 2021.9.5
+      # repository: homeassistant/home-assistant
+      # tag: dev
+      # pullPolicy: Always
     env:
       TZ: "America/Los_Angeles"
       PUID: "1000"
