@@ -7,7 +7,7 @@ resources:
 # - ingress-nginx-internal
 - wildcard-certificate
 # - adguard-home
-- authentik
+# - authentik
 - oxidized
 - blocky
 - cloudflare-ddns
