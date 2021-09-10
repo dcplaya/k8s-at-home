@@ -46,7 +46,7 @@ spec:
         cpu: 35m
         memory: 800Mi
       limits:
-        memory: 1024Mi
+        memory: 2048Mi
     osd:
       requests:
         cpu: 35m
@@ -60,9 +60,9 @@ spec:
       metadataDevice:
       osdsPerDevice: "1"
     nodes:
-    # - name: "node00"
-    #   devices:
-    #   - name: "nvme0n1"
+    - name: "node00"
+      devices:
+      - name: "nvme0n4"
     - name: "node01"
       devices:
       - name: "nvme0n1p4"
