@@ -54,8 +54,8 @@ spec:
       limits:
         memory: 4096Mi
   storage:
-    useAllNodes: true
-    useAllDevices: true
+    useAllNodes: false
+    useAllDevices: false
     config:
       metadataDevice:
       osdsPerDevice: "1"
