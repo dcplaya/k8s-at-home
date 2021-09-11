@@ -9,5 +9,4 @@ resources:
 - node-feature-discovery
 - node-problem-detector
 - reloader
-- kube-cleanup-operator
 # - home-dns
