@@ -52,25 +52,42 @@ spec:
       enabled: true
       serviceMonitor:
         enabled: true
-    installCRDs: true
-    snapshotsEnabled: false
+    upgradeCRDs: false
+    cleanUpCRDs: false
+    snapshotsEnabled: true
+    kubectl:
+      image:
+        repository: ghcr.io/k8s-at-home/kubectl
+        tag: v1.22.1
     deployRestic: true
     restic:
       podVolumePath: /var/lib/kubelet/pods
       privileged: false
+      tolerations:
+        - key: "node-role.kubernetes.io/master"
+          operator: "Exists"
       resources:
         requests:
-          cpu: 500m
-          memory: 2048Mi
+          memory: 200Mi
+          cpu: 15m
         limits:
-          cpu: 3000m
-          memory: 15360Mi
-    # schedules:
-    #   daily-backup:
-    #     schedule: "0 2 * * *"
-    #     template:
-    #       ttl: "120h"
-    #   weekly-backup:
-    #     schedule: "0 3 * * 2"
-    #     template:
-    #       ttl: "720h"
+          memory: 3000Mi
+    resources:
+      requests:
+        memory: 300Mi
+        cpu: 25m
+      limits:
+        memory: 1500Mi
+    schedules:
+      daily-backup:
+        schedule: "0 2 * * *"
+        template:
+          ttl: "120h"
+      weekly-backup:
+        schedule: "0 3 * * 2"
+        template:
+          ttl: "720h"
+      # monthly-backup:
+      #   schedule: "0 3 * * 2"
+      #   template:
+      #     ttl: "720h"
