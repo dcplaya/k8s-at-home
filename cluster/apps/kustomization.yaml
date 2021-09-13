@@ -11,4 +11,5 @@ resources:
 - monitoring
 - networking
 - system-upgrade
+- falco-system
 # - gaming
