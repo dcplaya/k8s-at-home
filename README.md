@@ -200,9 +200,9 @@ kubectl --kubeconfig=./kubeconfig get nodes
 7. Add udev rules for USB Devices
 8. Disable hardware offloading for `e1000` driver
 ```sh
-ethtool -K enp0s25 tso off gso off
+sudo ethtool -K eno1 tso off gso off
 ```
-
+9. Add udev rules
 For ??? USB Stick (Zigbee & ZWave)
 ```sh
 SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="8a2a", ATTRS{serial}=="813004F4", ENV{ID_USB_INTERFACE_NUM}=="00", SYMLINK+="zwave"
