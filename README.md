@@ -170,8 +170,8 @@ k3sup install \
 
 ```sh
 k3sup join \
-    --host=node02.cluster.elcarpenter.com \
-    --server-host=node01.cluster.elcarpenter.com \
+    --host=node01.cluster.elcarpenter.com \
+    --server-host=node03.cluster.elcarpenter.com \
     --k3s-version=v1.21.4+k3s1 \
     --user=carpenam \
     --server \
@@ -182,8 +182,8 @@ k3sup join \
 
 ```sh
 k3sup join \
-    --host=node05.cluster.elcarpenter.com \
-    --server-host=node01.cluster.elcarpenter.com \
+    --host=node00.cluster.elcarpenter.com \
+    --server-host=node03.cluster.elcarpenter.com \
     --k3s-version=v1.21.4+k3s1 \
     --user=carpenam
 ```
@@ -197,6 +197,18 @@ kubectl --kubeconfig=./kubeconfig get nodes
 # k8s-worker-a   Ready    worker                    4d20h   v1.20.5+k3s1
 ```
 6. Bootstrap Calico if this is a new cluster
+7. Add udev rules for USB Devices
+
+For ??? USB Stick (Zigbee & ZWave)
+```sh
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="8a2a", ATTRS{serial}=="813004F4", ENV{ID_USB_INTERFACE_NUM}=="00", SYMLINK+="zwave"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="8a2a", ATTRS{serial}=="813004F4", ENV{ID_USB_INTERFACE_NUM}=="01", SYMLINK+="zigbee"
+```
+
+For Conbee
+```sh
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1cf1", ATTRS{idProduct}=="0030", ATTRS{serial}=="DE2119158", SYMLINK+="conbee"
+```
 
 
 ### :cloud:&nbsp; Cloudflare API Token
