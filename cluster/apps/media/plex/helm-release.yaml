@@ -39,9 +39,9 @@ spec:
     service:
       main:
         type: LoadBalancer
-        loadBalancerIP: "${LB_PLEX_IP}"
-        # externalIPs:
-        # - "${LB_PLEX_IP}"
+        # loadBalancerIP: "${LB_PLEX_IP}"
+        externalIPs:
+        - "${LB_PLEX_IP}"
         externalTrafficPolicy: Local
         annotations:
           traefik.ingress.kubernetes.io/service.serversscheme: https
