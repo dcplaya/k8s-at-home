@@ -121,7 +121,6 @@ spec:
             - key: kubernetes.io/hostname
               operator: NotIn
               values:
-              - node00
               - node04
   postRenderers:
   - kustomize:
