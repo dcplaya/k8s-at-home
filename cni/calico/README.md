@@ -10,9 +10,15 @@ Steps to convert
       ```sh
       kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
       ```
-    - kubectl apply -f cni/calico/calico-bgpconfiguration.yaml
-    - kubectl apply -f cni/calico/calico-bgppeer.yaml
-    - kubectl apply -f cni/calico/calico-installation.yaml
+    - Set up the BGP Config
+      ```sh
+      kubectl apply -f cni/calico/calico-bgpconfiguration.yaml
+      kubectl apply -f cni/calico/calico-bgppeer.yaml
+      ```
+    - Perform the actual install
+      ```sh    
+      kubectl apply -f cni/calico/calico-installation.yaml
+      ```
 
 
 ## A possible live migration path
