@@ -23,11 +23,11 @@ spec:
     service:
       main:
         type: LoadBalancer
-        loadBalancerIP: "${LB_MQTT_IP}"
+        externalIPs:
+          - "${LB_MQTT_IP}"
+        # loadBalancerIP: "${LB_MQTT_IP}"
         annotations:
           coredns.io/hostname: "mqtt.home.${SECRET_DOMAIN}"
-        # externalIPs:
-        #   - "${LB_MQTT_IP}"
         externalTrafficPolicy: Local
     auth:
       enabled: true

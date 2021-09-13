@@ -49,7 +49,9 @@ spec:
         type: LoadBalancer
         port: 22
         externalTrafficPolicy: Local
-        loadBalancerIP: "${LB_GITEA_IP}"
+        externalIPs:
+          - "${LB_GITEA_IP}"        
+        # loadBalancerIP: "${LB_GITEA_IP}"
     gitea:
       admin:
         username: "${SECRET_GITEA_ADMIN_USERNAME}"

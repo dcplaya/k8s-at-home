@@ -30,7 +30,9 @@ spec:
     service:
       main:
         type: LoadBalancer
-        loadBalancerIP: "${LB_HYPERION_IP}"
+        externalIPs:
+        - "${LB_HYPERION_IP}"
+        # loadBalancerIP: "${LB_HYPERION_IP}"
     ingress:
       main:
         enabled: true
