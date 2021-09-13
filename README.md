@@ -163,7 +163,7 @@ k3sup install \
     --user=carpenam \
     --k3s-version=v1.21.4+k3s1 \
     --cluster \
-    --k3s-extra-args="--disable servicelb --disable traefik --kubelet-arg='feature-gates=MixedProtocolLBService=true,GracefulNodeShutdown=true'"
+    --k3s-extra-args="--disable servicelb --disable traefik --flannel-backend='none' --kubelet-arg='feature-gates=MixedProtocolLBService=true,GracefulNodeShutdown=true'"
 ```
 
 3. Join other master nodes
@@ -175,14 +175,14 @@ k3sup join \
     --k3s-version=v1.21.4+k3s1 \
     --user=carpenam \
     --server \
-    --k3s-extra-args="--disable servicelb --disable traefik --kubelet-arg='feature-gates=MixedProtocolLBService=true,GracefulNodeShutdown=true'"
+    --k3s-extra-args="--disable servicelb --disable traefik --flannel-backend='none' --kubelet-arg='feature-gates=MixedProtocolLBService=true,GracefulNodeShutdown=true'"
 ```
 
 3. Join other worker nodes
 
 ```sh
 k3sup join \
-    --host=node00.cluster.elcarpenter.com \
+    --host=node05.cluster.elcarpenter.com \
     --server-host=node01.cluster.elcarpenter.com \
     --k3s-version=v1.21.4+k3s1 \
     --user=carpenam
@@ -196,6 +196,8 @@ kubectl --kubeconfig=./kubeconfig get nodes
 # k8s-master-a   Ready    control-plane,master      4d20h   v1.20.5+k3s1
 # k8s-worker-a   Ready    worker                    4d20h   v1.20.5+k3s1
 ```
+6. Bootstrap Calico if this is a new cluster
+
 
 ### :cloud:&nbsp; Cloudflare API Token
 
