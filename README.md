@@ -198,6 +198,10 @@ kubectl --kubeconfig=./kubeconfig get nodes
 ```
 6. Bootstrap Calico if this is a new cluster
 7. Add udev rules for USB Devices
+8. Disable hardware offloading for `e1000` driver
+```sh
+ethtool -K enp0s25 tso off gso off
+```
 
 For ??? USB Stick (Zigbee & ZWave)
 ```sh
