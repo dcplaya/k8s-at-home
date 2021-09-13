@@ -13,3 +13,4 @@ resources:
 - velero.yaml
 - dev.yaml
 - gaming.yaml
+- calico-system
