@@ -213,7 +213,29 @@ For Conbee
 ```sh
 SUBSYSTEM=="tty", ATTRS{idVendor}=="1cf1", ATTRS{idProduct}=="0030", ATTRS{serial}=="DE2119158", SYMLINK+="conbee"
 ```
+10. USB NIC Netplan Example
 
+```sh
+sudo nano /etc/netplan/10-usb-nic.yaml
+```
+```yaml
+network:
+  ethernets:
+    enx1:
+      match:
+        name: enx3*
+      set-name: enx1
+      addresses:
+      - 10.10.200.69/24
+      gateway4: 10.10.200.1
+      nameservers:
+        addresses:
+        - 10.10.200.1
+        - 1.1.1.1
+        search:
+        - cluster.FQDN
+  version: 2
+```
 
 ### :cloud:&nbsp; Cloudflare API Token
 
