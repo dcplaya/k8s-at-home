@@ -1,7 +1,8 @@
 ---
 creation_rules:
 - encrypted_regex: '^(data|stringData)$'
-  # Flux Key, YubiKey (Expires Yearly)
+  # Flux Key, YubiKey (Expires Yearly), Workhorse VM (No Expiration)
   pgp: >-
     D96D04EF03182786C66C1BBC2B6B833C036DBA10,
-    1AA0AC84A4E1A268F9219DEC3D6F4F5FD1A6E398
+    1AA0AC84A4E1A268F9219DEC3D6F4F5FD1A6E398,
+    51512D5BE26B1157A29AAAC6D29CA7BB1F50565E
