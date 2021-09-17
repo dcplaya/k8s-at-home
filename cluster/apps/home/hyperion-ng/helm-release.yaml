@@ -20,7 +20,7 @@ spec:
     controllerType: deployment
     image:
       repository: sirfragalot/hyperion.ng
-      tag: 2.0.0-alpha.9-x86_64
+      tag: 2.0.0-alpha.10-x86_64
       pullPolicy: Always
     hostNetwork: true
     env:
