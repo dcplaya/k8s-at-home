@@ -7,7 +7,7 @@ metadata:
   labels:
     service: nzbget
 spec:
-  interval: 5m
+  interval: 6m
   chart:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
