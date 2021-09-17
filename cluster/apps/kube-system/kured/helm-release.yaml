@@ -5,7 +5,7 @@ metadata:
   name: kured
   namespace: kube-system
 spec:
-  interval: 5m
+  interval: 6m
   chart:
     spec:
       # renovate: registryUrl=https://weaveworks.github.io/kured
