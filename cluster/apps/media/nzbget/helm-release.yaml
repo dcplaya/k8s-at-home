@@ -80,11 +80,11 @@ spec:
           nodeSelectorTerms:
           - matchExpressions:
             - key: kubernetes.io/hostname
-              # operator: NotIn
-              operator: In
+              operator: NotIn
+              # operator: In
               values:
               # - node00
-              - node01
+              - node05
     resources:
       requests:
         memory: 260Mi
