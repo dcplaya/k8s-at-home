@@ -84,7 +84,7 @@ spec:
               operator: In
               values:
               # - node00
-              - node05
+              - node01
     resources:
       requests:
         memory: 260Mi
