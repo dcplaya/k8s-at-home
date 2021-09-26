@@ -86,8 +86,6 @@ spec:
           port: 9794
           additionalMetrics: true
           unknownQueueItems: false
-          URL: "https://tv.media.${SECRET_DOMAIN}"
-          APIKEY: ${SECRET_SONARR_API}
     persistence:
       config:
         enabled: true
