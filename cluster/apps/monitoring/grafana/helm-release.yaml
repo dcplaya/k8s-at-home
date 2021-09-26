@@ -17,8 +17,9 @@ spec:
         namespace: flux-system
       interval: 5m
   values:
-    deploymentStrategy:
-      type: Recreate
+    image:
+      repository: ghcr.io/k8s-at-home/grafana
+    replicas: 1
     env:
       GF_EXPLORE_ENABLED: true
       GF_PANELS_DISABLE_SANITIZE_HTML: true
@@ -32,7 +33,7 @@ spec:
       GF_DATE_FORMATS_INTERVAL_MONTH: "MM-YYYY"
       GF_DATE_FORMATS_INTERVAL_YEAR: "YYYY"
       VAR_BLOCKY_URL: "http://blocky.networking.svc.cluster.local:4000"
-    adminUser: "${SECRET_GRAFANA_USERNAME}"
+    adminUsername: "${SECRET_GRAFANA_USERNAME}"
     adminPassword: "${SECRET_GRAFANA_PASSWORD}"
     grafana.ini:
       server:
@@ -54,14 +55,14 @@ spec:
       dashboardproviders.yaml:
         apiVersion: 1
         providers:
-        - name: 'default'
-          orgId: 1
-          folder: ''
-          type: file
-          disableDeletion: false
-          editable: true
-          options:
-            path: /var/lib/grafana/dashboards/default
+          - name: "default"
+            orgId: 1
+            folder: ""
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/default
     datasources:
       datasources.yaml:
         apiVersion: 1
@@ -81,7 +82,7 @@ spec:
             url: http://loki:3100
     dashboards:
       default:
-        # Ref: https://grafana.com/grafana/dashboards/12175
+        # # Ref: https://grafana.com/grafana/dashboards/12175
         # calico-felix:
         #   gnetId: 12175
         #   revision: 5
@@ -100,6 +101,11 @@ spec:
         ceph-pools:
           gnetId: 5342
           revision: 5
+          datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/7845
+        zfs:
+          gnetId: 7845
+          revision: 4
           datasource: Prometheus
         # Ref: https://grafana.com/grafana/dashboards/13502
         minio:
@@ -137,14 +143,8 @@ spec:
         flux-control-plane:
           url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/control-plane.json
           datasource: Prometheus
-        # vernemq:
-        #   url: https://raw.githubusercontent.com/vernemq/vernemq/master/metrics_scripts/grafana/VerneMQ%20Node%20Metrics.json
-        #   datasource: Prometheus
-        # nginx-dashboard:
-        #   url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
-        #   datasource: Prometheus
         blocky:
-          url: https://raw.githubusercontent.com/0xERR0R/blocky/master/docs/blocky-grafana.json
+          url: https://raw.githubusercontent.com/0xERR0R/blocky/v0.16/docs/blocky-grafana.json
           datasource: Prometheus
         apc-smart-ups-1500:
           url: https://raw.githubusercontent.com/k8s-at-home/grafana-dashboards/main/apc-smart-ups-1500-snmp.json
@@ -169,12 +169,12 @@ spec:
         enabled: true
         searchNamespace: ALL
     plugins:
-    - natel-discrete-panel
-    - pr0ps-trackmap-panel
-    - grafana-piechart-panel
-    - vonage-status-panel
-    - grafana-worldmap-panel
-    - grafana-clock-panel
+      - natel-discrete-panel
+      - pr0ps-trackmap-panel
+      - grafana-piechart-panel
+      - vonage-status-panel
+      - grafana-worldmap-panel
+      - grafana-clock-panel
     serviceMonitor:
       enabled: true
     ingress:
@@ -182,20 +182,13 @@ spec:
       ingressClassName: "traefik"
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        hajimari.io/enable: "true"
-        # hajimari.io/icon: "mdiTelevisionClassic"
-        # hajimari.io/url:
-        # hajimari.io/appName: 
       hosts:
-      - "grafana.monitoring.${SECRET_DOMAIN}"
-      tls:
-      - hosts:
         - "grafana.monitoring.${SECRET_DOMAIN}"
+      tls:
+        - hosts:
+            - "grafana.monitoring.${SECRET_DOMAIN}"
+    serviceAccount:
+      create: true
+      autoMount: true
     persistence:
-      enabled: true
-      storageClassName: "rook-ceph-block"
-      size: 10Gi
-      accessModes:
-      - ReadWriteOnce
-    podAnnotations:
-      configmap.reloader.stakater.com/reload: "grafana"
+      enabled: false
