@@ -16,79 +16,72 @@ spec:
         name: prometheus-community-charts
         namespace: flux-system
       interval: 5m
-  timeout: 15m
   values:
-    prometheusOperator:
-      createCustomResource: false
+    fullnameOverride: prometheus
     alertmanager:
       config:
         global:
           slack_api_url: "${SECRET_ALERT_MANAGER_DISCORD_WEBHOOK}"
           resolve_timeout: 5m
         receivers:
-        - name: 'null'
-        - name: 'discord'
-          slack_configs:
-          - channel: '#prometheus'
-            icon_url: https://avatars3.githubusercontent.com/u/3380462
-            username: 'Prometheus'
-            send_resolved: true
-            title: |-
-              [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ if ne .CommonAnnotations.summary ""}}{{ .CommonAnnotations.summary }} {{ else if ne .CommonAnnotations.message ""}}{{ .CommonAnnotations.message }} {{ else if ne .CommonAnnotations.description ""}}{{ .CommonAnnotations.description }} {{ else }}{{ .CommonLabels.alertname }}{{ end }}
-            text: >-
-              {{ range .Alerts -}}
-                *Alert:* {{ .Annotations.title }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
+          - name: "null"
+          - name: "discord"
+            slack_configs:
+              - channel: "#prometheus"
+                icon_url: https://avatars3.githubusercontent.com/u/3380462
+                username: "Prometheus"
+                send_resolved: true
+                title: |-
+                  [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ if ne .CommonAnnotations.summary ""}}{{ .CommonAnnotations.summary }}{{ else }}{{ .CommonLabels.alertname }}{{ end }}
+                text: >-
+                  {{ range .Alerts -}}
+                    **Alert:** {{ .Annotations.title }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
 
-              {{ if ne .Annotations.summary ""}}*Summary:* {{ .Annotations.summary }} {{ else if ne .Annotations.message ""}}*Message:* {{ .Annotations.message }} {{ else if ne .Annotations.description ""}}*Description:* {{ .Annotations.description }}{{ end }}
+                  **Description:** {{ if ne .Annotations.description ""}}{{ .Annotations.description }}{{else}}N/A{{ end }}
 
-              *Details:*
-                {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
-                {{ end }}
-              {{ end }}
-        - name: 'webhook'
-          webhook_configs:
-          - url: "http://10.10.200.210:9000/hooks/webhook-ups"
-            send_resolved: false
+                  **Details:**
+                    {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+                    {{ end }}
+                  {{ end }}
+          - name: "nodered"
+            webhook_configs:
+              - url: "http://node-red.home:1880/power-outage"
+                send_resolved: true
         route:
-          group_by: ['alertname', 'job']
+          group_by: ["alertname", "job"]
           group_wait: 30s
           group_interval: 5m
           repeat_interval: 6h
-          receiver: 'discord'
+          receiver: "discord"
           routes:
-          - receiver: 'null'
-            match:
-              alertname: Watchdog
-          - receiver: 'discord'
-            match_re:
-              # severity: critical|warning
-              severity: critical
-            continue: true
-          - receiver: 'webhook'
-            match:
-              alertname: UPS15MinutesRemaining
-            continue: true
+            - receiver: "null"
+              match:
+                alertname: Watchdog
+            - receiver: "discord"
+              match_re:
+                severity: critical
+              continue: true
+            - receiver: "nodered"
+              match:
+                alertname: UPSOnBattery
+              continue: true
         inhibit_rules:
-        - source_match:
-            severity: 'critical'
-          target_match:
-            severity: 'warning'
-          equal: ['alertname', 'namespace']
+          - source_match:
+              severity: "critical"
+            target_match:
+              severity: "warning"
+            equal: ["alertname", "namespace"]
       ingress:
         enabled: true
         pathType: Prefix
         ingressClassName: "traefik"
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-          hajimari.io/enable: "true"
-          # hajimari.io/icon: "mdiTelevisionClassic"
-          # hajimari.io/url:
-          # hajimari.io/appName: 
         hosts:
-        - "alert-manager.monitoring.${SECRET_DOMAIN}"
-        tls:
-        - hosts:
           - "alert-manager.monitoring.${SECRET_DOMAIN}"
+        tls:
+          - hosts:
+              - "alert-manager.monitoring.${SECRET_DOMAIN}"
       alertmanagerSpec:
         storage:
           volumeClaimTemplate:
@@ -96,36 +89,69 @@ spec:
               storageClassName: "rook-ceph-block"
               resources:
                 requests:
-                  storage: 10Gi
+                  storage: 1Gi
     nodeExporter:
       serviceMonitor:
         relabelings:
-        - action: replace
-          regex: (.*)
-          replacement: $1
-          sourceLabels:
-          - __meta_kubernetes_pod_node_name
-          targetLabel: kubernetes_node
+          - action: replace
+            regex: (.*)
+            replacement: $1
+            sourceLabels:
+              - __meta_kubernetes_pod_node_name
+            targetLabel: kubernetes_node
+    kube-state-metrics:
+      fullnameOverride: kube-state-metrics
+    prometheus-node-exporter:
+      fullnameOverride: node-exporter
     grafana:
       enabled: false
+      forceDeployDashboards: true
+      sidecar:
+        dashboards:
+          multicluster:
+            etcd:
+              enabled: true
     kubelet:
       enabled: true
       serviceMonitor:
         metricRelabelings:
-        - action: replace
-          sourceLabels:
-          - node
-          targetLabel: instance
+          - action: replace
+            sourceLabels:
+              - node
+            targetLabel: instance
     kubeApiServer:
       enabled: true
     kubeControllerManager:
-      enabled: false
+      enabled: true
+      endpoints:
+        - 10.10.200.51
+        - 10.10.200.52
+        - 10.10.200.53
     kubeScheduler:
-      enabled: false
+      enabled: true
+      endpoints:
+        - 10.10.200.51
+        - 10.10.200.52
+        - 10.10.200.53
     kubeProxy:
-      enabled: false
+      enabled: true
+      endpoints:
+        - 10.10.200.51
+        - 10.10.200.52
+        - 10.10.200.53
     kubeEtcd:
-      enabled: false
+      enabled: true
+      endpoints:
+        - 10.10.200.51
+        - 10.10.200.52
+        - 10.10.200.53
+      service:
+        enabled: true
+        port: 2381
+        targetPort: 2381
+    # Setting this option to 0 disabled CPU limits
+    prometheusOperator:
+      configReloaderCpu: 0
     prometheus:
       ingress:
         enabled: true
@@ -133,26 +159,23 @@ spec:
         ingressClassName: "traefik"
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-          hajimari.io/enable: "true"
-          # hajimari.io/icon: "mdiTelevisionClassic"
-          # hajimari.io/url:
-          # hajimari.io/appName: 
         hosts:
-        - "prometheus.monitoring.${SECRET_DOMAIN}"
-        tls:
-        - hosts:
           - "prometheus.monitoring.${SECRET_DOMAIN}"
+        tls:
+          - hosts:
+              - "prometheus.monitoring.${SECRET_DOMAIN}"
+      thanosService:
+        enabled: true
+      thanosServiceMonitor:
+        enabled: true
       prometheusSpec:
-        ruleSelector: {}
-        ruleNamespaceSelector: {}
+        replicas: 1
+        replicaExternalLabelName: "replica"
         ruleSelectorNilUsesHelmValues: false
-        serviceMonitorSelector: {}
-        serviceMonitorNamespaceSelector: {}
         serviceMonitorSelectorNilUsesHelmValues: false
-        podMonitorSelector: {}
-        podMonitorNamespaceSelector: {}
         podMonitorSelectorNilUsesHelmValues: false
-        retention: 30d
+        probeSelectorNilUsesHelmValues: false
+        retention: 6h
         enableAdminAPI: true
         walCompression: true
         storageSpec:
@@ -161,28 +184,36 @@ spec:
               storageClassName: "rook-ceph-block"
               resources:
                 requests:
-                  storage: 50Gi
+                  storage: 10Gi
+        thanos:
+          image: quay.io/thanos/thanos:v0.22.0
+          version: v0.22.0
+          objectStorageConfig:
+            name: thanos-objstore
+            key: objstore.yml
         additionalScrapeConfigs:
-        # - job_name: 'node-exporter'
-        #   honor_timestamps: true
-        #   static_configs:
-        #   - targets:
-        #     # opnsense
-        #     - 192.168.1.1:9100
-        #     # rocinante nas
-        #     - 192.168.42.40:9100
-        #     # serenity nas
-        #     - 192.168.42.50:9100
-        # - job_name: cadvisor
-        #   honor_timestamps: true
-        #   metrics_path: /metrics
-        #   static_configs:
-        #   - targets:
-        #     # rocinante nas
-        #     - 192.168.42.40:9123
-        - job_name: 'minio'
-          honor_timestamps: true
-          metrics_path: /minio/prometheus/metrics
-          static_configs:
-          - targets:
-            - 10.10.200.210:9000
+          - job_name: "coredns"
+            honor_timestamps: true
+            static_configs:
+              - targets:
+                  - "${GATEWAY_ADDR}:9153"
+          - job_name: 'minio-job'
+            honor_timestamps: true
+            metrics_path: /minio/v2/metrics/cluster
+            static_configs:
+              - targets:
+                  - "nas01.cluster.${SECRET_DOMAIN}:9000"
+          # - job_name: "node-exporter"
+          #   honor_timestamps: true
+          #   static_configs:
+          #     - targets:
+          #         - "${GATEWAY_ADDR}:9100"
+          #         - "${NAS_ADDR}:9100"
+          #         - "192.168.1.28:9100"
+          - job_name: "weather"
+            static_configs:
+              - targets:
+                  - "wttr.in"
+            metrics_path: "/Delmar+NY"
+            params:
+              format: ["p1"]
