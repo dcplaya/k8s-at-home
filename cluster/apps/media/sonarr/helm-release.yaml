@@ -55,7 +55,7 @@ spec:
         - hosts:
           - "tv.media.${SECRET_DOMAIN}"
       api:
-        enabled: true
+        enabled: false
         primary: false
         ingressClassName: "traefik"
         annotations:
@@ -72,7 +72,7 @@ spec:
       supplementalGroups:
         - 100
     metrics:
-      enabled: true
+      enabled: false
       serviceMonitor:
         interval: 3m
         scrapeTimeout: 1m
