@@ -21,8 +21,10 @@ spec:
   values:
     controllerType: deployment
     image:
-      repository: ghcr.io/k8s-at-home/sonarr
-      tag: v3.0.6.1265
+      # repository: ghcr.io/k8s-at-home/sonarr
+      # tag: v3.0.6.1265
+      repository: hotio/sonarr
+      tag: nightly
       # pullPolicy: Always
     env:
       TZ: "America/Los_Angeles"
@@ -71,6 +73,9 @@ spec:
         tls:
         - hosts:
           - "tv.media.${SECRET_DOMAIN}"
+    podSecurityContext:
+      supplementalGroups:
+        - 100
     metrics:
       enabled: true
       serviceMonitor:
@@ -86,6 +91,8 @@ spec:
           port: 9794
           additionalMetrics: true
           unknownQueueItems: false
+          URL: "https://tv.media.${SECRET_DOMAIN}"
+          APIKEY: ${SECRET_SONARR_API}
     persistence:
       config:
         enabled: true
