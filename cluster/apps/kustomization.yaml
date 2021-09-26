@@ -8,7 +8,7 @@ resources:
 # - kasten-io
 - media
 - dev
-- monitoring
+# - monitoring
 - networking
 - system-upgrade
 - falco-system
