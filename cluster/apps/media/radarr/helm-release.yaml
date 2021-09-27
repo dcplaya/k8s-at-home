@@ -72,7 +72,7 @@ spec:
         - hosts:
           - "movies.media.${SECRET_DOMAIN}"
     metrics:
-      enabled: true
+      enabled: false
       serviceMonitor:
         interval: 3m
         scrapeTimeout: 1m
