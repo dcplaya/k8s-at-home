@@ -47,6 +47,8 @@ spec:
       enabled: true
       persistence:
         enabled: true
+        # existingClaim:
+        storageClass: "rook-ceph-block"
         size: 5Gi
     ruler:
       enabled: false
