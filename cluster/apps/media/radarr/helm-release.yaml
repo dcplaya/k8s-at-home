@@ -21,10 +21,13 @@ spec:
   values:
     controllerType: deployment
     image:
-      repository: ghcr.io/k8s-at-home/radarr
-      tag: v3.2.2.5080
+      repository: hotio/radarr
+      tag: nightly
+      pullPolicy: Always
     env:
       TZ: "America/Los_Angeles"
+      PUID: "1000"
+      PGID: "100"
     ingress:
       main:
         enabled: true
@@ -68,11 +71,8 @@ spec:
         tls:
         - hosts:
           - "movies.media.${SECRET_DOMAIN}"
-    podSecurityContext:
-      supplementalGroups:
-        - 100
     metrics:
-      enabled: false
+      enabled: true
       serviceMonitor:
         interval: 3m
         scrapeTimeout: 1m
