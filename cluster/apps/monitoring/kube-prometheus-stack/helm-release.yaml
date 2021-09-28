@@ -24,7 +24,7 @@ spec:
           slack_api_url: "${SECRET_ALERT_MANAGER_DISCORD_WEBHOOK}"
           resolve_timeout: 5m
         receivers:
-          - name: "null"
+          # - name: "null"
           - name: "discord"
             slack_configs:
               - channel: "#prometheus"
