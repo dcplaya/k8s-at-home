@@ -21,13 +21,20 @@ spec:
   values:
     controllerType: deployment
     image:
-      repository: hotio/sonarr
-      tag: nightly
-      pullPolicy: Always
+      # repository: hotio/sonarr
+      # tag: nightly
+      # pullPolicy: Always
+      repository: ghcr.io/k8s-at-home/sonarr-develop
+      tag: v3.0.6.1343
     env:
       TZ: "America/Los_Angeles"
-      PUID: "1000"
-      PGID: "100"
+      # PUID: "1000"
+      # PGID: "100"
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
     ingress:
       main:
         enabled: true
