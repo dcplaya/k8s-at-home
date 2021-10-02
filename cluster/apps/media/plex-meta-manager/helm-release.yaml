@@ -16,10 +16,10 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
-          # dnsPolicy: None
-          # dnsConfig:
-          #   nameservers:
-          #   - "${CLUSTER_DNS_SERVER_FQDN}"
+          dnsPolicy: None
+          dnsConfig:
+            nameservers:
+            - "${NETWORK_DNS}"
           initContainers:
           - name: git-config
             image: alpine/git:v2.30.2
