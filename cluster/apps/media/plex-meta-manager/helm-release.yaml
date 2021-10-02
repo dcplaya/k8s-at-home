@@ -19,7 +19,7 @@ spec:
           dnsPolicy: None
           dnsConfig:
             nameservers:
-            - "${NETWORK_DNS}"
+            - "${ROUTER_DNS}"
           initContainers:
           - name: git-config
             image: alpine/git:v2.30.2
