@@ -21,13 +21,16 @@ spec:
   values:
     controllerType: deployment
     image:
-      repository: hotio/lidarr
-      tag: nightly
-      pullPolicy: Always
+      repository: ghcr.io/k8s-at-home/lidarr-develop
+      tag: v0.8.1.2135
+      # pullPolicy: Always
     env:
       TZ: "America/Los_Angeles"
-      PUID: "1000"
-      PGID: "100"
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
     ingress:
       main:
         enabled: true
