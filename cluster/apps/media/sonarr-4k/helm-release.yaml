@@ -30,6 +30,8 @@ spec:
       runAsUser: 568
       runAsGroup: 568
       fsGroup: 568
+      supplementalGroups:
+        - 100
       fsGroupChangePolicy: "OnRootMismatch"
     ingress:
       main:
