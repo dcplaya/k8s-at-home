@@ -56,7 +56,7 @@ spec:
       vycontrol:
         enabled: true
         existingClaim: config-vycontrol
-        mountPath: /vycontrol/tests
+        mountPath: /code/vycontrol
     probes:
       liveness:
         enabled: false
