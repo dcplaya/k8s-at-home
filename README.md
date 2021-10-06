@@ -237,6 +237,19 @@ network:
   version: 2
 ```
 
+11. Modify `/etc/sysctl.conf`
+```sh
+net.ipv4.ip_forward=1
+net.ipv6.conf.all.forwarding=1
+
+net.ipv6.conf.all.disable_ipv6=1
+net.ipv6.conf.default.disable_ipv6=1
+net.ipv6.conf.lo.disable_ipv6=1
+
+fs.inotify.max_user_watches = 5242880
+fs.inotify.max_user_instances = 5120
+```
+
 ### :cloud:&nbsp; Cloudflare API Token
 
 :round_pushpin: You may skip this step, **however** make sure to `export` dummy data **on item 8** in the below list.
