@@ -97,9 +97,9 @@ spec:
                 roles:
                   - detect
                   - rtmp
-          width: 640
-          height: 360
-          fps: 5
+          # width: 640
+          # height: 360
+          # fps: 5
         dining-room:
           ffmpeg:
             inputs:
@@ -107,9 +107,9 @@ spec:
                 roles:
                   - detect
                   - rtmp
-          width: 640
-          height: 360
-          fps: 5
+          # width: 640
+          # height: 360
+          # fps: 5
           zones:
             zone-kitchen:
               coordinates: 991,414,1920,289,1920,702,1708,924,1564,1080,1120,1080,1061,1039
@@ -120,9 +120,9 @@ spec:
                 roles:
                   - detect
                   - rtmp
-          width: 640
-          height: 360
-          fps: 5
+          # width: 640
+          # height: 360
+          # fps: 5
         back-door:
           ffmpeg:
             inputs:
@@ -130,9 +130,9 @@ spec:
                 roles:
                   - detect
                   - rtmp
-          width: 640
-          height: 360
-          fps: 5
+          # width: 640
+          # height: 360
+          # fps: 5
     podAnnotations:
       configmap.reloader.stakater.com/reload: "frigate"
       backup.velero.io/backup-volumes: data
