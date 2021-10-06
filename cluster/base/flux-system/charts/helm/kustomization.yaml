@@ -8,6 +8,7 @@ resources:
 - coredns-charts.yaml
 - dacruz21-charts.yaml
 - deliveryhero-charts.yaml
+- descheduler-charts.yaml
 - drone-charts.yaml
 - emberstack-charts.yaml
 - emqx-charts.yaml
