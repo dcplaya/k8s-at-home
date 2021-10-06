@@ -53,9 +53,10 @@ spec:
         - hosts:
           - "vycontrol.network.${SECRET_DOMAIN}"
     persistence:
-      config:
+      vycontrol:
         enabled: true
         existingClaim: config-vycontrol
+        mountPath: /code/vycontrol
     probes:
       liveness:
         enabled: false

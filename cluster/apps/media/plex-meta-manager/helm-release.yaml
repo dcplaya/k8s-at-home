@@ -19,10 +19,10 @@ spec:
           dnsPolicy: None
           dnsConfig:
             nameservers:
-            - "${NETWORK_DNS}"
+            - "${ROUTER_IP}"
           initContainers:
           - name: git-config
-            image: alpine/git:v2.30.2
+            image: alpine/git:v2.32.0
             env:
             - name: GITEA_TOKEN
               value: "${SECRET_GITEA_ACCESS_TOKEN}"
