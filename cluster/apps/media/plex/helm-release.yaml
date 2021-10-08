@@ -80,7 +80,7 @@ spec:
       config:
         enabled: true
         existingClaim: config-plex
-      tmp:
+      transcode:
         enabled: true
         type: emptyDir
         medium: Memory

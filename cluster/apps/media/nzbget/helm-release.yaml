@@ -27,7 +27,7 @@ spec:
       TZ: "America/Los_Angeles"
     podSecurityContext:
       runAsUser: 568
-      runAsGroup: 568
+      runAsGroup: 100
       fsGroup: 568
       supplementalGroups:
         - 100
@@ -66,16 +66,25 @@ spec:
         existingClaim: config-nzbget
       downloads:
         enabled: false
-      nas-merged-media:
+      # nas-merged-media:
+      #   enabled: true
+      #   existingClaim: nfs-nas-merged-media-pvc
+      #   mountPath: "/mnt/unionfs"
+      #   # readOnly: true  
+      media:
         enabled: true
-        existingClaim: nfs-nas-merged-media-pvc
-        mountPath: "/mnt/unionfs"
-        # readOnly: true
-      nas-downloads:
-        enabled: true
-        existingClaim: nfs-nas-media-pvc
-        mountPath: "/downloads"
-        # readOnly: true          
+        type: custom
+        volumeSpec:
+          nfs:
+            server: 10.10.200.240
+            path: /mnt/Media/Plex/Merged-Media
+        mountPath: /mnt/unionfs
+        readOnly: false
+      # nas-downloads:
+      #   enabled: true
+      #   existingClaim: nfs-nas-media-pvc
+      #   mountPath: "/downloads"
+      #   # readOnly: true          
     podAnnotations:
       backup.velero.io/backup-volumes: config
     affinity:

@@ -85,11 +85,20 @@ spec:
       config:
         enabled: true
         existingClaim: config-bazarr
-      nas-merged-media:
+      # nas-merged-media:
+      #   enabled: true
+      #   existingClaim: nfs-nas-merged-media-pvc
+      #   mountPath: "/mnt/unionfs"
+      #   # readOnly: true  
+      media:
         enabled: true
-        existingClaim: nfs-nas-merged-media-pvc
-        mountPath: "/mnt/unionfs"
-        # readOnly: true  
+        type: custom
+        volumeSpec:
+          nfs:
+            server: 10.10.200.240
+            path: /mnt/Media/Plex/Merged-Media
+        mountPath: /mnt/unionfs
+        readOnly: false
     podAnnotations:
       backup.velero.io/backup-volumes: config
     resources:
