@@ -32,7 +32,7 @@ spec:
       fsGroup: 568
       supplementalGroups:
         - 100
-      fsGroupChangePolicy: "OnRootMismatch"
+      # fsGroupChangePolicy: "OnRootMismatch"
     ingress:
       main:
         enabled: true
