@@ -56,8 +56,6 @@ spec:
       upstream:
         externalResolvers:
         - tcp-tls:blocky-${SECRET_NEXTDNS_ID}.dns.nextdns.io:853
-        # - tcp-tls:blocky-${SECRET_NEXTDNS_ID}.dns1.nextdns.io:853
-        # - tcp-tls:blocky-${SECRET_NEXTDNS_ID}.dns2.nextdns.io:853
       conditional:
         mapping:
           device.${SECRET_DOMAIN}: udp:1.1.1.1
