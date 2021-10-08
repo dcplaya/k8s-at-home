@@ -28,11 +28,10 @@ spec:
       TZ: "America/Los_Angeles"
     podSecurityContext:
       runAsUser: 568
-      runAsGroup: 568
+      runAsGroup: 100
       fsGroup: 568
       supplementalGroups:
         - 100
-        - 1001
       fsGroupChangePolicy: "OnRootMismatch"
     ingress:
       main:
