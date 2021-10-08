@@ -27,9 +27,10 @@ spec:
         config:
           region: us-east-1
           s3ForcePathStyle: true
-          s3Url: http://10.10.200.210:9000
-          publicUrl: http://10.10.200.210:9000
-          #publicUrl: "${SECRET_MINIO_ENDPOINTS}"
+          s3Url: "${SECRET_MINIO_ENDPOINTS}"
+          publicUrl: "${SECRET_MINIO_ENDPOINTS}"
+          # s3Url: http://10.10.200.210:9000
+          # publicUrl: http://10.10.200.210:9000
       volumeSnapshotLocation:
         name: aws
         config:
