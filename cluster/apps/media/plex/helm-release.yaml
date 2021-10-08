@@ -84,11 +84,11 @@ spec:
         enabled: true
         type: emptyDir
         medium: Memory
-      nas-merged-media:
-        enabled: true
-        existingClaim: nfs-nas-merged-media-pvc
-        mountPath: "/mnt/unionfs"
-        # readOnly: true    
+      # nas-merged-media:
+      #   enabled: true
+      #   existingClaim: nfs-nas-merged-media-pvc
+      #   mountPath: "/mnt/unionfs"
+      #   # readOnly: true    
       media:
         enabled: true
         type: custom
@@ -96,7 +96,7 @@ spec:
           nfs:
             server: 10.10.200.240
             path: /mnt/Media/Plex/Merged-Media
-        mountPath: /test
+        mountPath: /mnt/unionfs
         readOnly: false
     addons:
       promtail:
