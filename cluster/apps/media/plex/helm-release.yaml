@@ -89,6 +89,15 @@ spec:
         existingClaim: nfs-nas-merged-media-pvc
         mountPath: "/mnt/unionfs"
         # readOnly: true    
+      media:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: 10.10.200.240
+            path: /mnt/Media/Plex/Merged-Media
+        mountPath: /test
+        readOnly: true
     addons:
       promtail:
         enabled: true
