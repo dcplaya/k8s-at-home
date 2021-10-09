@@ -36,7 +36,7 @@ spec:
       CLOUDPLOW_CONFIG: "/shared/Configs/Cloudplow/config.json"
       CLOUDPLOW_LOGFILE: "/dev/null"
       CLOUDPLOW_LOGLEVEL: "INFO"
-      CLOUDPLOW_CACHEFILE: "/config/cloudplow/cache.db"
+      CLOUDPLOW_CACHEFILE: "/config/cache.db"
     service:
       main:
         ports:
