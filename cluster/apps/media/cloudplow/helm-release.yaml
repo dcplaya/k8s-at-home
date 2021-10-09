@@ -22,7 +22,7 @@ spec:
     fullnameOverride: cloudplow
     controllerType: deployment
     image:
-      repository: sabrsorensen/alpine-cloudplow:latest
+      repository: sabrsorensen/alpine-cloudplow
       tag: latest
       pullPolicy: Always
     env:
