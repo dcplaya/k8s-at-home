@@ -1,0 +1,16 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: config-cloudplow-v1
+  namespace: media
+  labels:
+    service: cloudplow
+    kasten.io/backup-volume: "enabled"
+spec:
+  storageClassName: rook-ceph-block
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
