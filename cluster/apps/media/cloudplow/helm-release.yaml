@@ -25,6 +25,10 @@ spec:
       repository: sabrsorensen/alpine-cloudplow
       tag: latest
       pullPolicy: Always
+    dnsPolicy: None
+    dnsConfig:
+      nameservers:
+      - "${ROUTER_IP}"
     env:
       TZ: "America/Los_Angeles"
       PUID: "1000"
