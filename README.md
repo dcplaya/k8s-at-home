@@ -170,7 +170,7 @@ k3sup install \
 
 ```sh
 k3sup join \
-    --host=node01.cluster.elcarpenter.com \
+    --host=node03.cluster.elcarpenter.com \
     --server-host=node03.cluster.elcarpenter.com \
     --k3s-version=v1.21.5+k3s2 \
     --user=carpenam \
@@ -198,7 +198,7 @@ kubectl --kubeconfig=./kubeconfig get nodes
 ```
 6. Bootstrap Calico if this is a new cluster
 7. Add udev rules for USB Devices
-8. Disable hardware offloading for `e1000` driver
+8. Disable hardware offloading for `e1000e` driver
 ```sh
 sudo ethtool -K eno1 tso off gso off
 ```
