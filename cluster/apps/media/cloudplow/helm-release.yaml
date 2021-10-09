@@ -17,7 +17,7 @@ spec:
         kind: HelmRepository
         name: k8s-at-home-charts
         namespace: flux-system
-      interval: 6m
+      interval: 5m
   values:
     fullnameOverride: cloudplow
     controllerType: deployment
@@ -56,32 +56,32 @@ spec:
         readOnly: false
     podAnnotations:
       backup.velero.io/backup-volumes: config
-    # initContainers:
-    # - name: git-config
-    #   image: alpine/git:v2.32.0
-    #   env:
-    #   - name: GITEA_TOKEN
-    #     value: "${SECRET_GITEA_ACCESS_TOKEN}"
-    #   - name: URL
-    #     value: "git.dev.${SECRET_DOMAIN}"
-    #   command:
-    #   - "/bin/sh"
-    #   - "-c"
-    #   - |
-    #     set -o nounset
-    #     set -o errexit
-    #     # sleep 600000000m
-    #     if [ -z "${SECRET_GITEA_ACCESS_TOKEN}" ]; then
-    #       printf "%s - Error - Missing GITEA_TOKEN environment variable" "$(date -u)"
-    #       exit 1
-    #     fi
-    #     git clone --depth 1 "https://${SECRET_GITEA_ACCESS_TOKEN}@git.dev.${SECRET_DOMAIN}/dcplaya/Configs.git" /shared/Configs
-    #     chown -R 1000:1000 /shared/Configs
-    #     exit 0
-    #   volumeMounts:
-    #   - name: shared
-    #     # Path will be /shared/Configs/RClone/default.conf
-    #     mountPath: /shared
+    initContainers:
+      git-config:
+        image: alpine/git:v2.32.0
+        env:
+        - name: GITEA_TOKEN
+          value: "${SECRET_GITEA_ACCESS_TOKEN}"
+        - name: URL
+          value: "git.dev.${SECRET_DOMAIN}"
+        command:
+        - "/bin/sh"
+        - "-c"
+        - |
+          set -o nounset
+          set -o errexit
+          # sleep 600000000m
+          if [ -z "${SECRET_GITEA_ACCESS_TOKEN}" ]; then
+            printf "%s - Error - Missing GITEA_TOKEN environment variable" "$(date -u)"
+            exit 1
+          fi
+          git clone --depth 1 "https://${SECRET_GITEA_ACCESS_TOKEN}@git.dev.${SECRET_DOMAIN}/dcplaya/Configs.git" /shared/Configs
+          chown -R 1000:1000 /shared/Configs
+          exit 0
+        volumeMounts:
+        - name: shared
+          # Path will be /shared/Configs/RClone/default.conf
+          mountPath: /shared
     addons:
       codeserver:
         enabled: true
