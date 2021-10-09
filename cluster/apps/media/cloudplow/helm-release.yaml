@@ -54,6 +54,12 @@ spec:
             path: /mnt/Media/Plex/Merged-Media
         mountPath: /mnt/unionfs
         readOnly: false
+      shared:
+        enabled: true
+        type: emptyDir
+        mountPath: /shared
+        medium: Memory
+        sizeLimit: 1Gi
     podAnnotations:
       backup.velero.io/backup-volumes: config
     initContainers:
@@ -112,6 +118,8 @@ spec:
         volumeMounts:
         - name: config
           mountPath: /config
+        - name: shared
+          mountPath: /shared
     probes:
       liveness:
         enabled: false
