@@ -3,7 +3,7 @@ kind: Kustomization
 resources:
 - cert-manager.yaml
 # - metallb-system.yaml
-- kasten-io.yaml
+# - kasten-io.yaml
 - networking.yaml
 - media.yaml
 - monitoring.yaml
@@ -15,3 +15,4 @@ resources:
 - gaming.yaml
 - calico-system.yaml
 - falco-system.yaml
+- default.yaml
