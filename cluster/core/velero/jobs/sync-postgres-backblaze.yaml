@@ -20,10 +20,10 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
-          # dnsPolicy: None
+          dnsPolicy: None
           dnsConfig:
             nameservers:
-            - "${CLUSTER_DNS_SERVER_FQDN}"
+            - "${ROUTER_IP}"
           initContainers:
           - name: rclone-conf
             image: alpine/git:v2.32.0
