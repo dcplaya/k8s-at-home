@@ -65,12 +65,10 @@ spec:
         enabled: true
         existingClaim: config-nzbget
       downloads:
-        enabled: false
-      # nas-merged-media:
-      #   enabled: true
-      #   existingClaim: nfs-nas-merged-media-pvc
-      #   mountPath: "/mnt/unionfs"
-      #   # readOnly: true  
+        enabled: true
+        type: emptyDir
+        mountPath: /downloads
+        size: 25Gi
       media:
         enabled: true
         type: custom
@@ -80,11 +78,6 @@ spec:
             path: /mnt/Media/Plex/Merged-Media
         mountPath: /mnt/unionfs
         readOnly: false
-      # nas-downloads:
-      #   enabled: true
-      #   existingClaim: nfs-nas-media-pvc
-      #   mountPath: "/downloads"
-      #   # readOnly: true          
     podAnnotations:
       backup.velero.io/backup-volumes: config
     affinity:
