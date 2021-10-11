@@ -27,8 +27,8 @@ spec:
         config:
           region: us-east-1
           s3ForcePathStyle: true
-          s3Url: "${SECRET_MINIO_ENDPOINTS}"
-          publicUrl: "${SECRET_MINIO_ENDPOINTS}"
+          s3Url: https://nas00.cluster.${SECRET_DOMAIN}":9000
+          publicUrl: https://nas00.cluster.${SECRET_DOMAIN}":9000
           insecureSkipTLSVerify: true
       volumeSnapshotLocation:
         name: aws
