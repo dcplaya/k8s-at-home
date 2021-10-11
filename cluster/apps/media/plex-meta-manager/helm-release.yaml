@@ -96,8 +96,9 @@ spec:
                 cpu: 500m
           volumes:
           - name: media-pvc
-            persistentVolumeClaim:
-              claimName: nfs-nas-media-pvc
+            nfs:
+              server: 10.10.200.240
+              path: /mnt/Media/Plex/Merged-Media
           - name: shared
             emptyDir: {}
     
