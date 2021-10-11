@@ -98,6 +98,8 @@ spec:
             path: /mnt/Media/Plex/Merged-Media
         mountPath: /mnt/unionfs
         readOnly: false
+    podAnnotations:
+      backup.velero.io/backup-volumes: config
     addons:
       promtail:
         enabled: true
