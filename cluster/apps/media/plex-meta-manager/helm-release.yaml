@@ -7,7 +7,7 @@ metadata:
 spec:
   suspend: false
   # Run once a day, every day, starting at 3AM
-  schedule: "0 3 * * *"
+  schedule: "0 4 * * *"
   failedJobsHistoryLimit: 1
   successfulJobsHistoryLimit: 1
   concurrencyPolicy: Forbid
