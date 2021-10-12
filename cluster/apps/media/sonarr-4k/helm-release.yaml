@@ -155,10 +155,8 @@ spec:
               --timeout=10m \
               --drive-chunk-size=16M \
               --umask=002 \
-              --daemon \
-              --syslog \
               --use-mmap \
-              -v \
+              -vv \
               "$remote" "$localpath"
         securityContext:
           privileged: true
