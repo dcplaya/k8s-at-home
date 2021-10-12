@@ -109,14 +109,14 @@ spec:
         mountPath: /remote
         # medium: Memory
         # sizeLimit: 1Gi
-      # rclone:
-      #   enabled: true
-      #   mountPath: "/rclone/rclone.conf"
-      #   subPath: rclone.conf
-      #   type: custom
-      #   volumeSpec:
-      #     configMap:
-      #       name: rclone-google
+      rclone:
+        enabled: true
+        mountPath: "/rclone/rclone.conf"
+        subPath: rclone.conf
+        type: custom
+        volumeSpec:
+          secret:
+            secretName: rclone-google
     podAnnotations:
       backup.velero.io/backup-volumes: config
     additionalContainers:
