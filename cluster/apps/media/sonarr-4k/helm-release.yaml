@@ -111,9 +111,12 @@ spec:
         # sizeLimit: 1Gi
       rclone:
         enabled: true
+        mountPath: /rclone/rclone.conf
+        subPath: rclone.conf
         type: custom
-          secret:
-            secretName: rclone-google
+        volumeSpec:
+          configMap:
+            name: rclone-google
     podAnnotations:
       backup.velero.io/backup-volumes: config
     additionalContainers:
