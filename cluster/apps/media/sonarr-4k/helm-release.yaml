@@ -127,7 +127,7 @@ spec:
           - name: remote
             mountPath: /remote
           - name: rclone
-            mountPath: "/rclone/rclone.conf"
+            mountPath: "/rclone"
         env:
           - name: config
             value: "/rclone/rclone.conf"
