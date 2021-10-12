@@ -103,8 +103,62 @@ spec:
             path: /mnt/Media/Plex/Merged-Media
         mountPath: /mnt/unionfs
         readOnly: false
+      remote:
+        enabled: true
+        type: emptyDir
+        mountPath: /remote
+        # medium: Memory
+        # sizeLimit: 1Gi
+      rclone:
+        enabled: true
+        type: custom
+          secret:
+            secretName: rclone-google
     podAnnotations:
       backup.velero.io/backup-volumes: config
+    additionalContainers:
+      fsfreeze:
+        name: rcloneMount
+        image: rclone/rclone:v1.56
+        volumeMounts:
+          - name: remote
+            mountPath: /remote
+          - name: rclone
+            mountPath: "/rclone/rclone.conf"
+        env:
+          - name: config
+            value: "/rclone/rclone.conf"
+          - name: remote
+            value: "google:"
+          - name: localpath
+            value: "/remote"
+        command:
+          - "/bin/sh"
+          - "-c"
+          - |
+            rclone mount \
+              --user-agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36' \
+              --config="$config" \
+              --allow-other \
+              --gid=100 \
+              --drive-skip-gdocs \
+              --vfs-read-chunk-size=64M \
+              --vfs-read-chunk-size-limit=512M \
+              --vfs-cache-mode=writes \
+              --vfs-cache-max-size=5G \
+              --buffer-size=0M \
+              --poll-interval=15m \
+              --dir-cache-time=168h \
+              --timeout=10m \
+              --drive-chunk-size=16M \
+              --umask=002 \
+              --daemon \
+              --syslog \
+              --use-mmap \
+              -v \
+              "$remote" "$localpath"
+        securityContext:
+          privileged: true
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
