@@ -122,7 +122,7 @@ spec:
     additionalContainers:
       remote:
         name: rclone-mount
-        image: rclone/rclone:v1.56
+        image: rclone/rclone:1.56
         volumeMounts:
           - name: remote
             mountPath: /remote
