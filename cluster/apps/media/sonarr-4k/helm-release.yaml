@@ -120,8 +120,8 @@ spec:
     podAnnotations:
       backup.velero.io/backup-volumes: config
     additionalContainers:
-      fsfreeze:
-        name: rcloneMount
+      remote:
+        name: rclone-mount
         image: rclone/rclone:v1.56
         volumeMounts:
           - name: remote
