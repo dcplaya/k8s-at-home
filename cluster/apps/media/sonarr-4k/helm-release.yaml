@@ -106,7 +106,7 @@ spec:
       remote:
         enabled: true
         type: emptyDir
-        mountPath: /remote
+        mountPath: /data
         # medium: Memory
         # sizeLimit: 1Gi
       rclone:
@@ -125,7 +125,7 @@ spec:
         image: rclone/rclone:1.56
         volumeMounts:
           - name: remote
-            mountPath: /remote
+            mountPath: /data
           - name: rclone
             mountPath: "/rclone"
         env:
@@ -134,7 +134,7 @@ spec:
           - name: remote
             value: "google:"
           - name: localpath
-            value: "/remote"
+            value: "/data"
         command:
           - "/bin/sh"
           - "-c"
