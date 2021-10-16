@@ -40,7 +40,7 @@ spec:
           url: "http://nas00.cluster.${SECRET_DOMAIN}"
           icon: "nas"
         - name: Proxmox PVE
-          url: "https://pve.cluster.${SECRET_DOMAIN}:8007/"
+          url: "https://pve.cluster.${SECRET_DOMAIN}:8006/"
           icon: "DesktopClassic"
         - name: Proxmox Backup Server
           url: "https://pbs.cluster.${SECRET_DOMAIN}:8007/"
