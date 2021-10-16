@@ -39,9 +39,12 @@ spec:
         - name: TrueNAS Scale
           url: "http://nas00.cluster.${SECRET_DOMAIN}"
           icon: "nas"
-        # - name: HDHomeRun
-        #   url: "http://192.168.150.30"
-        #   icon: "antenna"
+        - name: Proxmox PVE
+          url: "https://pve.cluster.${SECRET_DOMAIN}:8007/"
+          icon: "DesktopClassic"
+        - name: Proxmox Backup Server
+          url: "https://pbs.cluster.${SECRET_DOMAIN}:8007/"
+          icon: "nas"
       groups:
         - name: Communicate
           links:
