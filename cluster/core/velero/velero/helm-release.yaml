@@ -23,13 +23,13 @@ spec:
       provider: aws
       backupStorageLocation:
         name: default
-        bucket: velero
+        bucket: velero-001
         config:
           region: us-east-1
           s3ForcePathStyle: true
-          s3Url: "https://nas00.cluster.${SECRET_DOMAIN}:9000"
-          publicUrl: "https://nas00.cluster.${SECRET_DOMAIN}:9000"
-          insecureSkipTLSVerify: true
+          s3Url: "https://s3.${SECRET_DOMAIN}"
+          publicUrl: "https://minio.${SECRET_DOMAIN}"
+          # insecureSkipTLSVerify: true
       volumeSnapshotLocation:
         name: aws
         config:
