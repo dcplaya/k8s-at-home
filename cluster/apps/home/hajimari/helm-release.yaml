@@ -36,15 +36,19 @@ spec:
         - name: Synology
           url: "http://10.10.200.210:5000"
           icon: "robot-vacuum"
+          group: "Infrastructure"
         - name: TrueNAS Scale
           url: "http://nas00.cluster.${SECRET_DOMAIN}"
           icon: "nas"
+          group: "Infrastructure"
         - name: Proxmox PVE
           url: "https://pve.cluster.${SECRET_DOMAIN}:8006/"
           icon: "DesktopClassic"
+          group: "Infrastructure"
         - name: Proxmox Backup Server
           url: "https://pbs.cluster.${SECRET_DOMAIN}:8007/"
           icon: "nas"
+          group: "Infrastructure"
       groups:
         - name: Communicate
           links:
