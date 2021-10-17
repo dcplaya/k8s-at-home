@@ -27,7 +27,7 @@ spec:
         config:
           region: us-east-1
           s3ForcePathStyle: true
-          s3Url: "https://s3.${SECRET_DOMAIN}"
+          s3Url: http://minio.tools:9000
           publicUrl: "https://minio.${SECRET_DOMAIN}"
           # insecureSkipTLSVerify: true
       volumeSnapshotLocation:
