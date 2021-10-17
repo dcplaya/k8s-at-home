@@ -67,8 +67,8 @@ spec:
       downloads:
         enabled: true
         type: emptyDir
-        mountPath: /downloads
-        size: 25Gi
+        mountPath: /local
+        size: 10Gi
       media:
         enabled: true
         type: custom
