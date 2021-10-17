@@ -72,7 +72,7 @@ spec:
         volumeSpec:
           nfs:
             server: "${NAS_ADDR}"
-            path: /S3
+            path: /mnt/NFS/S3
         mountPath: /data
     podAnnotations:
       secret.reloader.stakater.com/reload: "minio"
