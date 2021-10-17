@@ -5,7 +5,7 @@ resources:
 - default
 - kube-system
 - home
-# - flux-system
+- flux-system
 # - kasten-io
 - media
 - dev
