@@ -98,7 +98,7 @@ spec:
           - name: media-pvc
             nfs:
               server: "${NAS_ADDR}"
-              path: /mnt/Media/Plex/Merged-Media
+              path: /mnt/NFS/Merged-Media
           - name: shared
             emptyDir: {}
     

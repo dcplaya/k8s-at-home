@@ -106,7 +106,7 @@ spec:
         volumeSpec:
           nfs:
             server: "${NAS_ADDR}"
-            path: /mnt/Media/Plex/Merged-Media
+            path: /mnt/NFS/Merged-Media
         mountPath: /mnt/unionfs
         readOnly: false
     podAnnotations:
