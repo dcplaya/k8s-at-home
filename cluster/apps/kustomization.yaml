@@ -5,11 +5,13 @@ resources:
 - default
 - kube-system
 - home
+# - flux-system
 # - kasten-io
 - media
 - dev
 - monitoring
 - networking
 - system-upgrade
+- tools
 # - falco-system
 # - gaming
