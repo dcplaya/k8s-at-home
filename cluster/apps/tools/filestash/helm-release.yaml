@@ -21,7 +21,7 @@ spec:
     nameOverride: filestash
     env:
       APPLICATION_URL: "https://filestash.${SECRET_DOMAIN}"
-      TZ: "America/New_York"
+      TZ: "America/Los_Angeles"
     service:
       main:
         ports:
