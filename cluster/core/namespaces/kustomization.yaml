@@ -16,3 +16,4 @@ resources:
 - calico-system.yaml
 - falco-system.yaml
 - default.yaml
+- tools.yaml
