@@ -3,4 +3,4 @@ kind: Kustomization
 resources:
   - secret.sops.yaml
   - notification-error.yaml
-    - notification-info.yaml
+  - notification-info.yaml
