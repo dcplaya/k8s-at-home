@@ -74,7 +74,7 @@ spec:
         type: custom
         volumeSpec:
           nfs:
-            server: 10.10.200.240
+            server: "${NAS_ADDR}"
             path: /mnt/Media/Plex/Merged-Media
         mountPath: /mnt/unionfs
         readOnly: false
