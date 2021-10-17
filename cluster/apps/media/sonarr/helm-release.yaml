@@ -27,7 +27,7 @@ spec:
     env:
       TZ: "America/Los_Angeles"
     podSecurityContext:
-      runAsUser: 1001
+      runAsUser: 568
       runAsGroup: 100
       fsGroup: 568
       supplementalGroups:
