@@ -15,7 +15,7 @@ spec:
         kind: HelmRepository
         name: vmware-tanzu-charts
         namespace: flux-system
-      interval: 6m
+      interval: 5m
   values:
     ## EnableCSI uses the new kubernetes CSI snapshot beta feature
     # features: "EnableCSI"
@@ -39,8 +39,8 @@ spec:
       secretContents:
         cloud: |
           [default]
-          aws_access_key_id = "${SECRET_MINIO_ACCESS_KEY_VALERO}"
-          aws_secret_access_key = "${SECRET_MINIO_SECRET_KEY_VALERO}"
+          aws_access_key_id = "${SECRET_MINIO_ACCESS_KEY_VELERO}"
+          aws_secret_access_key = "${SECRET_MINIO_SECRET_KEY_VELERO}"
     initContainers:
     - name: velero-plugin-for-aws
       image: velero/velero-plugin-for-aws:v1.3.0
