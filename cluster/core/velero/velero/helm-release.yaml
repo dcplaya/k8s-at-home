@@ -72,14 +72,14 @@ spec:
           memory: 200Mi
           cpu: 150m
         limits:
-          memory: 4000Mi
-          cpu: 4000m
+          memory: 8000Mi
+          cpu: 5000m
     resources:
       requests:
         memory: 300Mi
         cpu: 25m
       limits:
-        memory: 3000Mi
+        memory: 4000Mi
     schedules:
       daily-backup:
         schedule: "0 2 * * *"
