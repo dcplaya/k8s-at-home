@@ -88,5 +88,5 @@ spec:
             emptyDir: {}
           # Location of rclone.conf
           - name: rclone
-            configMap:
-              name: rclone-backblaze
+            secret:
+              secretName: rclone-backblaze
