@@ -127,6 +127,16 @@ spec:
       limits:
         memory: 3500Mi
     probes:
+      liveness:
+        enabled: false
+      readiness:
+        enabled: false
+        custom: false
+        spec:
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          failureThreshold: 3
       startup:
         enabled: false
         custom: false
