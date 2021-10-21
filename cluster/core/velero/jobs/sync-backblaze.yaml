@@ -81,13 +81,13 @@ spec:
             volumeMounts:
             - mountPath: /shared
               name: shared
-            - mountPath: /config/backups.conf
+            - mountPath: /config
               name: rclone
-              readOnly: true
+              # readOnly: true
           volumes:
           - name: shared
             emptyDir: {}
           # Location of rclone.conf
           - name: rclone
-            secret:
-              secretName: rclone-backblaze
+            configMap:
+              name: rclone-backblaze
