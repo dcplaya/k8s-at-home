@@ -69,7 +69,7 @@ spec:
             - "24"
             - "--bwlimit"
             - "50M"
-            - "minio:velero"
+            - "minio:velero-001"
             - "backblaze-velero:/"
             resources:
               requests:
