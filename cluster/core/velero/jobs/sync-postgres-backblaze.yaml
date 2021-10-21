@@ -9,7 +9,7 @@ metadata:
   namespace: velero
   name: rclone-sync-postgres
 spec:
-  suspend: false
+  suspend: true
   # Run once a day, every day, starting at 3AM
   schedule: "0 3 * * *"
   failedJobsHistoryLimit: 1
@@ -20,33 +20,33 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
-          dnsPolicy: None
-          dnsConfig:
-            nameservers:
-            - "${ROUTER_IP}"
-          initContainers:
-          - name: rclone-conf
-            image: alpine/git:v2.32.0
-            env:
-            - name: GITEA_TOKEN
-              value: "${SECRET_GITEA_ACCESS_TOKEN}"
-            - name: URL
-              value: "git.dev.${SECRET_DOMAIN}"
-            command:
-            - "/bin/sh"
-            - "-ec"
-            - |
-              set -o nounset
-              set -o errexit
-              if [ -z "${SECRET_GITEA_ACCESS_TOKEN}" ]; then
-                printf "%s - Error - Missing GITEA_TOKEN environment variable" "$(date -u)"
-                exit 1
-              fi
-              git clone --depth 1 "https://${SECRET_GITEA_ACCESS_TOKEN}@git.dev.${SECRET_DOMAIN}/dcplaya/Configs.git" /shared/Configs
-              exit 0
-            volumeMounts:
-            - name: shared
-              mountPath: /shared
+          # dnsPolicy: None
+          # dnsConfig:
+          #   nameservers:
+          #   - "${ROUTER_IP}"
+          # initContainers:
+          # - name: rclone-conf
+          #   image: alpine/git:v2.32.0
+          #   env:
+          #   - name: GITEA_TOKEN
+          #     value: "${SECRET_GITEA_ACCESS_TOKEN}"
+          #   - name: URL
+          #     value: "git.dev.${SECRET_DOMAIN}"
+          #   command:
+          #   - "/bin/sh"
+          #   - "-ec"
+          #   - |
+          #     set -o nounset
+          #     set -o errexit
+          #     if [ -z "${SECRET_GITEA_ACCESS_TOKEN}" ]; then
+          #       printf "%s - Error - Missing GITEA_TOKEN environment variable" "$(date -u)"
+          #       exit 1
+          #     fi
+          #     git clone --depth 1 "https://${SECRET_GITEA_ACCESS_TOKEN}@git.dev.${SECRET_DOMAIN}/dcplaya/Configs.git" /shared/Configs
+          #     exit 0
+          #   volumeMounts:
+          #   - name: shared
+          #     mountPath: /shared
           containers:
           - name: rclone
             image: rclone/rclone:1.56
@@ -58,7 +58,7 @@ spec:
             args:
             - "-vvv"
             - "--config"
-            - "/shared/Configs/RClone/backups.conf"
+            - "/config/backups.conf"
             - "sync"
             - "--ignore-errors"
             - "--fast-list"
@@ -69,7 +69,7 @@ spec:
             - "24"
             - "--bwlimit"
             - "50M"
-            - "minio:postgres"
+            - "minio:postgres-001"
             - "backblaze-postgres:/"
             resources:
               requests:
@@ -81,7 +81,13 @@ spec:
             volumeMounts:
             - mountPath: /shared
               name: shared
+            - mountPath: /config
+              name: rclone
+              # readOnly: true
           volumes:
-          # Location of rclone.conf
           - name: shared
             emptyDir: {}
+          # Location of rclone.conf
+          - name: rclone
+            configMap:
+              name: rclone-backblaze
