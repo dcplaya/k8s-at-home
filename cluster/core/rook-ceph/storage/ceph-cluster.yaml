@@ -59,6 +59,9 @@ spec:
     config:
       osdsPerDevice: "1"
     nodes:
+    - name: "nas00"
+      devices:
+      - name: "nvme0n1p4"
     - name: "node00"
       devices:
       - name: "nvme0n1p1"
