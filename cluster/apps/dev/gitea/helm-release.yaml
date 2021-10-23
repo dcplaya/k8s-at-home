@@ -110,7 +110,7 @@ spec:
     postgresql:
       image:
         repository: bitnami/postgresql
-        tag: 13.4.0
+        tag: 14.0.0
       persistence:
         storageClass: "rook-ceph-block"
     affinity:
