@@ -125,4 +125,4 @@ spec:
         memory: 250Mi
         # cpu: 500m
       limits:
-        memory: 3500Mi
+        memory: 8000Mi
