@@ -28,13 +28,13 @@ spec:
       tag: nightly
     env:
       TZ: "America/Los_Angeles"
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 100
-      fsGroup: 568
-      supplementalGroups:
-        - 100
-      fsGroupChangePolicy: "OnRootMismatch"
+    # podSecurityContext:
+    #   runAsUser: 568
+    #   runAsGroup: 100
+    #   fsGroup: 568
+    #   supplementalGroups:
+    #     - 100
+    #   fsGroupChangePolicy: "OnRootMismatch"
     service:
       main:
         ports:
