@@ -21,14 +21,15 @@ spec:
   values:
     controllerType: deployment
     image:
-      # repository: ghcr.io/k8s-at-home/sonarr
-      # tag: v3.0.6.1342
-      repositoy: ubuntu
-      tag: latest
+      repository: ghcr.io/k8s-at-home/sonarr
+      tag: v3.0.6.1342
+      # repositoy: ubuntu
+      # tag: latest
     env:
       TZ: "America/Los_Angeles"
     podSecurityContext:
-      runAsUser: 568
+      # runAsUser: 568
+      runAsUser: 1000
       runAsGroup: 100
       fsGroup: 568
       supplementalGroups:
