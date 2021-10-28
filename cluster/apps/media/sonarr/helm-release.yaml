@@ -21,15 +21,12 @@ spec:
   values:
     controllerType: deployment
     image:
-      # repository: ghcr.io/k8s-at-home/sonarr
-      # tag: v3.0.6.1342
-      repository: ubuntu
-      tag: latest
+      repository: ghcr.io/k8s-at-home/sonarr
+      tag: v3.0.6.1342
     env:
       TZ: "America/Los_Angeles"
     podSecurityContext:
-      # runAsUser: 568
-      runAsUser: 1000
+      runAsUser: 568
       runAsGroup: 100
       fsGroup: 568
       supplementalGroups:
@@ -128,10 +125,3 @@ spec:
         cpu: 500m
       limits:
         memory: 8000Mi
-    probes:
-      liveness:
-        enabled: false
-      readiness:
-        enabled: false
-      startup:
-        enabled: false
