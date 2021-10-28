@@ -128,3 +128,10 @@ spec:
         cpu: 500m
       limits:
         memory: 8000Mi
+    probes:
+      liveness:
+        enabled: false
+      readiness:
+        enabled: false
+      startup:
+        enabled: false
