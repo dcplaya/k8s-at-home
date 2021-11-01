@@ -49,7 +49,7 @@ spec:
           #     mountPath: /shared
           containers:
           - name: rclone
-            image: rclone/rclone:1.56
+            image: rclone/rclone:1.57
             imagePullPolicy: IfNotPresent
             env:
             - name: TZ
