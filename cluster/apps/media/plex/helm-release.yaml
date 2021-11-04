@@ -135,7 +135,7 @@ spec:
       requests:
         ## 1000m = 1 core
         ## Setting request high enough so this doesnt get scheduled on i3 NUCs
-        cpu: 8000m
+        cpu: 5000m
         memory: 10000Mi
         gpu.intel.com/i915: 1
       limits:
