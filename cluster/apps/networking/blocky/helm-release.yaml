@@ -83,6 +83,7 @@ spec:
           - |
             # List of whitelisted domain names
             cboe.com
+            identity.mparticle.com
         clientGroupsBlock:
           default:
             - ads
