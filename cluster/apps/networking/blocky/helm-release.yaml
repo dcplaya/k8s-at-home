@@ -80,6 +80,9 @@ spec:
         whiteLists:
           ads:
           - https://raw.githubusercontent.com/anudeepND/whitelist/master/domains/whitelist.txt
+          - |
+            # List of whitelisted domain names
+            cboe.com
         clientGroupsBlock:
           default:
             - ads
