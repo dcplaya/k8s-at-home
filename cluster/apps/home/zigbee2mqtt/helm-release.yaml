@@ -85,10 +85,10 @@ spec:
         enabled: true
         mountPath: /data
         existingClaim: config-zigbee2mqtt
-      usb:
-        enabled: true
-        type: hostPath
-        hostPath: /dev/conbee
+      # usb:
+      #   enabled: true
+      #   type: hostPath
+      #   hostPath: /dev/conbee
     podAnnotations:
       backup.velero.io/backup-volumes: data
     addons:
