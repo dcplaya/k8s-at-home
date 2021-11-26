@@ -35,8 +35,7 @@ spec:
         password: ${ZIGBEE2MQTT_PASSWORD}
         client-id: zigbee2mqtt
       serial:
-        port: /dev/conbee
-        adapter: deconz
+        port: "tcp://zigbee-gateway.iot.${SECRET_DOMAIN}:6638"
       advanced:
         log_output:
         - console
@@ -86,18 +85,8 @@ spec:
         enabled: true
         mountPath: /data
         existingClaim: config-zigbee2mqtt
-      usb:
-        enabled: true
-        type: hostPath
-        hostPath: /dev/conbee
     podAnnotations:
       backup.velero.io/backup-volumes: data
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - {key: "feature.node.kubernetes.io/custom-conbee", operator: In, values: ["true"]}
     addons:
       codeserver:
         enabled: true
