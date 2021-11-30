@@ -52,15 +52,16 @@ spec:
       size: 100Mi
       storageClass: "rook-ceph-block"
       accessMode: ReadWriteOnce
-    # affinity:
-    #   podAntiAffinity:
-    #     preferredDuringSchedulingIgnoredDuringExecution:
-    #       - weight: 100
-    #         podAffinityTerm:
-    #           labelSelector:
-    #             matchExpressions:
-    #               - key: app.kubernetes.io/name
-    #                 operator: In
-    #                 values:
-    #                   - emqx
-    #           topologyKey: kubernetes.io/hostname 
+    # Prevents all instances running on same node
+    affinity:
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/name
+                    operator: In
+                    values:
+                      - emqx
+              topologyKey: kubernetes.io/hostname 
