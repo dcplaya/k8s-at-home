@@ -38,6 +38,8 @@ spec:
       EMQX_AUTH__USER__3__PASSWORD: "${HOME_ASSISTANT_PASSWORD}"
       EMQX_AUTH__USER__4__USERNAME: "${FRIGATE_USERNAME}"
       EMQX_AUTH__USER__4__PASSWORD: "${FRIGATE_PASSWORD}"
+      EMQX_AUTH__USER__5__USERNAME: "${PIXEL_USERNAME}"
+      EMQX_AUTH__USER__5__PASSWORD: "${PIXEL_PASSWORD}"
     emqxLoadedPlugins: >
       {emqx_management, true}.
       {emqx_recon, true}.
