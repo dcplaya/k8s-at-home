@@ -30,7 +30,7 @@ spec:
               set -o nounset
               set -o errexit
               cp -R -L /root/ssh /root/.ssh
-              chmod -R 700 /root/.ssh
+              chmod -R 600 /root/.ssh
               sleep 600000000m
               git clone --depth 1 "${SECRET_CONFIGS_URL}" /shared/Configs
               echo "Clone Complete"
