@@ -23,23 +23,18 @@ spec:
           initContainers:
           - name: git-config
             image: alpine/git:v2.32.0
-            env:
-            - name: GITEA_TOKEN
-              value: "${SECRET_GITEA_ACCESS_TOKEN}"
-            - name: URL
-              value: "git.dev.${SECRET_DOMAIN}"
             command:
             - "/bin/sh"
             - "-c"
             - |
               set -o nounset
               set -o errexit
-              # sleep 600000000m
+              sleep 600000000m
               if [ -z "${SECRET_GITEA_ACCESS_TOKEN}" ]; then
                 printf "%s - Error - Missing GITEA_TOKEN environment variable" "$(date -u)"
                 exit 1
               fi
-              git clone --depth 1 "https://${SECRET_GITEA_ACCESS_TOKEN}@git.dev.${SECRET_DOMAIN}/dcplaya/Configs.git" /shared/Configs
+              git clone --depth 1 "${SECRET_CONFIGS_URL}" /shared/Configs
               echo "Clone Complete"
               echo "Setting Perms"
               chown -R 1000:1000 /shared/Configs
@@ -49,6 +44,9 @@ spec:
             - name: shared
               # Path will be /shared/Configs/Plex-Meta-Manager/config.yml
               mountPath: /shared
+            - name: secret-volume
+              readOnly: true
+              mountPath: "/root/.ssh"
           containers:
           - name: plex-meta-manager
             image: meisnate12/plex-meta-manager:latest
@@ -61,11 +59,6 @@ spec:
                 exec:
                   command: ["/bin/sh", "-c", "/shared/Configs/Plex-Meta-Manager/pushGit.sh"]
             env:
-            # - name: GITEA_TOKEN
-            #   valueFrom:
-            #     secretKeyRef:
-            #       name: gitea-pat
-            #       key: token
             - name: PUID
               value: "1000"
             - name: GUID
@@ -101,4 +94,6 @@ spec:
               path: /mnt/NFS/Merged-Media
           - name: shared
             emptyDir: {}
-    
+          - name: secret-volume
+            secret:
+              secretName: sshkey
