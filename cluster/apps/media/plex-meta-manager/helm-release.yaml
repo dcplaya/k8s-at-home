@@ -29,13 +29,9 @@ spec:
             - |
               set -o nounset
               set -o errexit
-              sleep 600000000m
-              # if [ -z "${SECRET_GITEA_ACCESS_TOKEN}" ]; then
-              #   printf "%s - Error - Missing GITEA_TOKEN environment variable" "$(date -u)"
-              #   exit 1
-              # fi
               cp /root/ssh/* /root/.ssh/
               chmod -R 700 /root/.ssh
+              sleep 600000000m
               git clone --depth 1 "${SECRET_CONFIGS_URL}" /shared/Configs
               echo "Clone Complete"
               echo "Setting Perms"
