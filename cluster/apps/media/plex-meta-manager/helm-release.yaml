@@ -31,7 +31,7 @@ spec:
               set -o errexit
               cp -R -L /root/ssh /root/.ssh
               chmod -R 600 /root/.ssh
-              sleep 600000000m
+              # sleep 600000000m
               git clone --depth 1 "${SECRET_CONFIGS_URL}" /shared/Configs
               echo "Clone Complete"
               echo "Setting Perms"
@@ -43,7 +43,7 @@ spec:
               # Path will be /shared/Configs/Plex-Meta-Manager/config.yml
               mountPath: /shared
             - name: secret-volume
-              # readOnly: true
+              readOnly: true
               mountPath: "/root/ssh"
           containers:
           - name: plex-meta-manager
@@ -78,6 +78,9 @@ spec:
               name: media-pvc
             - mountPath: /shared
               name: shared
+            - name: secret-volume
+              readOnly: true
+              mountPath: "/root/ssh"
             resources:
               requests:
                 memory: 500Mi
