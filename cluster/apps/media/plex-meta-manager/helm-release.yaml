@@ -34,6 +34,8 @@ spec:
               #   printf "%s - Error - Missing GITEA_TOKEN environment variable" "$(date -u)"
               #   exit 1
               # fi
+              cp /root/ssh/* /root/.ssh/
+              chmod -R 700 /root/.ssh
               git clone --depth 1 "${SECRET_CONFIGS_URL}" /shared/Configs
               echo "Clone Complete"
               echo "Setting Perms"
@@ -46,7 +48,7 @@ spec:
               mountPath: /shared
             - name: secret-volume
               # readOnly: true
-              mountPath: "/root/.ssh"
+              mountPath: "/root/ssh"
           containers:
           - name: plex-meta-manager
             image: meisnate12/plex-meta-manager:latest
@@ -96,4 +98,4 @@ spec:
             emptyDir: {}
           - name: secret-volume
             secret:
-              secretName: sshkey
+              secretName: plex-meta-manager-sshkey
