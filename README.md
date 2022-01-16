@@ -172,7 +172,7 @@ k3sup install \
 k3sup join \
     --host=node03.cluster.elcarpenter.com \
     --server-host=node03.cluster.elcarpenter.com \
-    --k3s-version=v1.21.5+k3s2 \
+    --k3s-version=v1.21.8+k3s2 \
     --user=carpenam \
     --server \
     --k3s-extra-args="--disable servicelb --disable traefik --flannel-backend='none' --kubelet-arg='feature-gates=MixedProtocolLBService=true,GracefulNodeShutdown=true'"
@@ -184,7 +184,7 @@ k3sup join \
 k3sup join \
     --host=node00.cluster.elcarpenter.com \
     --server-host=node03.cluster.elcarpenter.com \
-    --k3s-version=v1.21.5+k3s2 \
+    --k3s-version=v1.21.8+k3s2 \
     --user=carpenam
 ```
 
