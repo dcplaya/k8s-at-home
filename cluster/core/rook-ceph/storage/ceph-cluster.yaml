@@ -67,7 +67,7 @@ spec:
       - name: "nvme0n1p4"
     - name: "node01"
       devices:
-      - name: "nvme0n1p1"
+      - name: "nvme0n1p4"
     - name: "node02"
       devices:
       - name: "nvme0n1p1"
