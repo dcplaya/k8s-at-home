@@ -127,9 +127,9 @@ spec:
               operator: In
               values:
               - "nas00"
-              # - "node01"
+              - "node01"
               # - "node02"
-              # - "node03"
+              - "node03"
               # - "node04"
               - "node05"
             - key: feature.node.kubernetes.io/custom-intel-gpu
@@ -140,7 +140,7 @@ spec:
       requests:
         ## 1000m = 1 core
         ## Setting request high enough so this doesnt get scheduled on i3 NUCs
-        cpu: 4000m
+        cpu: 3000m
         memory: 4000Mi
         gpu.intel.com/i915: 1
       limits:
