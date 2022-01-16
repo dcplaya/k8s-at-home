@@ -126,7 +126,12 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-              - node04
+              - "nas00"
+              # - "node01"
+              # - "node02"
+              # - "node03"
+              # - "node04"
+              - "node05"
             - key: feature.node.kubernetes.io/custom-intel-gpu
               operator: In
               values:
