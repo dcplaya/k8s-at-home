@@ -1,9 +1,8 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: rook-direct-mount
-  namespace: rook-ceph
+  namespace: rook-ceph # namespace:cluster
   labels:
     app: rook-direct-mount
 spec:
@@ -20,9 +19,10 @@ spec:
       containers:
         - name: rook-direct-mount
           image: rook/ceph:v1.8.2
-          command: ["/tini"]
-          args: ["-g", "--", "/usr/local/bin/toolbox.sh"]
+          command: ["/bin/bash"]
+          args: ["-m", "-c", "/usr/local/bin/toolbox.sh"]
           imagePullPolicy: IfNotPresent
+          tty: true
           env:
             - name: ROOK_CEPH_USERNAME
               valueFrom:
@@ -36,6 +36,7 @@ spec:
                   key: ceph-secret
           securityContext:
             privileged: true
+            runAsUser: 0
           volumeMounts:
             - mountPath: /dev
               name: dev
@@ -48,18 +49,18 @@ spec:
       # if hostNetwork: false, the "rbd map" command hangs, see https://github.com/rook/rook/issues/2021
       hostNetwork: true
       volumes:
-      - name: dev
-        hostPath:
-          path: /dev
-      - name: sysbus
-        hostPath:
-          path: /sys/bus
-      - name: libmodules
-        hostPath:
-          path: /lib/modules
-      - name: mon-endpoint-volume
-        configMap:
-          name: rook-ceph-mon-endpoints
-          items:
-          - key: data
-            path: mon-endpoints
+        - name: dev
+          hostPath:
+            path: /dev
+        - name: sysbus
+          hostPath:
+            path: /sys/bus
+        - name: libmodules
+          hostPath:
+            path: /lib/modules
+        - name: mon-endpoint-volume
+          configMap:
+            name: rook-ceph-mon-endpoints
+            items:
+              - key: data
+                path: mon-endpoints
