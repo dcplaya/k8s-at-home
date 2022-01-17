@@ -170,7 +170,7 @@ k3sup install \
 
 ```sh
 k3sup join \
-    --host=node03.cluster.elcarpenter.com \
+    --host=node01.cluster.elcarpenter.com \
     --server-host=node03.cluster.elcarpenter.com \
     --k3s-version=v1.21.8+k3s2 \
     --user=carpenam \
