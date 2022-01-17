@@ -16,6 +16,12 @@ spec:
         name: prometheus-community-charts
         namespace: flux-system
       interval: 5m
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
   values:
     fullnameOverride: prometheus
     alertmanager:
@@ -24,7 +30,7 @@ spec:
           slack_api_url: "${SECRET_ALERT_MANAGER_DISCORD_WEBHOOK}"
           resolve_timeout: 5m
         receivers:
-          # - name: "null"
+          - name: "null"
           - name: "discord"
             slack_configs:
               - channel: "#prometheus"
@@ -90,19 +96,20 @@ spec:
               resources:
                 requests:
                   storage: 1Gi
-    nodeExporter:
-      serviceMonitor:
-        relabelings:
-          - action: replace
-            regex: (.*)
-            replacement: $1
-            sourceLabels:
-              - __meta_kubernetes_pod_node_name
-            targetLabel: kubernetes_node
     kube-state-metrics:
       fullnameOverride: kube-state-metrics
     prometheus-node-exporter:
       fullnameOverride: node-exporter
+      prometheus:
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels:
+                - __meta_kubernetes_pod_node_name
+              targetLabel: kubernetes_node
     grafana:
       enabled: false
       forceDeployDashboards: true
@@ -149,9 +156,15 @@ spec:
         enabled: true
         port: 2381
         targetPort: 2381
-    # Setting this option to 0 disabled CPU limits
     prometheusOperator:
-      configReloaderCpu: 0
+      prometheusConfigReloader:
+        resources:
+          requests:
+            cpu: 100m
+            memory: 50Mi
+          limits:
+            cpu: 200m
+            memory: 100Mi
     prometheus:
       ingress:
         enabled: true
