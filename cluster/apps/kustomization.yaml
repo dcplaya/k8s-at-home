@@ -6,7 +6,7 @@ resources:
 - kube-system
 - home
 - flux-system
-# - kasten-io
+- kasten-io
 - media
 - dev
 - monitoring
